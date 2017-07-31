@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/mui.min.css"/>
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/localsel.css"/>
+	<script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+
+</head>
+<body>
+		<div class="localbox m10">
+		<h3>请选择您所在的楼宇</h3>
+		<div class="localcurrent mui-clearfix">
+			<span class="mui-pull-right">区域不正确？<a href="__URL__/selectAreas">点击切换</a></span>
+		</div>
+		<ul class="locallist">
+			<foreach name="list" item="val">
+				<li  onclick= "selectArea({$val['id']},'{$val['name']}')" >
+					<h4><span class="mui-pull-right">距我{$val['distance']}</span>{$val.name}</h4>
+					<div class="addr">
+						{$val.address}
+					</div>
+				</li>
+
+			</foreach>
+
+		</ul>
+	</div>
+	<script type="text/javascript">
+		var backurl ="{$backurl}";
+		document.body.addEventListener('touchstart', function () { });
+/*
+		$('.locallist li').on('click',function(){
+			$(this).find('.addrlist').slideToggle();
+		})
+		$('.addrlist').on('click',function(event){
+			event.stopPropagation();
+		})*/
+
+		function selectArea(shop_id,name){
+			if(confirm('确定要进入'+name+'么?')){
+				$.ajax({
+					type:'post',
+					url:'__URL__/select',
+					data:{id:shop_id},
+					success:function(data){
+						if(data) {
+							if (backurl) {
+								location.href = backurl;
+							}else{
+								location.href = '{:U("Index/index")}'+'?'+Math.random();
+							}
+						}else{
+							alert(data)
+						}
+					}
+				});
+			}
+		}
+		
+	</script>
+</body>
+</html>

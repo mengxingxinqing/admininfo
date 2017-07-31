@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="format-detection" content="telephone=no" />
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<title>{$info['partner_name']}</title>
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/weui.min.css" />
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/jquery-weui.css">
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/css.css?v13" />
+		<style type="text/css">
+			.loading {
+				width: 100%;
+				height: 100%;
+				position: fixed;
+				top: 0;
+				z-index: 999;
+				background: url(__PUBLIC__/Home/img/loading.gif) center center no-repeat #fff;
+				-webkit-background-size: 100px auto;
+				background-size: 100px auto;
+				text-align: center;
+			}
+			
+			.loading.on {
+				-webkit-transition: .5s;
+				transition: .5s;
+				-webkit-transform: translateY(-100%);
+				transform: translateY(-100%);
+			}
+			
+			.loading span {
+				position: relative;
+				top: 40%;
+				color: #02B9C2;
+				font-size: 22px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="loading">
+			<span>{$info['partner_name']}</span>
+		</div>
+		<div class="page">
+			<header class="n-nav-bar">
+				<if condition="$shop_num gt 1 && $info['is_pick_point'] eq 0">
+				<button class="n-header-link n-pull-left" onclick="location.href='/index.php/Home/SelectShop/index';">门店<span class="selecticon"></span></button>
+				</if>
+				<!--<h1 class="n-title">十分便利</h1>-->
+				<if condition="$isset_certs neq 0">
+				<a class="n-header-link n-pull-right" href="__URL__/certs">资质</a>
+				</if>
+					
+				<h1 class="n-title">{$info['name']}</h1>
+
+			</header>
+
+			<if condition="$in_sale_time eq 0">
+				<div class="n-banner-header banner1">
+					<h3>休息中</h3>
+					<p>营业时间：{$info['start_time']} - {$info['end_time']}</p>
+				</div>
+			<elseif condition="$info['is_close'] eq 1" />
+				<div class="n-banner-header banner1">
+					<h3>抱歉，暂停营业中</h3>
+					<p>&nbsp;</p>
+				</div>
+			</if>
+
+			<div class="n-footer-bar">
+				<div class="shopcar">
+					<a href="javascript:;" onclick="shopcart_submit('/index.php/Home/Index/shopcart');" class=""> <i class="iconfont icon-gouwuche"></i>
+						<div class="numdot" id="sc_num">0</div>
+					</a>
+				</div>
+				<a href="javascript:;" onclick="shopcart_submit('/index.php/Home/Index/checkShopCart',1);" class="orderbtn">下单</a>
+				<div class="price">¥<b id="sc_money">0</b>元 <span id="base_price_show" <if condition="$info['base_price'] eq 0">style="display: none;</if>"><span class="fontreds" id="base_price">{$info['base_price']}</span>元起送</span>
+				</div>
+			</div>
+			<div class="n-fullpagebox">
+				<div class="n-leftmenu">
+
+					<div class="xs-container">
+						<div class="xs-content">
+							<ul id="catlist">
+								
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="n-rightcontent">
+					<div class="xs-container">
+						<div class="xs-content">
+							<div class="msgtabox">
+								<div class="infom" style="display:none">
+									<div class="tag2">惠</div>
+									<div class="text"></div>
+								</div>
+							</div>
+
+							<ul class="n-goodslist">
+							</ul>
+							<p class="addrboxtext">
+							{$info['bottom_address']}
+							<if condition="$info.partner_id eq 8">
+							<button type="button" onclick="goRecharge()">充值</button>
+							</if>
+							<span class="weilai-logo"></span>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="n-goods-detail-box imgbox1">
+			<div class="n-goods-type-header"><span id="f_name"></span> <i class="iconfont icon-15jiajianjia close-btn"></i></div>
+			<div class="n-goods-type-content">
+				<div class="swiper-container">
+					<div class="swiper-wrapper" id="f_imglist">
+						<div class="swiper-slide"><img src="https://sfwm.oss-cn-beijing.aliyuncs.com/goods_101.jpg" alt=""></div>
+						<div class="swiper-slide"><img src="https://sfwm.oss-cn-beijing.aliyuncs.com/goods_101.jpg" alt=""></div>
+						<div class="swiper-slide"><img src="https://sfwm.oss-cn-beijing.aliyuncs.com/goods_101.jpg" alt=""></div>
+					</div>
+					<div class="swiper-pagination"></div>
+				</div>
+				<div class="detail-des" id="f_remark"></div>
+				<div id="formatlist">
+
+				</div>
+				<div id="attrlist">
+
+				</div>
+			</div>
+			<div class="n-goods-type-footer">
+				<div class="price">¥<b id="f_price"></b> <span class="info" id="f_result"></span></div>
+				<div class="numbox">
+					<a class="iconfont icon-16jiajianjian numplus btn_dec" id="f_btn_dec" href="javascript:;"></a>
+					<span id="f_num">0</span>
+					<a class="iconfont icon-15jiajianjia numplus btn_inc" href="javascript:;"></a>
+				</div>
+			</div>
+		</div>
+
+		<div class="n-goods-detail-box imgbox2" style="width: 80%;height: 60%;">
+			<div class="n-goods-type-header"><span id="m_name"></span> <i class="iconfont icon-15jiajianjia close-btn"></i></div>
+			<img id="m_img" src="" style="height: 100%;width: 100%;">
+		</div>
+
+
+		<div style="display: none" id="hideNotice">{$notice}</div>
+		<script>
+			var ossurl = '{$Think.config.OSS_PATH}';
+			var ispartner = 0;
+			var notice ;
+			var init_cat = "{$cat_id}";
+			var goods_discount_status = "{$goods_discount_status}";
+    		var goods_discount_num = "{$goods_discount_num}";
+			var base_price = "{$info.base_price}";
+		</script>
+		<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+		<script>
+			wx.config({
+				debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，
+				appId: '{$share.signPackage.appId}',
+				timestamp: '{$share.signPackage.timestamp}',
+				nonceStr: '{$share.signPackage.nonceStr}',
+				signature: '{$share.signPackage.signature}',
+				jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
+			});
+			wx.ready(function () {
+				// 在这里调用 API
+				// 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
+				wx.onMenuShareTimeline({
+					title: '{$share.pyq.title}', // 分享标题
+					link:"{$share.pyq.link}",
+					imgUrl: "{$share.pyq.imgUrl}" // 分享图标
+				});
+//                获取“分享给朋友”按钮点击状态及自定义分享内容接口
+				wx.onMenuShareAppMessage({
+					title: '{$share.hy.title}', // 分享标题
+					desc: "{$share.hy.desc}", // 分享描述
+					link:"{$share.hy.link}",
+					imgUrl: "{$share.hy.imgUrl}", // 分享图标
+					type: 'link' // 分享类型,music、video或link，不填默认为link
+				});
+			});
+		</script>
+		<script src="https://lib.sinaapp.com/js/jquery/2.2.4/jquery-2.2.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__PUBLIC__/Home/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__PUBLIC__/Home/js/xscroll-master.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__PUBLIC__/Home/js/jquery-weui.js" type="text/javascript" charset="utf-8"></script>
+
+		<script src="__PUBLIC__/Home/js/swiper.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__PUBLIC__/Home/js/index_new.js?v=13" type="text/javascript" charset="utf-8"></script>
+		<div style="display: none">
+			<script src="https://s4.cnzz.com/z_stat.php?id=1260548309&web_id=1260548309" language="JavaScript"></script>
+		</div>
+		<script type="text/javascript">
+			$(function(){
+				$.get("__URL__/setVisit","",function(){
+					
+				})
+			})
+
+			function goRecharge(){
+				location.href = '__URL__/userRecharge'
+			}
+		</script>
+	</body>
+</html>

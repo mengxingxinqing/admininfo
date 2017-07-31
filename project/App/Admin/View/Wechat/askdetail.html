@@ -1,0 +1,124 @@
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN SAMPLE TABLE PORTLET-->
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-list font-red"></i>
+                    <span class="caption-subject font-red uppercase">消息回复</span>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <div class="portlet light bordered">
+
+                            <div class="portlet-body" id="chats">
+                                <div class="scroller" style="height: 300px;" data-always-visible="1" data-rail-visible1="1">
+                                    <ul class="chats">
+                                        <volist name="list" id="it">
+                                        <li <if condition="$it['is_answer'] eq 1">class="out" <else/>class="in"</if>>
+                                            <img class="avatar" <if condition="$it['is_answer'] eq 1">src="__PUBLIC__/Back/metronic/assets/layouts/layout/img/avatar2.jpg" <else/> src="{$it['headimgurl']}" </if> />
+
+                                            <div class="message">
+                                                <span class="arrow"> </span>
+                                                <a href="javascript:;" class="name">
+                                                <if condition="$it['is_answer'] eq 1">
+                                                管理员
+                                                <else />
+                                                {$it['nickname']}
+                                                </if>
+                                                </a>
+                                                <span class="datetime">{$it['create_time']|date='Y-m-d H:i',###} </span>
+                                                <span class="body">
+                                                    <if condition="$it['type'] eq 'image'">
+                                                        <img src="{$it['content']}" width="200px" height="200px">
+                                                        <elseif condition="$it['type'] eq 'text'"/>
+                                                        {$it['content']}
+                                                        <elseif condition="$it['type'] eq 'voice'"/>
+                                                        <audio src="{$it['content']}">暂不支持</audio>
+                                                    </if>
+                                                </span>
+                                            </div>
+                                        </li>
+                                        </volist>
+                                    </ul>
+                                </div>
+                                <div class="chat-form">
+                                    <div class="input-cont">
+                                        <input class="form-control" type="text" id="content" placeholder="输入回复内容" /> </div>
+                                    <div class="btn-cont" >
+                                        <span class="arrow"> </span>
+                                        <a href="javascript:;" class="btn blue icn-only" >
+                                            <i class="fa fa-check icon-white"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END PORTLET-->
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- END SAMPLE TABLE PORTLET-->
+</div>
+<script>
+    window.onload = function () {
+        chatbox()
+
+        $("#chats").find(".scroller").slimScroll({
+            scrollTo: $("#chats").find("ul.chats").outerHeight()
+        })
+    }
+
+    //消息回复
+    function chatbox() {
+        var e = $("#chats"),
+                t = $(".chats", e),
+                a = $(".chat-form", e),
+                i = $("input", a),
+                l = $(".btn", a),
+                o = function(a) {
+                    a.preventDefault();
+                    var l = i.val();
+                    if (0 != l.length) {
+                        var o = new Date,
+                                n = o.getHours() + ":" + o.getMinutes(),
+                                r = "";
+                        r += '<li class="out">', r += '<img class="avatar" alt="" src="__PUBLIC__/Back/metronic' + Layout.getLayoutImgPath() + 'avatar1.jpg"/>', r += '<div class="message">', r += '<span class="arrow"></span>', r += '<a href="#" class="name">管理员</a>&nbsp;', r += '<span class="datetime">at ' + n + "</span>", r += '<span class="body">', r += l, r += "</span>", r += "</div>", r += "</li>";
+                        t.append(r);
+                        reply({$id});
+                        i.val("");
+                        var s = function() {
+                            var t = 0;
+                            return e.find("li.out, li.in").each(function() {
+                                t += $(this).outerHeight()
+                            }), t
+                        };
+                        e.find(".scroller").slimScroll({
+                            scrollTo: s()
+                        })
+                    }
+                };
+        $("body").on("click", ".message .name", function(e) {
+            e.preventDefault();
+            var t = $(this).text();
+            i.val("@" + t + ":"), App.scrollTo(i)
+        }), l.click(o), i.keypress(function(e) {
+            return 13 == e.which ? (o(e), !1) : void 0
+        })
+
+
+    }
+    function reply(id) {
+        var content = $('#content').val();
+        $.post('__URL__/answer',{id:id,content:content},function (data) {
+            subComplete(data)
+        });
+    }
+</script>

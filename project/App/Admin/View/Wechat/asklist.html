@@ -1,0 +1,88 @@
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN SAMPLE TABLE PORTLET-->
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-list font-red"></i>
+                    <span class="caption-subject font-red uppercase">消息回复</span>
+                </div>
+
+                <div class="actions">
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+                    </div>
+                </div>
+                <div class="tabbable tabbable-tabdrop">
+                    <div class="general-item-list">
+                        <volist name="list.data" id="it">
+                        <div class="item">
+                            <div class="item-head">
+                                <div class="item-details">
+                                    <img class="item-pic rounded" src="{$it['headimgurl']}">
+                                    <a href="" class="item-name primary-link">{$it['nickname']} <notempty name="it.name">【{$it['name']}】</notempty></a>
+                                    <span class="item-label"><abbr title="{$it['create_time']|date='Y-m-d H:i:s',###}" class="timeago"></abbr></span>
+                                </div>
+                                <!--<span class="item-status">
+                                    <span class="badge badge-empty badge-success"></span> </span>-->
+                            </div>
+                            <div class="item-body" style="padding-left: 45px;">
+                               <if condition="$it['type'] eq 'image'">
+                                   <img src="/{$it['content']}" width="200px"height="200px">
+                                   <elseif condition="$it['type'] eq 'text'"/>
+                                   {$it['content']}
+                                   <elseif condition="$it['type'] eq 'voice'"/>
+                                   <audio src="{$it['content']}">暂不支持</audio>
+                               </if>
+
+                            </div>
+                            <div class="text-right margin-top-10">
+                                <button class="btn btn-info btn-xs fastre">快速回复</button>
+                                <a class="btn btn-success btn-xs" href="__URL__/askdetail/id/{$it['id']}" target="_blank" >详情
+                                    <if condition="$it['status'] eq 1">【已回复】</if>
+                                </a>
+                            </div>
+                            <div class="text-right margin-top-10 fastrebox hide">
+                                <div class="form-group">
+
+                                    <textarea class="form-control" id="content{$it['id']}" rows="2" placeholder="请输入回复内容"></textarea>
+                                    <button class="btn btn-success btn-sm margin-top-10" onclick="reply(this,{$it['id']})">回复</button>
+                                </div>
+                            </div>
+                        </div>
+                        </volist>
+
+                    </div>
+                </div>
+                <div class="megas512">
+                    {$list['page']}
+                </div>
+            </div>
+        </div>
+        <!-- END SAMPLE TABLE PORTLET-->
+    </div>
+</div>
+<script>
+    $(function () {
+        jQuery("abbr.timeago").timeago();
+
+        //快速回复
+        $('.fastre').on('click',function(){
+            $(this).parent().next('.fastrebox').toggleClass('hide')
+        })
+    })
+
+    function reply(obj,id) {
+        var content = $('#content'+id).val();
+        $.post('__URL__/answer',{id:id,content:content},function (data) {
+            subComplete(data)
+            $(obj).parent().parent().addClass('hide');
+            $('#content'+id).val('')
+        });
+    }
+
+</script>

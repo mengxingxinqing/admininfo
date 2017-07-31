@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN" class="h100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{$info['name']}</title>
+    <link rel="stylesheet" href="https://sfwmfile.oss-cn-beijing.aliyuncs.com/coupon/Home/css/weui.min.css">
+    <link rel="stylesheet" href="https://sfwmfile.oss-cn-beijing.aliyuncs.com/coupon/Home/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="https://sfwmfile.oss-cn-beijing.aliyuncs.com/coupon/Home/css/common.css">
+</head>
+<body class="bonus-bg h100" style="background-image: url('{$info['img']}')">
+<div class="n-scroll-content">
+    <div class="bonus-receive">
+        <if condition="$status eq 0">
+
+            <div class="num-inputbox">
+                <button class="weui-btn weui-btn_warn" onclick="getOne()">立即领取</button>
+            </div>
+            <elseif condition="$status eq 1"/>
+            <div class="num-inputbox">
+                <button class="weui-btn" style="background-color:#999">已领取</button>
+                <a href="__URL__/myjf" class="weui-btn weui-btn_warn">查看我的优惠券</a>
+            </div>
+            <elseif condition="$status eq 2"/>
+            <div class="num-inputbox">
+                <button class="weui-btn" style="background-color:#999">活动已结束</button>
+            </div>
+        </if>
+
+        <h4 class="receive-title"><span>活动规则</span></h4>
+        <div class="receive-content">
+            活动期限：{$info['start_time']|date='Y-m-d',###}-{$info['end_time']|date='Y-m-d',###}<br/>
+            优惠券详情:
+                <ul>
+                <volist name="info.detail" id="it">
+                    <li>优惠券金额：{$it.bonus_money}元 &nbsp;满{$it.bonus_param}元可用 &nbsp; 有效期：{$it.bonus_day}天</li>
+                </volist>
+                </ul>
+        </div>
+    </div>
+</div>
+
+<script src="https://sfwmfile.oss-cn-beijing.aliyuncs.com/coupon/Home/js/jquery-2.1.4.js"></script>
+<script src="https://sfwmfile.oss-cn-beijing.aliyuncs.com/coupon/Home/js/jquery-weui.min.js"></script>
+<script src="https://sfwmfile.oss-cn-beijing.aliyuncs.com/coupon/Home/js/fastclick.js"></script>
+<div style="display:none;">
+<script src="http://s4.cnzz.com/z_stat.php?id=1261628444&web_id=1261628444" language="JavaScript"></script>
+</div>
+<script type="text/javascript">
+    $(function(){
+
+    })
+</script>
+<script>
+    $(function(){
+        FastClick.attach(document.body);
+    })
+    function getOne(){
+        var id = "{$info.id}";
+        $.post('__URL__/getBonusActivity',{id:id},function (res) {
+            if(res == 0){
+                alert("领取成功，快到我的优惠券查看吧");
+                location.reload();
+            }else if(res == 1){
+                alert("一个人只能领一次哦~");
+            }else if(res == 2){
+                alert("活动已经停止了，谢谢关注");
+            }
+        })
+    }
+
+</script>
+</body>
+</html>

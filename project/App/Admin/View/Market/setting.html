@@ -1,0 +1,321 @@
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN SAMPLE TABLE PORTLET-->
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-list font-red"></i>
+                    <span class="caption-subject font-red uppercase">营销设置</span>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <form method="post" class="form-horizontal" enctype="multipart/form-data" >
+                    <div class="form-body">
+                        <h3 class="form-section">1.设置邀请活动规则</h3>
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">邀请者获取红包条件</label>
+                                    <div class="col-md-6">
+                                        <select name="get_type" class="form-control selbond">
+                                            <option <if condition="$info['get_type'] eq 0">selected</if> value="0">好友关注既得</option>
+                                            <!--<option <if condition="$info['get_type'] eq 1">selected</if> value="1">关注并判定有效地理位置</option>-->
+                                            <option <if condition="$info['get_type'] eq 2">selected</if> value="2">好友关注并下单得</option>
+                                        </select>
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row fanweiinp hide" >
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">邀请范围</label>
+                                    <div class="col-md-6">
+                                        <select name="range_type" class="form-control bound">
+                                            <option value="1">市内</option>
+                                            <option value="0">周边X公里</option>
+                                        </select>
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group kmset hide">
+                                    <div class="col-md-6">
+                                        周边
+                                        <input class="form-control input-xsmall inline" type="text" name="get_range" value="{$info['get_range']}" /> 公里
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">邀请红包</label>
+                                    <div class="col-md-9">
+                                        <div class="col-md-6">
+                                            金额
+                                            <input class="form-control input-xsmall inline" type="number" name="money" min="0" value="{$info['money']}" /> 元
+                                            <span class="help-block"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            有效期
+                                            <input class="form-control input-xsmall inline check_int" type="number" name="active_time" min="0" value="{$info['active_time']}" /> 天
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="form-section">2.设置邀请文字</h3>
+                        <h5>分享微信好友</h5>
+                        <div class="row">
+
+                            <div class="col-md-6">
+
+                                <div class="sherecard friendemo">
+                                    <empty name="info.title1">
+                                        <h5>快来xx外卖拿红包！</h5>
+                                        <else/>
+                                        <h5>{$info['title1']}</h5>
+                                    </empty>
+                                    <div class="cardcont">
+                                        <empty name="info.img1">
+                                            <img src="__PUBLIC__/Back/metronic/img/noimage.jpg" alt="" />
+                                            <else/>
+                                            <img src="{$info['img1']}" alt="" />
+                                        </empty>
+                                        <empty name="info.content1">
+                                            <p>新用户关注立得x元红包，邀好友红包接着送～</p>
+                                            <else/>
+                                            <p>{$info['content1']}</p>
+                                        </empty>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 friendinput">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">标题</label>
+                                    <div class="col-md-8">
+                                        <input name="title1" value="{$info['title1']}" class="form-control hd-titin" />
+
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">图片</label>
+                                    <div class="col-md-8">
+                                        <input type="file" name="img1" class="form-control hd-imgin" />
+                                        <span class="help-block">建议图片尺寸为100x100正方形图片</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">内容</label>
+                                    <div class="col-md-8">
+                                        <textarea name="content1" class="form-control hd-contin">{$info['content1']}</textarea>
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <h5>分享朋友圈</h5>
+                        <div class="row">
+
+                            <div class="col-md-6">
+
+                                <div class="sherecard friends momentdemo">
+                                    <div class="cardcont">
+                                        <empty name="info.img1">
+                                            <img src="__PUBLIC__/Back/metronic/img/noimage.jpg" alt="" />
+                                            <else/>
+                                            <img src="{$info['img2']}" alt="" />
+                                        </empty>
+                                        <empty name="info.title2">
+                                            <p>来拿红包吧～</p>
+                                            <else/>
+                                            <p>{$info['title2']}</p>
+                                        </empty>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 momentin">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">标题</label>
+                                    <div class="col-md-8">
+                                        <input name="title2" value="{$info['title2']}" class="form-control hd-titin" />
+
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">图片</label>
+                                    <div class="col-md-8">
+                                        <input type="file" name="img2" class="form-control hd-imgin" />
+                                        <span class="help-block">建议图片尺寸为100x100正方形图片</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 id="p1" class="form-section">3.好友所见邀请页设置</h3>
+                        <div class="row">
+                            <div class="col-md-6" style="overflow: auto;">
+                                <div class="invitedemo" <notempty name="info.img4"> style='background-image:url("{$info['img4']}") ' </notempty> >
+                                    <div class="demoheader">
+                                        <img src="__PUBLIC__/Back/metronic/img/header5.png" />
+                                    </div>
+                                    <div class="democontent">
+                                        <div class="userinfo">
+                                            <img class="headimg" src="__PUBLIC__/Back/metronic/img/0.jpg" alt="" />
+                                            <h5><span>XXX</span>给您推荐～</h5>
+
+                                        </div>
+                                        <div class="inimgbox">
+                                            <empty name="info.img3">
+                                                <img src="__PUBLIC__/Back/metronic/img/noimage2.jpg" alt="" />
+                                                <else/>
+                                                <img src="{$info['img3']}" alt="" />
+                                            </empty>
+                                            <div class="shadow"></div>
+                                        </div>
+
+                                        <div class="contentpv">
+                                            <empty name="info.content3">
+                                                请在右侧输入内容
+                                                <else/>
+                                                {$info['content3']}
+                                            </empty>
+                                        </div>
+                                        <div class="qrcode">
+                                            <img src="__PUBLIC__/qrcode/qrcode.jpg" alt="" />
+                                        </div>
+                                        <div class="shopname">长按二维码识别关注<span>{$pinfo['name']}</span></div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 inviteinbg">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">背景</label>
+                                    <div class="col-md-8">
+                                        <input type="file" name="img4" class="form-control hd-imgin" />
+                                        <span class="help-block">建议尺寸为450x675，否则页面显示不完整</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 invitein">
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">图片</label>
+                                    <div class="col-md-8">
+                                        <input type="file" name="img3" class="form-control hd-imgin" />
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">内容</label>
+                                    <div class="col-md-8">
+                                        <textarea name="content3" class="form-control hd-contin">{$info['content3']}</textarea>
+                                        <div class="text-right margin-top-10">
+                                            <button class="btn btn-info btn-xs enterbtn" type="button">换行</button>
+                                        </div>
+                                        <span class="help-block">可点击“换行”按钮进行文字换行</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-12 text-right"><a class="btn" href="__URL__/index">取消</a> <button class="btn green" type="submit">保存并发布</button></div>
+                </div>
+            </div>
+            </form>
+        </div>
+</div>
+  </div>
+    </div>
+
+<script>
+
+    $(function () {
+
+        //配送范围js
+        $('.selbond').on('change', function(){
+            if ($('.selbond option:selected').val() == '1') {
+                $('.fanweiinp').removeClass('hide');
+            } else {
+                $('.fanweiinp').addClass('hide');
+            }
+        })
+        $('.bound').on('change', function() {
+            if ($('.bound option:selected').val() == '0') {
+                $('.kmset').removeClass('hide');
+            } else {
+                $('.kmset').addClass('hide');
+            }
+        })
+
+        //设置文字与图片
+        $('.friendinput').find('.hd-titin').on('input propertychange', function() {
+            $('.friendemo h5').html($(this).val());
+        });
+        $('.friendinput').find('.hd-contin').on('input propertychange', function() {
+            $('.friendemo .cardcont p').html($(this).val());
+        });
+        $('.momentin').find('.hd-titin').on('input propertychange', function() {
+            $('.momentdemo .cardcont p').html($(this).val());
+        });
+        $('.invitein').find('.hd-contin').on('input propertychange', function() {
+            $('.democontent .contentpv').html($(this).val());
+        });
+        $('.friendinput .hd-imgin').on('change', function() {
+            getImg('.friendemo .cardcont img', this);
+        })
+        $('.momentin .hd-imgin').on('change', function() {
+            getImg('.momentdemo .cardcont img', this);
+        })
+        $('.invitein .hd-imgin').on('change', function() {
+            getImg('.invitedemo .inimgbox img', this);
+        })
+        $('.enterbtn').on('click', function() {
+            $('.invitein').find('.hd-contin').val($('.invitein').find('.hd-contin').val() + '<br>');
+            $('.invitein').find('.hd-contin').focus();
+        })
+
+        $('.inviteinbg .hd-imgin').on('change', function() {
+            $('.invitedemo').css('backgroundImage','url('+getObjectURL(this.files[0])+')')
+        })
+
+    })
+
+    //本地预览图片
+    function getImg(fileupclass, obj) {
+        var objUrl = getObjectURL(obj.files[0]);
+        var byteSize = obj.files[0].size;
+        if(( Math.ceil(byteSize / 1024) )>500){
+            alert("图片大小不能超过500kb");
+        }
+        console.log("objUrl = " + objUrl);
+        if (objUrl) {
+            $(fileupclass).attr("src", objUrl);
+        }
+    }
+    //建立一個可存取到該file的url
+    function getObjectURL(file) {
+        var url = null;
+        if (window.createObjectURL != undefined) { // basic
+            url = window.createObjectURL(file);
+        } else if (window.URL != undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file);
+        }
+        return url;
+    }
+</script>

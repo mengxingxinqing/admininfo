@@ -1,0 +1,35 @@
+<?php
+return array(
+    'IGNORE_PRIV_LIST'=>array(
+        array(
+            'module_name'=>'Admin',
+            'controller_list'=>array(
+                array(
+                    'controller_name'=>'Admin',
+                    'action_list'=>array('ajaxCheckUsername')
+                ),
+                array(
+                    'controller_name'=>'Public',
+                    'action_list'=>array()
+                ),
+                array(
+                    'controller_name'=>'Index',
+                    'action_list'=>array()
+                ),
+                array(
+                    'controller_name'=>'Cache',
+                    'action_list'=>array()
+                ),
+                array(
+                    'controller_name'=>'Role',
+                    'action_list'=>array()
+                ),
+                array(
+                    'controller_name'=>'Admin',
+                    'action_list'=>array()
+                ),
+            ),
+        )
+
+    ),
+);

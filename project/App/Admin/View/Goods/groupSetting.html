@@ -1,0 +1,135 @@
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/morris/morris.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
+
+<!-- END PAGE LEVEL PLUGINS -->
+<div class="portlet light bordered">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa fa-plus font-red"></i>
+            <span class="caption-subject font-red uppercase">团餐设置</span>
+        </div>
+
+    </div>
+    <div class="row form-horizontal form-row-seperated">
+        <div class="col-md-3">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <select class="bs-select form-control" data-live-search="true" data-size="8" name="shop_id" onchange="changeShop(this.value);">
+                        <volist name="shop_list" id="item">
+                            <option value="{$item['id']}" <if condition="$shop_id eq $item['id']">selected</if>  >{$item['name']}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <div class="tabbable tabbable-tabdrop">
+            <ul class="nav nav-tabs">
+                <volist name="day_list" id="item">
+                    <li <if condition="$item['val'] eq $selected_day">class="active"</if> >
+                    <a  class="day_tab" href="#tab1" data-toggle="tab" data-day="{$item['val']}">{$item['str']}</a>
+                    </li>
+                </volist>
+            </ul>
+            <div class="tab-content">
+        <form action="#" class="form-horizontal" id="tform">
+            <div class="form-body">
+                <div class="row">
+                    <!--/span-->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">团餐规则</label>
+                            <div class="col-md-8">
+                                <input type="hidden" name="sid" id="sid" value="">
+                                <textarea id="remark" name="remark">{$info['remark']}</textarea>
+                                <span class="help-block">这里规则将显示在团餐页面的顶部，主要是描述性的语言，给用户查看</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/span-->
+                </div>
+
+                <div class="row">
+                    <!--/span-->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">团餐总起定量</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" name="min_num" id="min_num" placeholder="团餐总起定量" value="{$info['min_num']}">
+                                <span class="help-block">1.设置总起订量后，将判断订单的总份数，才允许用户下单 2.总起订量留空或0则表示不对总份数做限制</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/span-->
+                </div>
+                <div class="row">
+                    <!--/span-->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">是否提供发票</label>
+                            <div class="col-md-8">
+                                <input type="checkbox" class="make-switch" data-size="small" data-on-color="info" data-on-text="开启"
+                                       data-off-text="关闭" <if condition="$info['need_invoice'] eq 1">checked</if> onchange="changePick(this)">
+                                <input type="hidden" id="need_invoice" name="need_invoice" value="{$data['need_invoice']}">
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--/span-->
+                </div>
+            </div>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <a href="javascript:;" onclick="subForm(this,'tform','__URL__/editGroupAction')" class="btn green savebtn">保存信息</a>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+                </div>
+        </div>
+    </div>
+</div>
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/counterup/jquery.waypoints.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/counterup/jquery.counterup.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/moment.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="/Public/ueditor/ueditor.config.js"></script>
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="/Public/ueditor/ueditor.all.js"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<script type="text/javascript">
+    $(function(){
+        var ue = UE.getEditor('remark');
+        $(".day_tab").click(function(){
+            var selected_day = $(this).attr("data-day");
+            var shop_id = $("select[name='shop_id']").val();
+            location.href = '__URL__/groupGoodsList?selected_day='+selected_day+'&shop_id='+shop_id;
+        })
+
+    })
+    function changePick(obj){
+        if($(obj).is(':checked')){
+            $("#need_invoice").val(1);
+        }else{
+            $("#need_invoice").val(0);
+        }
+    }
+
+    function changeShop(shop_id){
+        alert(shop_id);
+        $('#sid').val(shop_id);
+    }
+</script>

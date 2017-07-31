@@ -1,0 +1,44 @@
+{__NOLAYOUT__}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <h4 class="modal-title">渠道信息</h4>
+</div>
+<div class="modal-body">
+    <div class="form">
+        <form action="#" method="post" id="form1" class="form-horizontal">
+            <div class="form-body">
+                <notempty name="info">
+                <!--/row-->
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <label class="control-label col-md-3"></label>
+                            <div class="col-md-9">
+                                <img width="200" height="200" src="{$info['url']}" alt="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </notempty>
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">渠道名称</label>
+                            <div class="col-md-9">
+                                <input type="hidden" name="id" value="{$id}">
+                                <input type="text" class="form-control" name="name" placeholder="请输入渠道名称" value="{$info['name']}">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" data-dismiss="modal" class="btn dark btn-outline">关闭</button>
+    <button type="button" class="btn green" onclick="subForm(this,'form1','__URL__/qrcodeedit')">保存</button>
+</div>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>商品详情</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/weui.min.css" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/jquery-weui.min.css" />
+    
+</head>
+
+<body style="background: #fff;">
+<volist name="imgs" id="it">
+<img src="{$Think.config.OSS_PATH}{$it}" style="width:100%;" onclick="goBack();">
+</volist>
+<script src="__PUBLIC__/Home/js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Home/js/jquery-weui.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+$(function(){
+    $.toast("点击屏幕可关闭详情", "text");
+})
+function goBack(){
+    var id = "{$id}";
+    var type = "{$type}";
+    location.href="__URL__/index/type/"+type+"#pg_"+id;
+}
+</script>
+</body>
+
+</html>

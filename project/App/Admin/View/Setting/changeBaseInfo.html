@@ -1,0 +1,351 @@
+<!--当页依赖-->
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" type="text/css">
+
+
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" />
+
+<!--当页依赖-->
+<div class="portlet light bordered">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa fa-plus font-red"></i>
+            <span class="caption-subject font-red uppercase">外卖基础设置</span>
+        </div>
+        <div class="actions">
+
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <form action="__URL__/changeBaseInfo" class="form-horizontal" id="tform" method="post" enctype="multipart/form-data" onsubmit="return alert('设置更改后，请重新启动接单APP')">
+            <div class="form-body">
+                <h3 class="form-section font-lg">基础信息设置</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">品牌名称</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="name" value="{$info['name']}" placeholder="请输入名称">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group last">
+                            <label class="control-label col-md-3">Logo</label>
+                            <div class="col-md-9">
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+                                        <empty name="info['logo']">
+                                        <img src="https://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt="" /> 
+                                        <else />
+                                        <img src="{$info['logo']}" alt="" />
+                                        </empty>
+                                    </div>
+                                    <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 400px; max-height: 400px;"> </div>
+                                    <div>
+                                        <span class="btn default btn-file">
+                                    <span class="fileinput-new"> 选择图片 </span>
+                                        <span class="fileinput-exists"> 变更 </span>
+                                        <input type="file" name="logo"> </span>
+                                        <a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> 清除 </a>
+                                    </div>
+                                </div>
+                                <div class="clearfix margin-top-10">
+                                    <span class="label label-warning">说明</span> 图片尺寸建议为500x500或正方形图片 </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">模版</label>
+                            <div class="col-md-9" style="padding-top: 7px;">
+                                    <if condition="$info['tpl_type'] eq 1">
+                                    <span class="">标准模式</span> 
+                                    <elseif condition="$info['tpl_type'] eq 2" />
+                                    <span class="">大图模式</span>
+                                    <else />
+                                    <span class="">双图模式</span>
+                                    </if>
+                                    <a href="__URL__/tplType?back=setting/changeBaseInfo">更改</a>
+                                    <br />
+                                    <if condition="$info['tpl_type'] eq 1">
+                                    <img src="__PUBLIC__/Back/metronic/img/tpl-biaozhun.png" width="100" style="margin-top: 10px;" />
+                                    <elseif condition="$info['tpl_type'] eq 2" />
+                                    <img src="__PUBLIC__/Back/metronic/img/tpl-datu.png" width="100" style="margin-top: 10px;" />
+                                    <else />
+                                    <img src="__PUBLIC__/Back/metronic/img/tpl-shuangtu.png" width="100" style="margin-top: 10px;" />
+                                    </if>           
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">顾客留言接收人</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="admin_uid" value="{$info['admin_uid']}" placeholder="请输入对应编码">
+                                <span class="help-block">
+                                    1.接收人在公众号中回复“编码”两字后，将自动获取自己的编码
+                                    <br>
+                                    2.设置后顾客的留言消息会立刻推送给接收人，方便及时沟通回复
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group last">
+                            <label class="control-label col-md-3">选店背景图</label>
+                            <div class="col-md-9">
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+                                        <empty name="info['select_img']">
+                                            <img src="https://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt="" />
+                                            <else />
+                                            <img src="{$info['select_img']}" alt="" />
+                                        </empty>
+                                    </div>
+                                    <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 400px; max-height: 400px;"> </div>
+                                    <div>
+                                        <span class="btn default btn-file">
+                                    <span class="fileinput-new"> 选择图片 </span>
+                                        <span class="fileinput-exists"> 变更 </span>
+                                        <input type="file" name="select_img"> </span>
+                                        <a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> 清除 </a>
+                                    </div>
+                                </div>
+                                <div class="clearfix margin-top-10">
+                                    <span class="label label-warning">说明</span>  </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <h3 class="form-section font-lg">订单设置</h3>
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">开启自动接单</label>
+                            <div class="col-md-6">
+                                <div class="radio-list">
+
+                                    <input type="checkbox" class="make-switch" data-size="small" data-on-color="info" <if condition="$info['is_order_auto'] eq 1">  checked </if> data-on-text="开启" data-off-text="关闭" onchange="changeOrderAuto(this)">
+
+                                    <input type="hidden" id="order_auto" name="order_auto" value="{$info['is_order_auto']}">
+
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">支付方式选择</label>
+                            <div class="col-md-6">
+                                <div class="checkbox-list">
+                                    <label class="checkbox-inline">
+                            <input type="checkbox" name="pay_type[]" class="pay_type" id="inlineCheckbox1" value="1" <if condition="$info['pay_type'] eq '1' or $info['pay_type'] eq '1,2'">checked="checked"</if>  >微信支付</label>
+                                    <label class="checkbox-inline">
+                            <input type="checkbox" name="pay_type[]" class="pay_type" id="inlineCheckbox2" value="2" <if condition="$info['pay_type'] eq '2' or $info['pay_type'] eq '1,2'">checked="checked"</if> >货到付款</label>
+                                </div>
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- <h3 class="form-section font-lg">权限账户设置</h3>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            
+                            <div class="col-md-6">
+                                 
+
+                                <a href="" class="btn btn-sm blue">添加账户</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="light bordered">
+                    
+                    <div class="portlet-body noh">
+                        <div class="table-scrollable">
+                            <table class="table table-hover table-light">
+                                <thead>
+                                <tr>
+                                    <th width="50%"> 帐号 </th>
+                                    <th width="50%"> 操作 </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="account_list" id="it">
+                                <tr>
+                                    <td> {$it['tel']} </td>
+                                    <td>
+                                        <a href="" class="btn btn-warning" style="margin-right: 15px;">修改</a>
+                                        <button type="button" class="btn btn-warning red"  style="margin-right: 15px;">删除</button>
+                                    </td>
+                                </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div> -->
+
+
+    
+                <div class="form-actions">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            
+                            <button type="submit" class="btn green">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--当页依赖-->
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+
+<!--当页依赖-->
+<script type="text/javascript">
+    $(function(){
+        /*$(".timepicker-24").timepicker({
+            autoclose: !0,
+            minuteStep: 5,
+            showSeconds: !1,
+            showMeridian: !1
+        })*/
+
+        $(document).on('focusin','.timepicker-24',function(){
+                
+                $(this).timepicker({
+                autoclose: !0,
+                minuteStep: 5,
+                showSeconds: !1,
+                showMeridian: !1
+            })
+        });        
+        /*$.get('__URL__/getPartnerInfo','',function(res){
+            $.each(res.pay_type,function(i,v){
+                $(".pay_type").each(function(){
+                    if( v == $(this).val()){
+                        $(this).attr("checked","checked");
+                        $(this).closest('div').addClass('focus');
+                        $(this).closest('span').addClass('checked');
+                    }
+                })
+            })
+
+            $(".order_auto").each(function(){
+                if($(this).val() == res.is_order_auto){
+                    $(this).attr("checked","checked");
+                    $(this).closest('span').addClass('checked');
+                }
+            })
+        },'json')*/
+
+        $("#change_sendcharge").change(function(){
+            var charge_type = $(this).val();
+            if(charge_type == 1){
+                $(".fixed_charge").show();
+                $(".dynamic_charge").hide();
+            }else{
+                $(".fixed_charge").hide();
+                $(".dynamic_charge").show();
+            }
+        })
+
+        $(".add_charge").click(function(){
+
+            var html = '<div class="row"><div class="col-md-9"><div class="form-group"><label class="control-label col-md-2"><button type="button" class="btn btn-xs btn-default delete_charge">删除</button></label><div class="col-md-10"><input type="number" step="0.1" min="0" class="form-control input-xsmall inline" placeholder="公里数" name="send_range_start[]"> &nbsp;公里 至<input type="number" step="0.1" min="0" class="form-control input-xsmall inline" placeholder="公里数" name="send_range_end[]"> &nbsp;公里 ，配送费 <input type="number" step="0.1" min="0" class="form-control input-xsmall inline" placeholder="金额" name="send_money[]"> 元 ，配送时长 <input type="number" step="0.1" min="0" class="form-control input-xsmall inline" placeholder="金额" name="send_interval[]"> 分钟<span class="help-block"></span></div></div></div></div>';
+
+            $(".dynamic_charge").append(html);
+        })
+
+        $(".dynamic_charge").on('click','.delete_charge',function(){
+            $(this).closest(".row").remove();
+        })
+
+
+        $(".add_reserve").click(function(){
+
+            var html = '<div class="row"><div class="col-md-9"><div class="form-group"><label class="control-label col-md-2"><button type="button" class="btn btn-xs btn-default delete_reserve">删除</button></label><div class="col-md-10">固定送达时间<input type="text" class="form-control timepicker timepicker-24 input-xsmall inline" name="pre_time[]"> &nbsp;&nbsp;几点前可选<input type="text" class="form-control timepicker timepicker-24 input-xsmall inline" name="buy_time[]"><span class="help-block"></span></div></div></div></div>';
+
+            $(".reserve_box").append(html);
+            /*$(document).on('focus','.timepicker-24',function(){
+                
+                $(this).timepicker({
+                autoclose: !0,
+                minuteStep: 5,
+                showSeconds: !1,
+                showMeridian: !1
+            })
+
+            $(".timepicker-24").timepicker({
+                autoclose: !0,
+                minuteStep: 5,
+                showSeconds: !1,
+                showMeridian: !1
+            })*/
+
+        })
+
+        $(".reserve_box").on('click','.delete_reserve',function(){
+            $(this).closest(".row").remove();
+        })
+    })
+    
+    function changeOrderAuto(obj){
+        if($(obj).is(':checked')){     
+            $("#order_auto").val(1);
+        }else{
+            $("#order_auto").val(0);
+        }
+    }
+
+    function changePhoneAlert(obj){
+        if($(obj).is(':checked')){     
+            $("#open_phone").val(1);
+        }else{
+            $("#open_phone").val(0);
+        }
+    }
+
+    function changeFixedTime(obj){
+        if($(obj).is(':checked')){     
+            $("#fixed_time_status").val(1);
+            $(".reserve_box").show();
+        }else{
+            $("#fixed_time_status").val(0);
+            $(".reserve_box").hide();
+        }
+    }
+</script>

@@ -1,0 +1,130 @@
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN SAMPLE TABLE PORTLET-->
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-list font-red"></i>
+                    <span class="caption-subject font-red uppercase">系统内链接</span>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="row">
+                    <div class="col-md-12">
+                    </div>
+                </div>
+                <div class="tabbable tabbable-tabdrop">
+
+                        <table class="table table-striped table-bordered table-hover order-column table-light moneytb">
+                            <thead>
+                            <tr>
+                                <th>类型</th>
+                                <th>名称</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td colspan="3">系统内置页</td>
+                            </tr>
+                            <volist name="list1" id="it">
+                                <tr>
+                                    <td>系统内置页</td>
+                                    <td>{$it.name}</td>
+                                    <td> <button class="copyBtn1" id="sys_{$it.id}" data-id="{$it.id}" data-val="{$it.url}">拷贝地址</button> </td>
+                                </tr>
+                            </volist>
+                            <tr>
+                                <td colspan="3">门店地址</td>
+                            </tr>
+                            <volist name="list2" id="it">
+                                <tr>
+                                    <td>门店地址</td>
+                                    <td>{$it.name}</td>
+                                    <td> <button class="copyBtn2" id="shop_{$it.id}" data-id="{$it.id}" data-val="{$it.url}" >拷贝地址</button> </td>
+                                </tr>
+                            </volist>
+                            <tr>
+                                <td colspan="3">分类地址</td>
+                            </tr>
+                            <volist name="list3" id="it">
+                                <tr>
+                                    <td>分类地址</td>
+                                    <td>{$it.name}</td>
+                                    <td> <button class="copyBtn3" id="cat_{$it.id}" data-id="{$it.id}" data-val="{$it.url}" >拷贝地址</button> </td>
+                                </tr>
+                            </volist>
+                            </tbody>
+                        </table>
+
+                    <div class="megas512">
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <!-- END SAMPLE TABLE PORTLET-->
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/Back/js/ZeroClipboard.js"></script>
+<script>
+    $(".copyBtn1").each(function(i){
+        var id = $(this).attr('data-id');
+        var clip=null;
+        clip = new ZeroClipboard.Client();
+        ZeroClipboard.setMoviePath('__PUBLIC__/Back/js/ZeroClipboard.swf' );  //和html不在同一目录需设置setMoviePath
+        clip.setHandCursor(true);
+        clip.setText($(this).attr("data-val"));
+        clip.addEventListener('complete', function (client, text) {
+            alert( "已经成功拷贝到剪切板" );
+        });
+        clip.glue('sys_'+id);
+    });
+
+    $(".copyBtn2").each(function(i){
+        var id = $(this).attr('data-id');
+        var clip=null;
+        clip = new ZeroClipboard.Client();
+        ZeroClipboard.setMoviePath('__PUBLIC__/Back/js/ZeroClipboard.swf' );  //和html不在同一目录需设置setMoviePath
+        clip.setHandCursor(true);
+        clip.setText($(this).attr("data-val"));
+        clip.addEventListener('complete', function (client, text) {
+            alert( "已经成功拷贝到剪切板" );
+        });
+        clip.glue('shop_'+id);
+    });
+
+    $(".copyBtn3").each(function(i){
+        var id = $(this).attr('data-id');
+        var clip=null;
+        clip = new ZeroClipboard.Client();
+        ZeroClipboard.setMoviePath('__PUBLIC__/Back/js/ZeroClipboard.swf' );  //和html不在同一目录需设置setMoviePath
+        clip.setHandCursor(true);
+        clip.setText($(this).attr("data-val"));
+        clip.addEventListener('complete', function (client, text) {
+            alert( "已经成功拷贝到剪切板" );
+        });
+        clip.glue('cat_'+id);
+    });
+</script>
+
+<!--弹出容器-->
+<div class="modal fade" id="ajax" role="basic" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img src="assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
+                <span> &nbsp;&nbsp;Loading... </span>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function sendArticle(id,sid){
+        $.post('__URL__/articleSend',{id:id,sid:sid},function(){
+            mToast("推送成功，2-5分钟内到达");
+        });
+    }
+</script>

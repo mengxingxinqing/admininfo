@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>自提点消费明细</title>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/weui.min.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/jquery-weui.css" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/css.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/person.css" />
+</head>
+
+<body>
+<div class="weui_tab">
+    <div class="weui_navbar">
+        <a href="#" class="weui_navbar_item weui_bar_item_on" data-type="1">
+            自提点消费明细
+        </a>
+    </div>
+    <div class="weui_tab_bd">
+        <volist name="list" id="item">
+        <div class="weui_cells">
+            <div class="weui_cells">
+                <div class="weui_cell">
+                   <div class="weui_cell_bd weui_cell_primary">
+                       <p>自提点消费：<span>{$item['money']}元</span></p>
+                       <p class="color3">地址：{$item['name']}</p>
+                       <p class="color3">{$item['create_time']|date='Y-m-d H:i',###}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </volist>
+    </div>
+</div>
+<div class="chongzhi">
+    <div class="weui_cells_title">明细</div>
+
+</div>
+<div class="m15">
+
+</div>
+<script src="__PUBLIC__/Home/js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Home/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Home/js/jquery-weui.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+</script>
+</body>
+
+</html>

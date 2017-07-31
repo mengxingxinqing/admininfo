@@ -1,0 +1,86 @@
+{__NOLAYOUT__}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <h4 class="modal-title">发放代金券</h4>
+</div>
+<div class="modal-body">
+    <div class="form">
+        <form method="post" id="form1" class="form-horizontal">
+            <div class="form-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">发送给：</label>
+                            <div class="col-md-3">
+                                <input type="text" name="" class="form-control" value="{$user_info['nickname']}" readonly="readonly"> 
+                                <input type="hidden" name="user_id" value="{$user_info['id']}">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">名称：</label>
+                            <div class="col-md-3">
+                                <input type="text" name="bonus_name" class="form-control" value=""> 
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">金额：</label>
+                            <div class="col-md-3">
+                                <input type="text" name="money" class="form-control" value="" require="true" msg="请填写红包金额"> 
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">满多少可用（选填）：</label>
+                            <div class="col-md-3">
+                                <input type="text" name="param" class="form-control" value=""> 
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">有效期：</label>
+                            <div class="col-md-3">
+                                <input type="text" name="day" class="form-control" value="" require="true" msg="请填写红包有效期"> 
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button type="button" onclick="subForm(this,'form1','__URL__/sendBonus')" class="btn green">发送</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6"> </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

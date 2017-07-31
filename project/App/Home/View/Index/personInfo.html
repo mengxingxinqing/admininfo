@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>我的会员卡</title>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/weui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/jquery-weui.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/css.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/person.css"/>
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_o0e6zpr0in5ng66r.css">
+</head>
+
+<body>
+<div class="card-header">
+    <div class="card-qrcode">
+        <img src="{$qrcode}" alt="">
+    </div>
+    <div class="card-num">会员卡号 <span>{$user.id}</span></div>
+    <h3 class="name">{$user.nickname}</h3>
+    <h2 class="balance">
+        <div>{$data.money}</div>
+        <span class="balance-text">储值余额</span>
+    </h2>
+</div>
+
+<div class="wode">
+
+    <div class="weui_cells weui_cells_access">
+        <a href="__URL__/myjf" class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p><i class="iconfont icon-youhuijuan-xianxing"></i>我的优惠券</p>
+            </div>
+            <div class="weui_cell_ft">
+                <span>{$data.bonus}</span>张
+            </div>
+        </a>
+        <a href="__URL__/myjifen" class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p><i class="iconfont icon-jifen-xianxing"></i>我的积分</p>
+            </div>
+            <div class="weui_cell_ft">
+                {$data.score}
+            </div>
+        </a>
+        <a href="__URL__/myorder" class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p><i class="iconfont icon-danju-xianxing"></i>我的订单</p>
+            </div>
+            <div class="weui_cell_ft">
+                <span>{$data.order}</span>单
+            </div>
+        </a>
+        <a href="__URL__/userRecharge" class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p><i class="iconfont icon-caiwu-xianxing"></i>储值</p>
+            </div>
+            <div class="weui_cell_ft">
+            </div>
+        </a>
+    </div>
+
+    <div class="weui_cells weui_cells_access" style="margin-top: 15px;">
+        <a class="weui_cell" href="__URL__/myinfo">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p><i class="iconfont icon-yonghu-xianxing"></i>我的资料</p>
+            </div>
+            <div class="weui_cell_ft">
+            </div>
+        </a>
+    </div>
+</div>
+
+<script src="__PUBLIC__/Home/js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Home/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Home/js/jquery-weui.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Home/js/swiper.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    $(function () {
+        FastClick.attach(document.body);
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title>选择店铺</title>
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/mui.min.css"/>
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/localsel.css?v1"/>
+	<script src="https://lib.sinaapp.com/js/jquery/2.2.4/jquery-2.2.4.min.js"></script>
+	<style>
+		html{
+			background: url({$bgimg}) center bottom no-repeat #f7f7f7;
+			background-size:400px auto;
+		}
+	</style>
+</head>
+<body>
+<div class="localbox m10">
+	<h3><button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left" style="position: fixed; left: -5px; top: 14px; color: #333;" onclick="javascript:history.go(-1);">
+		<span class="mui-icon mui-icon-left-nav"></span>返回
+	</button>请选择离您最近的门店</h3>
+	<!-- <div class="localcurrent">
+        <span class="mui-pull-right">区域不正确？<a href="__URL__/selectAreas">点击切换</a></span>
+        {$name}
+    </div> -->
+	<ul id="list" class="locallist">
+		<notempty name="list">
+			<foreach name="list" item="val">
+				<if condition="$val['is_pick_point'] eq 0">
+				<li>
+					<a href="javascript:;" data-val="{$val['name']}" onclick="selectArea({$val['id']},this)">
+						<h4><span id="dis{$val['id']}" class="mui-pull-right"></span>{$val.name}</h4>
+						<div class="addr">
+							{$val.address}
+						</div>
+					</a>
+				</li>
+				</if>
+			</foreach>
+		</notempty>
+	</ul>
+</div>
+<script type="text/javascript">
+	var backurl ="{$backurl}";
+	document.body.addEventListener('touchstart', function () { });
+
+	$(function(){
+		var no = "{$no}";
+		if(no == '1'){
+			return;
+		}
+		getLocation();
+	});
+	function getLocation(){
+		//判断是否支持 获取本地位置
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(showPosition,showError);
+		}else{
+			alert("浏览器不支持定位.");
+			window.location.href = "__URL__/index?no=1";
+		}
+	}
+	function showPosition(position) {
+		var lat=position.coords.latitude;
+		var lng=position.coords.longitude;
+		//调用地图命名空间中的转换接口   type的可选值为 1:gps经纬度，2:搜狗经纬度，3:百度经纬度，4:mapbar经纬度，5:google经纬度，6:搜狗墨卡托
+		$.post("__URL__/index",{lat:lat,lng:lng},function(res){
+			$('#list').html('');
+			var html = '';
+			for(var i=0;i<res.length;i++){
+				var c = '';
+				if(i == 0){ c='class="on"'; }
+
+				if(res[i]['is_pick_point'] != 1){
+					html += '<li '+c+'><a href="javascript:;" data-val="'+res[i]['name']+'" onclick="selectArea('+res[i]['id']+',this)"> <h4><span class="mui-pull-right">距我'+res[i]['distance']+'</span>'+res[i]['name']+'</h4> <div class="addr">'+res[i]['address']+' </div> </a> </li>';
+				}		
+			}
+			$('#list').html(html);
+		},'json');
+	}
+
+	function showError(error){
+		location.href = "__URL__/index?no=1";
+	}
+
+	$('.locallist li').on('click',function(){
+		$(this).find('.addrlist').slideToggle();
+	})
+	$('.addrlist').on('click',function(event){
+		event.stopPropagation();
+	})
+
+	function selectArea(shop_id,obj){
+		var name = $(obj).attr('data-val');
+		if(confirm('确定要进入'+name+'么?')){
+			$.post("__URL__/select",{id:shop_id},function(res){
+				location.href = '{:U("Index/index")}'+'?'+Math.random();
+			},'json')
+		}
+	}
+
+</script>
+</body>
+</html>

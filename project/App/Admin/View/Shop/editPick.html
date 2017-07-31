@@ -1,0 +1,215 @@
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/morris/morris.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/jqvmap/jqvmap/jqvmap.css" rel="stylesheet" type="text/css" />
+<!-- END PAGE LEVEL PLUGINS -->
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="fa fa-plus font-red"></i>
+			<span class="caption-subject font-red uppercase">自提设置</span>
+		</div>
+		
+	</div>
+	<div class="portlet-body form">
+		<form action="#" class="form-horizontal" id="tform">
+			<input type="hidden" name="shop_id" value="{$shop_id}">
+			<div class="form-body">
+
+				<div class="reserve_box">
+                    
+                    <div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">
+							自提地址
+							</label>
+							<div class="col-md-8">
+                                    <input type="text" class="form-control inline" name="pick_address" value="{$pick_address}">
+							</div>
+						</div>
+					</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label col-md-4">
+									自提时间
+								</label>
+								<div class="col-md-8">
+									<div class="input-group input-large">
+										<button type="button" class="btn btn-sm btn-success add_delete add_reserve">增加</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+						<div class="col-md-4"></div>
+						<div class="col-md-8">(自提将按此时间范围，自动划分每20分钟一档，供用户选择到店自提时间。
+							)</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label col-md-4">
+									
+								</label>
+								<div class="col-md-8">
+									
+	                                <div class="input-group input-large">
+	                                	<div>
+										<input type="text" class="form-control timepicker timepicker-24" name="pick_start_time[]" value="{$pick_time[0]['pick_start_time']}" >
+										</div>
+										<span class="input-group-addon"> 到 </span>
+										<div>
+										<input type="text" class="form-control timepicker timepicker-24" name="pick_end_time[]" value="{$pick_time[0]['pick_end_time']}">
+										</div>
+									</div>
+									<span class="help-block"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<volist name="pick_time" id="item" key="k">
+					<if condition="$k gt 1">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label col-md-4">
+									<button type="button" class="btn btn-xs btn-default delete_reserve">删除</button>
+								</label>
+								<div class="col-md-8">
+									
+	                                <div class="input-group input-large">
+	                                	<div>
+										<input type="text" class="form-control timepicker timepicker-24" name="pick_start_time[]" value="{$item['pick_start_time']}">
+										</div>
+										<span class="input-group-addon"> 到 </span>
+										<div>
+										<input type="text" class="form-control timepicker timepicker-24" name="pick_end_time[]" value="{$item['pick_end_time']}">
+										</div>
+									</div>
+									<span class="help-block"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+					</if>
+					</volist>
+                </div>
+
+                <if condition="$partner_id eq 8 or $partner_id eq 14 or $partner_id eq 18 or $partner_id eq 25">
+                <div class="row">
+					<!--/span-->
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4"><strong class="font-red"></strong>多点自提功能</label>
+							<div class="col-md-8">
+								<div class="input-group input-large">
+									<input type="checkbox" class="make-switch" data-size="small" data-on-color="info" data-on-text="开启" data-off-text="关闭" <if condition="$data['is_pick_point'] eq 1">checked</if> onchange="changePick(this,{$shop_id})">
+                                    <input type="hidden" id="is_pick" name="is_pick" value="{$data['is_pick']}">
+								</div>
+								<span class="help-block"></span>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+				</div>
+
+				<div class="row" id="pick_point" <if condition="$data['is_pick_point'] eq 0">style="display:none"</if> >
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">
+								
+							</label>
+							<div class="col-md-8">
+								<div class="input-group input-large">
+									<a href="__URL__/pickPointList" target="_blank" class="btn btn-sm btn-success">多点自提点列表</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+                
+			</div>
+			</if>
+			<div class="form-actions">
+				<div class="row">
+					<div class="col-md-12 text-center">
+								<a href="javascript:;" onclick="subForm(this,'tform','__URL__/editPick')" class="btn green savebtn">保存门店信息</a>
+								<!-- <a href="__URL__/certsUpload?shop_id={$data['id']}" class="btn red" style="margin-left:20px;">修改证件</a>
+								<a href="__URL__/notice?shop_id={$data['id']}" class="btn yellow" style="margin-left:20px;">发布公告</a>
+								<a href="__URL__/shoppay?id={$data['id']}" class="btn blue" style="margin-left:20px;">到店付二维码</a> -->
+
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/counterup/jquery.waypoints.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/counterup/jquery.counterup.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/moment.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<script type="text/javascript">
+	$(".timepicker-24").timepicker({
+		autoclose: !0,
+		minuteStep: 10,
+		showSeconds: !1,
+		showMeridian: !1
+	})
+</script>
+<script type="text/javascript">
+	$(function(){
+		$(document).on('focusin','.timepicker-24',function(){
+                
+                $(this).timepicker({
+                autoclose: !0,
+                minuteStep: 5,
+                showSeconds: !1,
+                showMeridian: !1
+            })
+        });
+		$(".add_reserve").click(function(){
+			var html = '<div class="row"><div class="col-md-6"><div class="form-group"><label class="control-label col-md-4"><button type="button" class="btn btn-xs btn-default delete_reserve">删除</button></label><div class="col-md-8"><div class="input-group input-large"><div><input type="text" class="form-control timepicker timepicker-24" name="pick_start_time[]" value=""></div><span class="input-group-addon"> 到 </span><div><input type="text" class="form-control timepicker timepicker-24" name="pick_end_time[]" value=""></div></div><span class="help-block"></span></div></div></div></div>';
+			$(".reserve_box").append(html);
+		})
+
+		$(".reserve_box").on('click','.delete_reserve',function(){
+            $(this).closest(".row").remove();
+        })
+
+
+	})
+	function changePick(obj,shop_id){
+        if($(obj).is(':checked')){     
+            $("#is_pick").val(1);
+            $("#pick_point").show();
+            $.post("__URL__/setPickPoint",{shop_id:shop_id,is_pick_point:1},function(res){
+            	alert('开启成功');
+            },'json')
+        }else{
+
+            $("#is_pick").val(0);
+            $("#pick_point").hide();
+            $.post("__URL__/setPickPoint",{shop_id:shop_id,is_pick_point:0},function(res){
+            	alert('关闭成功');
+            },'json')
+        }
+    }
+</script>

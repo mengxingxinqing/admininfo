@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>订单详情</title>
+		<link rel="stylesheet" href="/Public/Home/css/weui.min.css" />
+		<link rel="stylesheet" href="/Public/Home/css/jquery-weui.css?v2" />
+		<link rel="stylesheet" href="/Public/Home/css/iconfont.css" />
+		<link rel="stylesheet" href="/Public/Home/css/css.css" />
+		<link rel="stylesheet" href="/Public/Home/css/order.css?v2" />
+	</head>
+
+	<body>
+
+		<div class="n-pagebox">
+			<form id="myform" name="myform" method="post" action="/index.php/Home/Index/saveOrder" class="mui-input-group">
+
+			<!--配送方式选择,两种方式都打开才显示start-->
+			<if condition="$shop_info['is_pick'] eq 1 and $shop_info['is_godoor'] eq 1">
+			<h5 class="h5tit">配送方式</h5>
+			<div class="n-card orderbox">
+				<div class="weui_cells weui_cells_radio peisong">
+					<label class="weui_cell weui_check_label" for="x9">
+						<div class="weui_cell_bd weui_cell_primary">
+							<p>
+								送货上门
+							</p>
+						</div>
+						<div class="weui_cell_ft">
+							<input type="radio" class="weui_check" name="is_pick" id="x9" value="0" checked="checked">
+							<span class="weui_icon_checked"></span> </div>
+					</label>
+					<label class="weui_cell weui_check_label" for="x10">
+						<div class="weui_cell_bd weui_cell_primary">
+							<p>
+								自己取
+							</p>
+						</div>
+						<div class="weui_cell_ft">
+							<input type="radio" name="is_pick" class="weui_check ziqu" id="x10" value="1">
+							<span class="weui_icon_checked"></span> </div>
+					</label>
+				</div>
+			</div>
+			</if>
+			<!--配送方式选择end-->
+
+
+
+			<if condition="$shop_info['is_pick'] eq 1">
+			<h5 class="h5tit addrsef" <if condition="$shop_info['is_pick'] eq 1 and $shop_info['is_godoor'] eq 0">style="display:block"</if>>自提信息</h5>
+			<notempty name="user_info['name']">
+			<div class="n-card addrsef" <if condition="$shop_info['is_pick'] eq 1 and $shop_info['is_godoor'] eq 0">style="display:block"</if>>
+				<div class="peisongifocard">
+					<p style="margin-top: 5px;"><span class="name">我的称呼：{$user_info['name']}</span></p>
+					<p> <span class="phone">我的电话：{$user_info['tel']}</span></p>
+					<p class="mui-ellipsis">自提地址：{$user_info['pick_address']}</p>
+					<div class="edit">
+						<a href="__URL__/changePickInfo">修改自提信息</a>
+					</div>
+				</div>
+			</div>
+			</notempty>
+				<!--只有自提的时候-->
+				<if condition="$shop_info['is_pick'] eq 1 and $shop_info['is_godoor'] eq 0">
+				<input type="hidden" name="is_pick" value="1">
+				</if>
+			<empty name="user_info['name']">	
+			<div class="n-card addrsef" <if condition="$shop_info['is_pick'] eq 1 and $shop_info['is_godoor'] eq 0">style="display:block"</if>>
+				<div class="peisongifocard">
+					<a class="addrnone" href="__URL__/changePickInfo">点击添加自提信息</a>
+					
+				</div>
+			</div>
+			</empty>
+			</if>
+
+
+			<if condition="$shop_info['is_godoor'] eq 1">
+			<h5 class="h5tit shangmen">收货信息</h5>
+			<notempty name="user_info['name']">
+			<div class="n-card shangmen">
+				<div class="peisongifocard">
+					<p style="margin-top: 5px;"><span class="name">{$user_info['name']}</span> <span class="phone">{$user_info['tel']}</span></p>
+					<p class="mui-ellipsis">地址：{$user_info['address']}</p>
+					<p class="mui-ellipsis">门牌：{$user_info['detail_address']}</p>
+					<div class="edit"><a href="__URL__/changeAddress">修改收货信息</a></div>
+					
+				</div>
+			</div>
+			</notempty>
+			
+			<empty name="user_info['name']">	
+			<div class="n-card shangmen">
+				<div class="peisongifocard">
+					<a class="addrnone" href="__URL__/changeAddress">点击添加收货地址</a>
+					
+				</div>
+			</div>
+			</empty>
+			</if>
+
+
+
+			
+
+
+			<!--时间部分start-->
+			<div id="ziti_box" <if condition="$shop_info['is_godoor'] eq 1">style="display:none"</if> >
+				<h5 class="h5tit ziti">自提时间</h5>
+				<div class="n-card ziti">
+					<div class="weui_cell weui_cell_select weui_select_after" id="select_time_ziti">
+						<div class="weui_cell_bd weui_cell_primary" id="select_content_ziti">
+							
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="door_box" <if condition="$shop_info['is_godoor'] eq 0">style="display:none"</if>>
+				<h5 class="h5tit">送达时间</h5>
+				<div class="n-card">
+					<div class="weui_cell weui_cell_select weui_select_after" id="select_time">
+						<div class="weui_cell_bd weui_cell_primary" id="select_content">
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--时间部分end-->
+
+
+			<input type="hidden" name="name" value="{$user_info['name']}">
+			<input type="hidden" id="tel" name="tel" value="{$user_info['tel']}">
+			<input type="hidden" id="address" name="address" value="{$user_info['address']}" >
+			<input type="hidden" id="detail_address" name="detail_address" value="{$user_info['detail_address']}" >
+			<input type="hidden" name="shop_name" value="{$shop_info['name']}">
+			<input type="hidden" name="shop_tel" value="{$shop_info['tel']}">
+			<input type="hidden" name="bonus_id" id="bonus_id" value="{$selected_bonus['id']}">
+			<input type="hidden" name="bonus_partner" id="bonus_partner" value="{$selected_bonus['partner_id']}">
+			<input type="hidden" name="real_price" id="real_price" value="{$pay_money}">
+			<input type="hidden" name="remark" id="attrs" value="">
+			<input type="hidden" name="total_money" id="total_money" value="{$total_money}">
+			<input type="hidden" name="userremark" id="userremark">
+			<input type="hidden" id="no_bonus_money" value="{$no_bonus_money}" >
+            <input type="hidden" id="user_part" name="user_part" value="0" >
+            <input type="hidden" id="pick_address" name="pick_address" value="{$user_info['pick_address']}">
+            <input type="hidden" id="pick_id" name="pick_id" value="{$user_info['pick_id']}">
+            <input type="hidden" name="type" value="{$type}">
+			<input type="hidden" id="address_status" name="address_status" value="1">
+
+			<div class="n-card orderbox">
+				<!-- <h5>{$vo['shop_info']['partner_name']}</h5> -->
+				<dl>
+					<dt> <span class="td1">品名</span> <span class="td2">单价</span> <span class="td3">数量</span> <span class="td4">单品总价</span> </dt>
+
+					<volist name="goods_info" id="sub">
+					<dd> <span class="td1 mui-ellipsis">{$sub['goods_name']}<p style="color: #999">{$sub['format_name']} {$sub['attr_str']}</p></span> <span class="td2">￥{$sub['price']}</span> <span class="td3">x{$sub['num']}</span> <span class="td4">￥{$sub['total_money']}</span> </dd>
+					</volist>
+				</dl>
+				<div class="priceall">
+					<notempty name="selected_bonus['money']">
+					<a class="price bonuslink open-popup" data-target="#bounslist">
+						<span class="n-pull-right" id="now_bonus_money">-￥{$selected_bonus['money']}</span>
+						<span class="iconfont icon-hongbao price"> 红包</span>
+					</a>
+					</notempty>
+					<volist name="activity_info" id="item">
+					<div class="pricedec">
+						<div class="price n-pull-right">
+							<if condition="$item.type eq 'dec'">
+							<span>-<span>￥{$item.money}</span></span>
+							</if>
+						</div>
+						<div class="bonustext">
+						{$item['name']}
+						</div>
+					</div>
+					</volist>
+
+					<div class="pricedec" <if condition="$lunchbox_money eq 0">style="display:none"</if> >
+						<div class="price n-pull-right">
+							<span><span>￥{$lunchbox_money|sprintf='%.2f',###}</span></span>
+						</div>
+						<div class="bonustext">
+							餐盒费
+						</div>
+					</div>
+
+					<div class="pricedec have-send sendmoneyBlock" style="display: none">
+						<div class="price n-pull-right">
+							<span><span class="sendmoneySpan">￥0</span></span>
+						</div>
+						<div class="bonustext">
+							配送费
+						</div>
+					</div>
+
+					<div class="pricedec">
+						<div class="price n-pull-right have-send" data-val="{$total_money}" <if condition="$shop_info['is_godoor'] eq 0">style="display:none"</if>>
+							<if condition="$total_money gt $pay_money">
+								<span style="color:grey;font-size:12px;margin-right:10px;">(原价:￥<s id="total_money_s">{$total_money|sprintf='%.2f',###}</s>)</span>
+							</if>
+							<span class="bonustext">￥<span id="pay_money">{$pay_money|sprintf='%.2f',###}</span></span>
+						</div>
+
+						<div class="price n-pull-right no-send" data-val="{$total_money}" <if condition="$shop_info['is_godoor'] eq 1"> style="display: none;"</if>>
+							<if condition="$total_money gt $pay_money">
+								<span style="color:grey;font-size:12px;margin-right:10px;">(原价:￥<s id="total_money_s">{$total_money|sprintf='%.2f',###}</s>)</span>
+							</if>
+							<span class="bonustext">￥<span id="pay_money_no_send">{$pay_money|sprintf='%.2f',###}</span></span>
+						</div>
+
+						<div style="font-size: 16px;">总计</div>
+					</div>
+				</div>
+			</div>
+			<h5 class="h5tit">备注</h5>
+			<div class="n-card">
+				<div class="weui_cell" style=" padding: 10px 15px;   height: 60px;">
+					<div class="weui_cell_bd weui_cell_primary">
+						<textarea class="weui_textarea" id="remarktext" name="userremark" placeholder="请输入您的具体要求" rows="2"></textarea>
+					</div>
+				</div>
+			</div>
+
+			
+
+			
+
+			<h5 class="h5tit paytype_title">支付方式</h5>
+			<div class="n-card">
+
+
+				<div class="weui_cells weui_cells_radio zhifu">
+					<if condition="$shop_info['is_user_recharge'] eq 1">
+						<label class="weui_cell weui_check_label" for="recharge_pay" id="pay3">
+							<div class="weui_cell_bd weui_cell_primary">
+								<p> 余额支付 (余额：{$account_money}元) </p>
+							</div>
+							<div class="weui_cell_ft">
+								<input type="radio" name="pay_type" value="3" class="weui_check" id="recharge_pay" <if condition="$can_recharge_pay eq 0">disabled="disabled" <else /> checked="checked" </if>>
+								<span class="weui_icon_checked"></span> </div>
+						</label>
+					</if>
+
+					<if condition="$shop_info['pay_type'] eq '1'">
+						<label class="weui_cell weui_check_label" for="weixin" id="pay1">
+							<div class="weui_cell_bd weui_cell_primary">
+								<p> 微信支付 </p>
+							</div>
+							<div class="weui_cell_ft">
+								<input type="radio" name="pay_type" value="1" class="weui_check" id="weixin" <if condition="$shop_info['is_user_recharge'] eq 0 OR $can_recharge_pay eq 0">checked="checked"</if>>
+								<span class="weui_icon_checked"></span> </div>
+						</label>
+					<elseif condition="$shop_info['pay_type'] eq '2'" /> 
+						<label class="weui_cell weui_check_label" for="xianxia" id="pay2" <if condition="$shop_info['is_pick'] eq 1 and $shop_info['is_godoor'] eq 0">style="display:none"</if> >
+							<div class="weui_cell_bd weui_cell_primary">
+								<p> 货到付款 </p>
+							</div>
+							<div class="weui_cell_ft">
+								<input type="radio" name="pay_type" value="2" class="weui_check" id="xianxia" checked="checked">
+								<span class="weui_icon_checked"></span> </div>
+						</label>
+					<else />
+						<label class="weui_cell weui_check_label" for="weixin" id="pay1">
+							<div class="weui_cell_bd weui_cell_primary">
+								<p> 微信支付 </p>
+							</div>
+							<div class="weui_cell_ft">
+								<input type="radio" name="pay_type" value="1" class="weui_check" id="weixin" <if condition="$shop_info['is_user_recharge'] eq 0 OR $can_recharge_pay eq 0">checked="checked"</if>>
+								<span class="weui_icon_checked"></span> </div>
+						</label>
+
+						<label class="weui_cell weui_check_label" for="xianxia" id="pay2" <if condition="$shop_info['is_pick'] eq 1 and $shop_info['is_godoor'] eq 0">style="display:none"</if> >
+							<div class="weui_cell_bd weui_cell_primary">
+								<p> 货到付款 </p>
+							</div>
+							<div class="weui_cell_ft">
+								<input type="radio" name="pay_type" value="2" class="weui_check" id="xianxia">
+								<span class="weui_icon_checked"></span> </div>
+						</label>
+					</if>				
+				</div>
+			</div>
+			
+			<div class="m15">
+				<input type="hidden" name="send_money" id="send_money" value="0">
+				<if condition="$shop_info['is_godoor'] eq 1">
+				<button type="button" class="weui_btn weui_btn_primary have-send" disabled="disabled" id="save_order" data-target="zhifu" onclick="return submyformpost(this);">支付<span id="pay_money_button">{$pay_money}</span>元</button>
+				</if>
+				<button type="button" class="weui_btn weui_btn_primary no-send" id="save_order" data-target="zhifu" onclick="return submyformpost(this);" <if condition="$shop_info['is_godoor'] eq 1">style="display: none;"</if>  >支付<span id="pay_money_button_no_send">{$pay_money|sprintf='%.2f',###}</span>元</button>
+			</div>
+			</form>
+
+			<div style="padding-bottom: 20px;"></div>
+		</div>
+
+		<div id="select-time" class='weui-popup-container popup-bottom'>
+			<div class="weui-popup-overlay"></div>
+			<div class="weui-popup-modal">
+				<div class="toolbar">
+					<div class="toolbar-inner">
+						<a href="javascript:;" class="picker-button close-popup">关闭</a>
+						<h1 class="title">请选择送达时间</h1>
+					</div>
+				</div>
+				<div class="modal-content">
+					<div class="n-time-selec-tbox" id="time_content">
+						<div class="left-time">
+							<ul id="day_list">
+								
+							</ul>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="select-time-ziti" class='weui-popup-container popup-bottom'>
+			<div class="weui-popup-overlay"></div>
+			<div class="weui-popup-modal">
+				<div class="toolbar">
+					<div class="toolbar-inner">
+						<a href="javascript:;" class="picker-button close-popup">关闭</a>
+						<h1 class="title">请选择自提时间</h1>
+					</div>
+				</div>
+				<div class="modal-content">
+					<div class="n-time-selec-tbox" id="time_content_ziti">
+						<div class="left-time">
+							<ul id="day_list_ziti">
+								
+							</ul>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="zhifu" class="weui-popup-container">
+			<div class="weui-popup-overlay"></div>
+			<div class="weui-popup-modal">
+				<div class="zhifu_title">请按住下方二维码识别，进行微信支付</div>
+				<div class="n-card orderbox">
+					<div style="margin: 40px auto;text-align: center;" id="qrcode">
+					</div>
+				</div>
+				<div class="m15">
+					<button class="weui_btn weui_btn_primary" id="tsuc" onclick="paysuccess();" style="display:none">已完成支付</button>
+					<button class="weui_btn weui_btn_default" onclick="backIndex();">取消支付</button>
+				</div>
+			</div>
+		</div>
+
+
+
+		<div id="bounslist" class="weui-popup-container">
+			<div class="weui-popup-overlay"></div>
+			<div class="weui-popup-modal">
+				<ul class="moneylist">
+					<volist name="bonus_list" id="item">
+					<li class="close-popup select_bonus" data-bonusid="{$item['id']}" data-bonusmoney="{$item['money']}" >
+						<div class="moneynum">
+							<b class="b1"></b>
+							<b class="b2"></b>
+							<div class="pkg red">
+								<div class="num">{$item['money']|sprintf='%.0f',###}<span>元</span></div>
+							</div>
+						</div>
+						<div class="moneytext">
+							<b class="b1"></b>
+							<b class="b2"></b>
+							<h4>{$item['bonus_type']} <span class="statusred">使用中</span></h4>
+							<p>• 可购买{$shop_info['partner_name']}任意商品</p>
+							<p>• 有效期至{$item['end_time']|date='Y年m月d日',###}</p>
+						</div>
+					</li>
+					</volist>
+					<li class="nouse close-popup select_bonus" data-bonusid="0">
+						不使用
+					</li>
+				</ul>
+
+			</div>
+		</div>
+		<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+		<script>
+			wx.config({
+				debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，
+				appId: '{$share.signPackage.appId}',
+				timestamp: '{$share.signPackage.timestamp}',
+				nonceStr: '{$share.signPackage.nonceStr}',
+				signature: '{$share.signPackage.signature}',
+				jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
+			});
+			wx.ready(function () {
+				// 在这里调用 API
+				// 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
+				wx.onMenuShareTimeline({
+					title: '{$share.pyq.title}', // 分享标题
+					link:"{$share.pyq.link}",
+					imgUrl: "{$share.pyq.imgUrl}" // 分享图标
+				});
+//                获取“分享给朋友”按钮点击状态及自定义分享内容接口
+				wx.onMenuShareAppMessage({
+					title: '{$share.hy.title}', // 分享标题
+					desc: "{$share.hy.desc}", // 分享描述
+					link:"{$share.hy.link}",
+					imgUrl: "{$share.hy.imgUrl}", // 分享图标
+					type: 'link' // 分享类型,music、video或link，不填默认为link
+				});
+			});
+		</script>
+		<script>
+			var type = "{$type}";
+		</script>
+		<script src="https://lib.sinaapp.com/js/jquery/2.2.4/jquery-2.2.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="https://webapi.amap.com/maps?v=1.3&key=1df154e733e82c81a76cb01b419b7740"></script>
+		<script src="/Public/Home/js/jquery-weui.js?v2" type="text/javascript" charset="utf-8"></script>
+		<script src="/Public/Home/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/Public/Home/js/order.js?v26" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var timerId;
+
+			var is_pick = "{$shop_info['is_pick']}";
+			var is_godoor = "{$shop_info['is_godoor']}";
+
+			var send_type = "{$send_type}";
+
+			$(function() {
+				if(send_type == 2){
+					$('.peisong .weui_check_label').eq(1).trigger("click");
+				}
+				/*var li_index = 0;
+				var li_txt = "今天";*/
+				FastClick.attach(document.body);
+
+				//配送时间选择
+				$('#time_content').on('click','.left-time li',function(){
+					$('#time_content .left-time li').removeClass('on');
+					$('#time_content .right-time').removeClass('on');
+					$(this).addClass('on');
+					// li_index = $(this).index();
+					// li_txt = $(this).html();
+					$('#time_content .right-time').eq($(this).index()).addClass('on');
+				});
+
+				$('#time_content').on('click','.right-time li',function(){
+					$('#time_content .right-time li').removeClass('on');
+					$(this).addClass('on');
+					var t = $(this).html();
+					var t_arr = t.split("-");
+					var li_txt = $("#day_list li.on").text();
+					var li_index = $("#day_list li.on").index();
+					$('#time_txt').val(li_txt+" "+t);
+					var myDate = new Date();
+					var nextDate = new Date(myDate.getTime() + 24*60*60*1000*li_index);  //后一天
+					// var str = nextDate.getFullYear()+"/"+(nextDate.getMonth()+1)+"/"+nextDate.getDate()+" "+t;
+					// var timestamp2 = Date.parse(new Date(str));
+					// timestamp2 = timestamp2 / 1000;
+					$('#reserve_time').val(t_arr[0]+"-"+li_index);
+					$('#select_time').removeClass('bdred');
+					$.closePopup();
+				});
+
+
+				//自提时间选择
+				$('#time_content_ziti').on('click','.left-time li',function(){
+					$('#time_content_ziti .left-time li').removeClass('on');
+					$('#time_content_ziti .right-time').removeClass('on');
+					$(this).addClass('on');
+					// li_index = $(this).index();
+					// li_txt = $(this).html();
+					$('#time_content_ziti .right-time').eq($(this).index()).addClass('on');
+				});
+
+				$('#time_content_ziti').on('click','.right-time li',function(){
+					$('#time_content_ziti .right-time li').removeClass('on');
+					$(this).addClass('on');
+					var t = $(this).html();
+
+					var li_txt = $("#day_list_ziti li.on").text();
+					var li_index = $("#day_list_ziti li.on").index();
+
+					$('#time_txt_ziti').val(li_txt+" "+t);
+
+					$('#pick_time').val(t+"-"+li_index);
+					$('#select_time_ziti').removeClass('bdred');
+					$.closePopup();
+				});
+
+				$(".select_bonus").click(function(){
+					var now_bonus_id = $(this).attr("data-bonusid");
+					var no_bonus_money = $("#no_bonus_money").val();
+					var send_money = $("#send_money").val();
+					var no_bonus_no_send_money = no_bonus_money - send_money;
+					if(now_bonus_id == 0){
+						$("#now_bonus_money").text('不使用');
+						$("#bonus_id").val('');
+						$("#pay_money").text(no_bonus_money);
+						$("#pay_money_button").text(no_bonus_money);
+
+						$("#pay_money_no_send").text(no_bonus_no_send_money);
+						$("#pay_money_button_no_send").text(no_bonus_no_send_money);
+					}else{
+						var now_bonus_money = $(this).attr("data-bonusmoney");
+						$("#now_bonus_money").text('-￥'+now_bonus_money);
+						$("#bonus_id").val(now_bonus_id);
+						var now_pay_money = no_bonus_money - now_bonus_money;
+						now_pay_money = now_pay_money.toFixed(2);
+						$("#pay_money").text(now_pay_money);
+						$("#pay_money_button").text(now_pay_money);
+
+						var now_pay_money_no_send = no_bonus_no_send_money - now_bonus_money;
+						now_pay_money_no_send = now_pay_money_no_send.toFixed(2);
+						$("#pay_money_no_send").text(now_pay_money_no_send);
+						$("#pay_money_button_no_send").text(now_pay_money_no_send);
+					}
+				})
+			});
+			var order_id = '';
+			
+			
+			$('.peisong .weui_check_label').eq(0).on('click', function() {
+				// $('.songcantime').hide();
+				// $('.songcantime').eq(0).show();
+				$('.addrsef').hide();
+				$('.shangmen').show();
+				$("#door_box").show();
+				$("#ziti_box").hide();
+				$("#pay2").show();
+				// $(".paytype_title").text("请选择支付方式");
+
+				$(".have-send").show();
+				$(".no-send").hide();
+			});
+
+			$('.peisong .weui_check_label').eq(1).on('click', function() {
+				// $('.songcantime').hide();
+				$('.addrsef').show();
+				$('.shangmen').hide();
+				$("#door_box").hide();
+				$("#ziti_box").show();
+				$("#weixin").prop('checked', true);
+				$("#pay2").hide();
+				// $(".paytype_title").text("支付方式");
+
+				$(".have-send").hide();
+				$(".no-send").show();
+			});
+
+			$('.btnsel a').on('click', function() {
+				$(this).parent().find('a').removeClass('on');
+				$(this).addClass('on');
+			})
+
+
+			function submyformpost(obj) {
+//			    $.toast.prototype.defaults.duration = 3000;
+//			    $.toast("请稍后...");
+				var time = $('#reserve_time').val();
+				var pick_time = $('#pick_time').val();
+
+				var selected_pick = $("input[name='is_pick']:checked").val();
+
+				if(selected_pick == 0 || is_pick == 0){
+					if(!time){
+						$.toast("请选择送达时间哦~~","text");
+						$('#select_time').addClass('bdred');
+						return;
+					}
+				}else{
+					if(!pick_time){
+						$.toast("请选择自提时间哦~~","text");
+						$('#select_time_ziti').addClass('bdred');
+						return;
+					}
+				}
+//				var address_status = $('#address_status').val();
+//				if(selected_pick == 0 && address_status == 0){
+//					$.toast("抱歉，您的地址不在配送区域内，暂时不能下单","text");
+//					return;
+//				}
+
+
+			    $('#userremark').val($('#remarktext').val());
+			    var real = $('#real_price').val();
+			    if(real == '0'){
+			        changePayMethod();
+			    }
+			    $(obj).attr("disabled", true);
+			    $(obj).html('请稍后...');
+			    $(obj).unbind("click"); //移除click
+			    $.ajax({
+			        type: "POST",
+			        url:"__URL__/saveOrder",
+			        data:$('#myform').serialize(),// 要提交的表单
+			        success: function(msg) {
+			            msg = eval('('+msg+')');
+			            if(msg['status'] == 'success'){
+			                var order_num = msg['param'];
+			                order_id = msg['order_id'];
+			                location.href = '__URL__/orderSuccess/order_id/'+order_id;
+			            }else if(msg['status'] == 'wx'){
+			                order_id = msg['param'];
+			                $.post("__URL__/wxpay",{order_id:order_id},function(res){
+								if(res['code_url']){
+									$('#qrcode').append('<img src="'+res['code_url']+'">');
+									$('#zhifu').popup();
+									setTimeout("showSuccess()",3000);
+								}else{
+				                	jsApiCall(order_id,res);
+								}
+			                },'json');
+			            }else if(msg['status'] == 'error'){
+			                $.toast("系统异常，在公众号留言吧");
+			            }else if(msg['status'] == 'changeAdd'){
+			                location.href = '__URL__/changeAddress';
+			            }else if(msg['status'] == 'changePickAdd'){
+			                location.href = '__URL__/changePickInfo';
+			            }else if(msg['status'] == 'recharge_no_enough'){
+			            	 $.toast("余额不足，无法完成订单");
+			            }else if(msg['status'] == 'nostore'){
+			            	$.toast(msg['msg'],function () {
+								location.href = '__URL__/index';
+							});
+						}
+			        }
+			    });
+			}
+
+			function showSuccess() {
+				$('#tsuc').show();
+			}
+
+			function paysuccess() {
+				location.href = '__URL__/orderSuccess/order_id/'+order_id;
+			}
+
+			function checkOrderStatus(id){
+				$.post("__URL__/getOrderIsPay",{id:id},function(res){
+					if(res == '1'){
+						window.clearInterval(timerId);
+						$.toast("支付成功");
+						location.href = '__URL__/orderSuccess';
+					}
+				})
+			}
+
+			function backIndex(){
+				location.href = "__URL__/index";
+			}
+
+			function jsApiCall(order_id,apiparam){
+		        if (typeof WeixinJSBridge == "undefined"){
+		            if( document.addEventListener ){
+		                document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+		            }else if (document.attachEvent){
+		                document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+		                document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+		            }
+		        }else{
+		            onBridgeReady(order_id,apiparam);
+		        }
+		    }
+
+		    //调用微信JS api 支付
+		    function onBridgeReady(order_id,apiparam)
+		    {
+		        WeixinJSBridge.invoke(
+		                'getBrandWCPayRequest',
+		                // {$apiparam},
+		                apiparam,
+		                function(res){
+		                    // $('#btn').attr("disabled", true);
+		                    if(res.err_msg == "get_brand_wcpay_request:ok"){
+		                        // alert('下单成功');
+		                        location.href = '__URL__/orderSuccess/order_id/'+order_id;
+		                    }else{
+		                        // var order_id = "{$order_id}";
+		                        $.post("{:U('Index/checkWxpayStatus')}",{order_id:order_id},function(res){
+		                            if(res.status == 0 && res.cash_pay==1){
+		                                if (confirm('微信支付不成功，是否转为货到付款？')) {
+		                                    $.post("{:U('Index/changeWxpay')}",{order_id:order_id},function(res){
+		                                        if (res.status) {
+		                                            location.href = "{:U('Index/orderSuccess')}";
+		                                        }else{
+		                                            alert('网络繁忙请稍后再试！');
+		                                        }
+		                                        
+		                                    },'json');
+		                                }else{
+		                                    $.post("{:U('Index/giveUpWxpay')}",{order_id:order_id},function(){
+		                                    });
+		                                    location.href = "{:U('Index/index')}";
+		                                }                                
+		                            }else{
+		                                location.href = "{:U('Index/index')}";
+		                            }
+		                        },'json')
+
+		                        
+		                        
+		                    }
+
+		                }
+		        );
+		    }
+			
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,78 @@
+{__NOLAYOUT__}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <h4 class="modal-title">自动回复</h4>
+</div>
+<div class="modal-body">
+    <div class="form">
+        <form method="post" id="form1" action="__URL__/editauto" class="form-horizontal">
+            <div class="form-body">
+                <!--/row-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">回复类型</label>
+                            <div class="col-md-6">
+                                <input type="hidden" name="id" value="{$info['id']}">
+                                <select id="type" class="form-control" name="type" onchange="changeType(this.value)">
+
+                                    <option value="0" <if condition="$info['type'] eq 0">selected</if> >默认回复</option>
+                                    
+                                    <option value="1" <if condition="$info['type'] eq 1">selected</if>>关注自动回复</option>
+                                    
+                                    
+
+                                    <option value="2" <if condition="$info['type'] eq 2">selected</if> >关键字回复</option>
+                                    
+                                </select>
+                                    <span class="help-block">
+                                    未设定对应类型的回复，则回复默认
+                                    </span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row" id="keyword-box" <if condition="$info['type'] neq 2">style="display: none;"</if>>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">关键字</label>
+                            <div class="col-md-5">
+                                <input class="form-control" type="text" name="key" value="{$info['key']}" placeholder="请输入关键字">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">内容</label>
+                            <div class="col-md-5">
+                                <textarea name="answer" class="form-control" placeholder="回复内容">{$info['answer']}</textarea>
+                                <span class="help-block">只能回复文字+emoji表情</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+    </form>
+</div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" data-dismiss="modal" class="btn dark btn-outline">关闭</button>
+    <button type="button" data-dismiss="modal" class="btn green" onclick="subForm(this,'form1','__URL__/editauto')">保存</button>
+</div>
+<script type="text/javascript">
+    function changeType(obj){
+        if(obj == 2){
+            $("#keyword-box").show();
+        }else{
+            $("#keyword-box").hide();
+        }
+    }
+</script>

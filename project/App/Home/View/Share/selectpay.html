@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>扫一扫支付</title>
+</head>
+<body>
+<div style="position: fixed; left: 0; right: 0; top: 48%; z-index:99; text-align: center; width: 100px; line-height: 44px; margin:0 auto; color: #fff; font-size: 14px; background-color: rgba(0,0,0,.7);">加载中</div>
+</body>
+<script>
+    window.onload = function(){
+        if(isWeiXin()){
+            var url = "{$url}";
+            alert(url);
+            location.href = "{$url}";
+        }else{
+            alert("暂不支持支付宝");
+        }
+    }
+    function isWeiXin(){
+        var ua = window.navigator.userAgent.toLowerCase();
+        if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+            return true;
+        }else{
+            return false;
+        }
+    }
+</script>
+</html>

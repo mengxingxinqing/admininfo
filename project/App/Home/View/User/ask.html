@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>消息回复</title>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/weui.min.css" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/css.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/mui.min.css" />
+    <style type="text/css">
+        .msgbox {
+            margin: 15px;
+        }
+
+        .username {
+            font-size: 14px;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .msg {
+            color: #666;
+            font-size: 16px;
+            padding: 10px;
+        }
+
+        .msghuifu {
+            padding: 10px;
+            border-top: 1px solid #eee;
+        }
+        .msgre{
+            border-top: 1px solid #eee;
+        }
+        .msgre .username {
+            border-bottom: none;
+        }
+
+        .msghuifu textarea {
+            margin-bottom: 10px;
+        }
+
+        .huifulink {
+            font-size: 14px;
+        }
+
+        .huifubox {
+            display: none;
+        }
+
+        .mui-card {
+            border-radius: 0;
+            margin-left: 0;
+            margin-right: 0;
+        }
+    </style>
+</head>
+
+<body>
+<h2>用户留言</h2>
+<volist name="list" id="it">
+    <div class="msgbox">
+        <div class="mui-card" id="cont{$it['id']}">
+            <div class="username">{$uinfo['nickname']}</div>
+            <div class="msg">{$it['content']}</div>
+            <notempty name="it.answer">
+            <div class="msgre">
+                <div class="username">回复内容：</div>
+                <div class="msg">{$it['answer']['content']}</div>
+            </div>
+            </notempty>
+            <empty name="it.answer">
+            <div class="msghuifu mui-text-right" id="answer{$it['id']}">
+                <a class="huifulink" href="#">回复</a>
+                <div class="huifubox">
+                    <textarea name="" id="content{$it['id']}" rows="2" cols=""></textarea>
+                    <button class="mui-btn mui-btn-mini mui-btn-green" data-val="{$it['id']}" onclick="reply(this)">回复</button>
+                </div>
+            </div>
+            </empty>
+        </div>
+    </div>
+</volist>
+<script src="__PUBLIC__/Home/js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    $('.huifulink').click(function() {
+        $(this).hide()
+        $(this).next('.huifubox').show();
+    })
+
+    function reply(obj){
+        var id = $(obj).attr('data-val');
+        var content = $('#content'+id).val();
+        var url = "__URL__/answer";
+        var pid = "{$pid}";
+        $.post(url,{id:id,content:content,pid:pid},function(data){
+            $('#div'+id).html(content);
+            $('#answer'+id).hide();
+            $('#cont'+id).append('<div class="msgre"> <div class="username">回复内容：</div><div class="msg">'+content+'</div></div>');
+            alert("回复成功");
+        });
+    }
+</script>
+</body>
+
+</html>

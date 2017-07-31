@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html manifest="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>我的红包</title>
+    <script src="__PUBLIC__/Home/js/mui.min.js"></script>
+    <script src="https://lib.sinaapp.com/js/jquery/2.2.4/jquery-2.2.4.min.js" type="text/javascript" charset="utf-8"></script>
+    <link href="__PUBLIC__/Home/css/mui.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/common.css" />
+    <script type="text/javascript">if(window.localStorage.getItem('mybonus')!=3){window.localStorage.setItem('mybonus',3);location.href=location.href+'?'+Math.random();}</script>
+</head>
+
+    <body>
+        <!-- <header class="mui-bar mui-bar-nav">
+            <button class="mui-btn mui-btn-link mui-btn-nav mui-pull-left" onclick="goshop();">
+                <span class="mui-icon mui-icon-left-nav"></span>买东西
+            </button>
+            <h1 class="mui-title">我的红包</h1>
+            
+        </header> -->
+        <div class="mui-content">
+            
+            <ul class="moneylist">
+                <foreach name="list" item="item">
+                <li>
+                
+                    <div class="moneynum">
+                        <b class="b1"></b>
+                        <b class="b2"></b>
+                        <div class="pkg red">
+                            <div class="num">{$item['money']|intval}<span>元</span></div>
+                        </div>
+                    </div>
+                    <div class="moneytext">
+                        <b class="b1"></b>
+                        <b class="b2"></b>
+                        <h4>
+                        <empty name="item['name']">
+                        {$item['bonus_type']}
+                        <else />
+                        {$item['name']}
+                        </empty>
+                        </h4>
+                        <if condition="($item['min_money'] eq 0) and ($item['type'] eq 1)">
+                        <p>• 可购买店内任意餐品</p>
+
+                        <else/>
+                        <p>• 满{$item['param']}元可用</p>
+                        </if>
+                        <p>• 有效期至{$item['end_time']|date='Y年m月d日',###}</p>
+                        <p>
+                        <if condition="$isweek eq 1">
+                        <a href="__URL__/weekIndex">点击进店看看吧</a>
+                        <else />
+                        <a href="__URL__/index">点击进店看看吧</a>
+                        </if>
+                        </p>
+                    </div>
+                </li>
+                </foreach>
+                
+            </ul>
+            <a href="__URL__/myqrcode?sharetype=bonusshare" class="getmoneylink">点击获得<span style="color: #d82717;">更多红包</span><i class="iconfont icon-hongbao mui-pull-right"></i></a>
+        </div>
+<div style="display: none;">
+<script src="https://s4.cnzz.com/z_stat.php?id=1256154911&web_id=1256154911" language="JavaScript"></script>
+</div>
+    </body>
+
+<script>
+function catSelect(type, cat){
+    if (type == 1) {
+        location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1f81fa6ec6189c65&redirect_uri=https://tm.haodian.mobi/index.php/Home/Index/index?select_type=1&response_type=code&scope=snsapi_base&state=1#wechat_redirect";
+    }else{
+        location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1f81fa6ec6189c65&redirect_uri=https://tm.haodian.mobi/index.php/Home/Index/index/select_type/2/cat/"+cat+"&response_type=code&scope=snsapi_base&state=1#wechat_redirect";
+    }
+}
+    function goshop(){
+        location.href = '__URL__/index';
+    }
+    $('.yaoqing').on('tap',function(){
+        $('.qrcodebox').slideDown()
+        $(this).parent().hide()
+    })
+</script>
+<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+    wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，
+        appId: '{$share.signPackage.appId}',
+        timestamp: '{$share.signPackage.timestamp}',
+        nonceStr: '{$share.signPackage.nonceStr}',
+        signature: '{$share.signPackage.signature}',
+        jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
+    });
+    wx.ready(function () {
+        // 在这里调用 API
+        // 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
+        wx.onMenuShareTimeline({
+            title: '{$share.pyq.title}', // 分享标题
+            link:"{$share.pyq.link}",
+            imgUrl: "{$share.pyq.imgUrl}" // 分享图标
+        });
+//                获取“分享给朋友”按钮点击状态及自定义分享内容接口
+        wx.onMenuShareAppMessage({
+            title: '{$share.hy.title}', // 分享标题
+            desc: "{$share.hy.desc}", // 分享描述
+            link:"{$share.hy.link}",
+            imgUrl: "{$share.hy.imgUrl}", // 分享图标
+            type: 'link' // 分享类型,music、video或link，不填默认为link
+        });
+    });
+</script>
+</html>

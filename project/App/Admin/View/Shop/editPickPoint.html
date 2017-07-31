@@ -1,0 +1,355 @@
+<!--当页依赖-->
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" type="text/css">
+
+
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" />
+
+<!--当页依赖-->
+<div class="portlet light bordered">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa fa-plus font-red"></i>
+            <span class="caption-subject font-red uppercase">添加自提点</span>
+        </div>
+        <div class="actions">
+
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <form action="#" class="form-horizontal" id="tform" method="post">
+            <input type="hidden" id="id" name="id" value="{$id}">
+            <div class="form-body">
+
+                <!-- <h3 class="form-section font-lg">基础设置</h3> -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">所属门店</label>
+                            <div class="col-md-6">
+                               <select class="bs-select form-control" data-live-search="true" data-size="8" name="shop_id">
+                                    <volist name="shop_list" id="item">
+                                    <option value="{$item['id']}" <if condition="$info['shop_id'] eq $item['id']">selected</if>  >{$item['name']}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">名称</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" min="0" placeholder=""  name="name" id="name" value="{$info['name']}">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">编号</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" min="0" placeholder=""  name="number" id="number" value="{$info['number']}">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <!--/span-->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">自提地址</label>
+                            <div class="col-md-6">
+                                    <input class="form-control" type="text" placeholder="" name="address" id="tipinput" value="{$info['address']}">
+                                    <input type="hidden" name="lat" id="lat" value="{$info['lat']}"> 
+                                    <input type="hidden" name="lng" id="lng" value="{$info['lng']}">
+                        
+                                <span class="help-block"></span>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <!--/span-->
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-8">
+                        <div id="container" style="width:100%;height: 500px"></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!--/span-->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">负责人</label>
+                            <div class="col-md-6">
+                                    <input class="form-control" type="text" placeholder="" name="user_name" id="tipinput" value="{$info['user_name']}">
+                        
+                                <span class="help-block"></span>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <!--/span-->
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">客服电话</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" min="0" placeholder=""  name="tel" value="{$info['tel']}">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">商户号</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" min="0" placeholder=""  name="param1" value="{$info['param1']}">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">终端号</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" min="0" placeholder=""  name="param2" value="{$info['param2']}">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="reserve_box" >
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">
+                                    自提时间
+                                </label>
+                                <div class="col-md-8">
+                                    <div class="input-group input-large">
+                                        <button type="button" class="btn btn-sm btn-success add_delete add_reserve">增加</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">
+                                    
+                                </label>
+                                <div class="col-md-8">
+                                    
+                                    <div class="input-group input-large">
+                                        <div>
+                                        <input type="text" class="form-control timepicker timepicker-24" name="pick_start_time[]" value="{$pick_time[0]['pick_start_time']}" >
+                                        </div>
+                                        <span class="input-group-addon"> 到 </span>
+                                        <div>
+                                        <input type="text" class="form-control timepicker timepicker-24" name="pick_end_time[]" value="{$pick_time[0]['pick_end_time']}">
+                                        </div>
+                                    </div>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <volist name="pick_time" id="item" key="k">
+                    <if condition="$k gt 1">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">
+                                    <button type="button" class="btn btn-xs btn-default delete_reserve">删除</button>
+                                </label>
+                                <div class="col-md-8">
+                                    
+                                    <div class="input-group input-large">
+                                        <div>
+                                        <input type="text" class="form-control timepicker timepicker-24" name="pick_start_time[]" value="{$item['pick_start_time']}">
+                                        </div>
+                                        <span class="input-group-addon"> 到 </span>
+                                        <div>
+                                        <input type="text" class="form-control timepicker timepicker-24" name="pick_end_time[]" value="{$item['pick_end_time']}">
+                                        </div>
+                                    </div>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </if>
+                    </volist>
+                </div>
+
+
+                <div class="form-actions">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            
+                            <a href="javascript:;" onclick="subForm(this,'tform','__URL__/editPickPoint')" class="btn green savebtn">保存</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--当页依赖-->
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.3&key=1df154e733e82c81a76cb01b419b7740&plugin=AMap.Autocomplete"></script>
+<script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+
+<!--当页依赖-->
+<script type="text/javascript">
+    $(function(){
+        $(document).on('focusin','.timepicker-24',function(){
+                
+                $(this).timepicker({
+                autoclose: !0,
+                minuteStep: 5,
+                showSeconds: !1,
+                showMeridian: !1
+            })
+        });
+
+
+        $(".add_reserve").click(function(){
+            var html = '<div class="row"><div class="col-md-6"><div class="form-group"><label class="control-label col-md-4"><button type="button" class="btn btn-xs btn-default delete_reserve">删除</button></label><div class="col-md-8"><div class="input-group input-large"><div><input type="text" class="form-control timepicker timepicker-24" name="pick_start_time[]" value=""></div><span class="input-group-addon"> 到 </span><div><input type="text" class="form-control timepicker timepicker-24" name="pick_end_time[]" value=""></div></div><span class="help-block"></span></div></div></div></div>';
+            $(".reserve_box").append(html);
+        })
+
+        $(".reserve_box").on('click','.delete_reserve',function(){
+            $(this).closest(".row").remove();
+        })
+
+    });
+</script>
+
+<script type="text/javascript">
+    var marker,circle,lnglat;
+    var map = new AMap.Map("container", {
+        resizeEnable: true,
+        zoom: 10
+    });
+
+    initMark();
+    function initMark(){
+        var lat = $('#lat').val();
+        var lng = $('#lng').val();
+
+        if(lat){
+            lnglat = new AMap.LngLat(lng,lat);
+            map.setCenter(lnglat);
+            map.setZoom(13);
+            addMark();
+        }
+    }
+
+    //为地图注册click事件获取鼠标点击出的经纬度坐标
+    var clickEventListener = map.on('click', function(e) {
+//        document.getElementById("lnglat").value = e.lnglat.getLng() + ',' + e.lnglat.getLat();
+        $('#lng').val(e.lnglat.getLng());
+        $('#lat').val(e.lnglat.getLat());
+        lnglat = e.lnglat;
+        addMark();
+//        addCircle();
+    });
+    var auto = new AMap.Autocomplete({
+        input: "tipinput"
+    });
+    AMap.event.addListener(auto, "select", select);//注册监听，当选中某条记录时会触发
+    function select(e) {
+        if (e.poi && e.poi.location) {
+            map.setZoom(13);
+            map.setCenter(e.poi.location);
+            $('#lng').val(e.poi.location.getLng());
+            $('#lat').val(e.poi.location.getLat());
+            lnglat = e.poi.location;
+            addMark();
+        }
+    }
+
+    function addMark(){
+        if(!lnglat) return;
+        if(marker){
+            marker.setMap(null);
+        }
+        marker = new AMap.Marker({
+            icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+            position: lnglat,
+            draggable: true,
+            cursor: 'move',
+            raiseOnDrag: true
+        });
+        marker.setMap(map);
+//        dragend
+        AMap.event.addListener(marker, "dragend", dragend);
+
+    }
+    function dragend(e){
+        $('#lng').val(e.lnglat.getLng());
+        $('#lat').val(e.lnglat.getLat());
+    }
+
+    /*function addCircle(){
+        var r = $('#send_range').val();
+        if(!r || !lnglat) return;
+        r = r*1000;
+        if(circle){
+            circle.setMap(null);
+        }
+        circle = new AMap.Circle({
+            center: new AMap.LngLat(lnglat.lng, lnglat.lat),// 圆心位置
+            radius: r, //半径
+            strokeColor: "#F33", //线颜色
+            strokeOpacity: 1, //线透明度
+            strokeWeight: 3, //线粗细度
+            fillColor: "#ee2200", //填充颜色
+            fillOpacity: 0.35//填充透明度
+        });
+        circle.setMap(map);
+    }
+
+    $('#send_range').on('input',function () {
+        addCircle();
+    })*/
+</script>

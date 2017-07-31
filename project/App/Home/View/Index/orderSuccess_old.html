@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html manifest="">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+      <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+      <meta http-equiv="Pragma" content="no-cache" />
+      <meta http-equiv="Expires" content="0" />
+    <title>十分便利</title>
+    <script src="__PUBLIC__/Home/js/mui.min.js"></script>
+    <script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <link href="__PUBLIC__/Home/css/mui.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/common.css" />
+    <script src="__PUBLIC__/Home/js/mui.pullToRefresh.js"></script>
+    <script src="__PUBLIC__/Home/js/mui.pullToRefresh.material.js"></script>
+  </head>
+
+  <body>
+    <div class="mui-content mui-car">
+      <h3 class="titlebig" style="margin-top: 100px;">
+      <i class="iconfont icon-wancheng"></i> 订单提交成功！
+    </h3>
+      <div class="mui-card">
+
+        <p class="m10">如有需要，可拨打以下电话联系商家</p>
+          <foreach name="tel" item="val">
+             <p class="m10"> 订单编号：{$val.id} </p>
+            <div class="m10 timealert">{$val.shop_name}：<a href="tel:{$val.tel}">{$val.tel}</a></div>
+          </foreach>
+      </div>
+      <div class="m10">
+          <!-- <a class="moneybtn" href="{:U('Activity/Index/index')}"></a> -->
+          <a href="" class="mui-btn mui-btn-block mui-btn-red">邀请好友得3元红包</a>
+      </div>
+    </div>
+    <div class="zhuanfatext pos">
+      <img src="__PUBLIC__/Home/images/zhuanfatext.png">
+    </div>
+    <script>
+      var mask = mui.createMask(function(){
+          $('.zhuanfatext').hide();
+      });
+      //{:U('Index/myQrcode',array('sharetype'=>'shopping'))}
+      //
+      $('.mui-btn-red').on('tap',function(){
+          $('.zhuanfatext').show();
+          mask.show();//显示遮罩
+          addstatics();
+      });
+      var base_id = "{$base_id}";
+      function addstatics(){
+        $.get('__URL__/getStatics',{'sharetype':'shopping'});
+      }
+      $(function(){
+//          if(base_id != ""){
+//              $.post('/index.php/Home/Index/sendOrderTpl',{base_id:base_id},function(){
+//              });
+//          }
+
+        $('a').each(function(){
+            var href = $(this).attr('href');
+            href = href+'?'+Math.random();
+            $(this).attr('href',href);
+        });
+      });
+    </script>
+  </body>
+  <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+  <script>
+      wx.config({
+          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，
+          appId: '{$share.signPackage.appId}',
+          timestamp: '{$share.signPackage.timestamp}',
+          nonceStr: '{$share.signPackage.nonceStr}',
+          signature: '{$share.signPackage.signature}',
+          jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
+      });
+      wx.ready(function () {
+          // 在这里调用 API
+          // 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
+          wx.onMenuShareTimeline({
+              title: '{$share.pyq.title}', // 分享标题
+              link:"{$share.pyq.link}",
+              imgUrl: "{$share.pyq.imgUrl}" // 分享图标
+          });
+//                获取“分享给朋友”按钮点击状态及自定义分享内容接口
+          wx.onMenuShareAppMessage({
+              title: '{$share.hy.title}', // 分享标题
+              desc: "{$share.hy.desc}", // 分享描述
+              link:"{$share.hy.link}",
+              imgUrl: "{$share.hy.imgUrl}", // 分享图标
+              type: 'link' // 分享类型,music、video或link，不填默认为link
+          });
+      });
+  </script>
+</html>

@@ -1,0 +1,68 @@
+
+<!--本页依赖-->
+<div class="portlet light bordered">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa fa-info-circle font-red"></i>
+            <span class="caption-subject font-red uppercase">扣款列表</span>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="table-scrollable table-scrollable-borderless">
+            <table class="table table-striped table-hover table-light">
+                <thead>
+                <tr>
+                    <th> id </th>
+                    <th> 订单号 </th>
+                    <th> 店铺id </th>
+                    <th> 订单金额 </th>
+                    <th> 扣款金额 </th>
+                    <th> 扣款时间 </th>
+                    <th> 当前余额 </th>
+                    <th> 扣款类型 </th>
+                    <th> 扣款状态 </th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name="list" id="it">
+                    <tr>
+                        <td>{$it['id']}</td>
+                        <td>{$it['order_id']}</td>
+                        <td>{$it['shop_id']}</td>
+                        <td>{$it['order_money']}</td>
+                        <td>{$it['money']}</td>
+                        <td>{$it['create_time']|date='Y-m-d H:i:s',###}</td>
+                        <td>{$it['curr_money']}</td>
+                        <td>
+                            <if condition="$it['type'] eq 0">
+                                流水抽成
+                                <else/>
+                                电话费
+                            </if>
+                        </td>
+                        <td>
+                            <if condition="$it['status'] eq 0">
+                                成功
+                                <else/>
+                                取消
+                            </if>
+                        </td>
+                    </tr>
+                </volist>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="megas512">
+            {$data['page']}
+        </div>
+    </div>
+</div>
+<!--本页依赖-->
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/counterup/jquery.waypoints.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/counterup/jquery.counterup.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-tabdrop/js/bootstrap-tabdrop.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/js/jquery.timeago.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript"></script>

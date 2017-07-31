@@ -1,0 +1,116 @@
+{__NOLAYOUT__}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <h4 class="modal-title">编辑菜单</h4>
+</div>
+<div class="modal-body">
+    <div class="form">
+        <form method="post" id="form1" action="__URL__/menusedit" class="form-horizontal">
+            <div class="form-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">菜单名称</label>
+                            <div class="col-md-9">
+                                <input type="text" name="name" class="form-control" placeholder="请输入名称" value="{$info['name']}">
+                                <notempty name="pid">
+                                    <input type="hidden" name="parent_id" value="{$pid}">
+                                    <else/>
+                                    <input type="hidden" name="id" value="{$id}">
+                                    <input type="hidden" name="parent_id" value="{$info['parent_id']}">
+                                </notempty>
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/row-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">类型</label>
+                            <div class="col-md-6">
+                                <select id="type" class="form-control" name="type">
+                                    <option value="">请选择</option>
+                                    <option value="view" <if condition="$info['type'] eq 'view'">selected</if> >网页</option>
+                                    <option value="click" <if condition="$info['type'] eq 'click'">selected</if>>按钮</option>
+                                </select>
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="urlrow" class="row" <if condition="$info['type'] neq 'view'"> style="display: none;" </if> >
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">跳转地址</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="url" id="url" placeholder="跳转地址" value="{$info['url']}">
+                                <span class="help-block"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <select class="form-control" id="base_url">
+                                    <option value="">--选择站内链接--</option>
+                                    <volist name="urls" id="it">
+                                        <option value="{$it['url']}">{$it['name']}</option>
+                                    </volist>
+                                </select>
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="keyrow" class="row" <if condition="$info['type'] neq 'click'"> style="display: none;" </if>  >
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">触发关键字</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="key" placeholder="触发关键字" value="default_key">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">排序</label>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" name="sort" placeholder="排序数值" value="{$info['sort']}">
+                            <span class="help-block">从小到大从上到下</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" data-dismiss="modal" class="btn dark btn-outline">关闭</button>
+    <button type="button" data-dismiss="modal" class="btn green" onclick="subForm(this,'form1','__URL__/menusedit')">保存</button>
+</div>
+<script>
+    $(document).on('change','#type',function(){
+        if($('#type option:selected').val()=='click'){
+            $('#urlrow').hide();
+//            $('#keyrow').show();
+        }else if($('#type option:selected').val()=='view'){
+            $('#keyrow').hide();
+            $('#urlrow').show();
+        }else{
+            $('#keyrow').hide();
+            $('#urlrow').hide();
+        }
+    })
+    $(document).on('change','#base_url',function () {
+        var url = $("#base_url").val();
+        if(url){
+            $('#url').val(url);
+        }
+    })
+</script>

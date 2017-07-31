@@ -1,0 +1,77 @@
+<div class="portlet light bordered">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa fa-plus font-red"></i>
+            <span class="caption-subject font-red uppercase">修改信息</span>
+        </div>
+        <div class="actions">
+
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <form class="form-horizontal" id="tform" method="post">
+            <div class="form-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">现在的账号</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="oldtel" placeholder="请输入现在的账号">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">现在的密码</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="oldpwd" placeholder="请输入现在的密码">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">新的密码</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="newpwd" placeholder="请输入新密码">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">确认密码</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="repwd" placeholder="请输入确认密码">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-offset-3 col-md-9">
+                                <a href="javascript:;" class="btn green" onclick="subForm(this,'tform','__URL__/changeInfo')">保存</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6"> </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

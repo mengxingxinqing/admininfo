@@ -1,0 +1,61 @@
+{__NOLAYOUT__}
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>味来 | 平台管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="__PUBLIC__/Back/metronic/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="__PUBLIC__/Back/metronic/assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
+
+    <link href="__PUBLIC__/Back/metronic/assets/layouts/layout4/css/themes/light.min.css" rel="stylesheet" type="text/css" />
+</head>
+<!-- END HEAD -->
+
+<body class="">
+
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+
+    <!-- END SIDEBAR -->
+    <h2 class="text-center center-block" style="max-width:500px; position:fixed; top: 50%; transform: translateY(-50%);  left: 0%; right: 0%; padding: 40px 0px; background-color: #fff;">
+        <span class="font-blue fa fa-download"> </span><span> 下载［味来］接单App</span>
+        <div class="font-grey-mint" style="font-size: 14px; font-weight: normal; margin-top: 10px;">
+            <div class="text-center font-lg margin-top-20">
+                Android版 v1.0.{$res['version']}
+            </div>
+            <div class="text-center">
+                <div id="qrcode" width="300" style="margin:20px;"></div>
+            </div>
+            <div class="text-center">
+                请用安卓手机扫描上方二维码进行下载 或<a href="{$res['url']}">点击这里</a>下载手机安装包
+            </div>
+            <div class="text-center font-red margin-top-10">
+                微信扫描不能直接下载，建议使用[手机qq]或[微博]自带的扫码工具扫描
+            </div>
+        </div>
+    </h2>
+
+</div>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/respond.min.js"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/excanvas.min.js"></script>
+<script src="__PUBLIC__/Home/js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Home/js/jquery.qrcode.min.js" type="text/javascript" charset="utf-8"></script>
+
+</body>
+<script>
+    $('#qrcode').qrcode("{$res['url']}");
+</script>
+
+</html>

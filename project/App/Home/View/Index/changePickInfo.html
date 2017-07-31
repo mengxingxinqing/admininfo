@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>订单详情</title>
+		<link rel="stylesheet" href="/Public/Home/css/weui.min.css" />
+		<link rel="stylesheet" href="/Public/Home/css/jquery-weui.css" />
+		<link rel="stylesheet" href="/Public/Home/css/iconfont.css" />
+		<link rel="stylesheet" href="/Public/Home/css/css.css" />
+		<link rel="stylesheet" href="/Public/Home/css/order.css" />
+	</head>
+
+	<body>
+		<!--<header class="n-nav-bar">
+<button class="n-header-link n-pull-left"><span class="backicon"></span>返回</button>
+<h1 class="n-title">十分便利</h1>
+</header>-->
+
+		<div class="n-pagebox">
+			<h5 class="h5tit">自提地址</h5>
+			<div class="n-card">
+				<div class="weui_cell">
+					<div class="weui_cell_hd">
+						<label class="weui_label">称呼</label>
+					</div>
+					<div class="weui_cell_bd weui_cell_primary">
+						<input class="weui_input" type="text" id="name" name="name" value="{$user_address['name']}" placeholder="请输入您的称呼">
+					</div>
+				</div>
+				<div class="weui_cell">
+					<div class="weui_cell_hd">
+						<label class="weui_label">电话</label>
+					</div>
+					<div class="weui_cell_bd weui_cell_primary">
+						<input class="weui_input" type="text" id="tel" name="tel" value="{$user_address['tel']}" placeholder="请输入您的电话号码">
+					</div>
+				</div>
+
+
+				<div class="weui_cell">
+					<div class="weui_cell_hd">
+						<label class="mr5">自提地址</label>
+					</div>
+					<a href="javascript:;" class="weui_cell_bd weui_cell_primary color3 open-popup" data-target="#addr" id="pick-display"><empty name="user_address['pick_address']">输入您想要自提的地点<else />{$user_address['pick_address']}</empty></a>
+					<input type="hidden" name="pick_name" value="{$user_address['pick_address']}">
+					<input type="hidden" name="pick_id" value="{$user_address['pick_id']}">
+				</div>
+
+			</div>
+
+			
+
+			<div class="m15">
+				<button onclick="save()" class="weui_btn weui_btn_primary">完成</button>
+			</div>
+			<div id="container" style="height:300px"></div>
+			<div style="padding-bottom: 20px;"></div>
+		</div>
+
+
+
+		<div id="addr" class="weui-popup-container">
+			<div class="weui-popup-overlay"></div>
+			<div class="weui-popup-modal">
+				<div class="weui_cell n-card">
+					<div class="weui_cell_bd weui_cell_primary">
+						<input class="weui_input" type="text" placeholder="请输入自提的位置。例如：南稍门、钟楼等" id="serach_pick">
+					</div>
+
+					<div class="weui_cell_hd">
+						<button type="button" class="weui_btn weui_btn_mini weui_btn_primary" style="font-size: 12px;" onclick="serachPick()">搜索</button>
+					</div>
+				</div>
+				<h5 class="h5tit">搜索结果</h5>
+				<div class="n-card">
+					<div class="weui_panel_bd" id="search_result">
+						<volist name="pick_list" id="item">
+						<a href="javascript:void(0);" class="weui_media_box weui_media_appmsg select_pick" data-pick-id="{$item['id']}" data-pick-address="{$item['address']}">
+
+							<div class="weui_media_bd">
+								<h4 class="weui_media_title">{$item['name']}</h4>
+								<p class="weui_media_desc">{$item['address']}</p>
+								<notempty name="item['tel']">
+								<p class="weui_media_desc">联系方式：{$item['tel']} <!-- 营业时间：9:00 - 22:00 --></p>
+								</notempty>
+							</div>
+						</a>
+						</volist>
+						
+					</div>
+				</div>
+				<h5 class="h5tit" style="text-align: center; display: none" id="result_none">无搜索结果</h5>
+			</div>
+		</div>
+
+
+		<script src="https://lib.sinaapp.com/js/jquery/2.2.4/jquery-2.2.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/Public/Home/js/jquery-weui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/Public/Home/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+
+		<!-- <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.3&key=1df154e733e82c81a76cb01b419b7740&plugin=AMap.Autocomplete"></script> -->
+		<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.3&key=1df154e733e82c81a76cb01b419b7740"></script>
+		<!-- <script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script> -->
+	</body>
+	<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	<script>
+		wx.config({
+			debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，
+			appId: '{$share.signPackage.appId}',
+			timestamp: '{$share.signPackage.timestamp}',
+			nonceStr: '{$share.signPackage.nonceStr}',
+			signature: '{$share.signPackage.signature}',
+			jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
+		});
+		wx.ready(function () {
+			// 在这里调用 API
+			// 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
+			wx.onMenuShareTimeline({
+				title: '{$share.pyq.title}', // 分享标题
+				link:"{$share.pyq.link}",
+				imgUrl: "{$share.pyq.imgUrl}" // 分享图标
+			});
+//                获取“分享给朋友”按钮点击状态及自定义分享内容接口
+			wx.onMenuShareAppMessage({
+				title: '{$share.hy.title}', // 分享标题
+				desc: "{$share.hy.desc}", // 分享描述
+				link:"{$share.hy.link}",
+				imgUrl: "{$share.hy.imgUrl}", // 分享图标
+				type: 'link' // 分享类型,music、video或link，不填默认为link
+			});
+		});
+	</script>
+	<script>
+		$(function(){
+			$("#search_result").on("click",".select_pick",function(){
+				var pick_name = $(this).attr('data-pick-address');
+				var pick_id = $(this).attr('data-pick-id');
+				$("#pick-display").text(pick_name);
+				$("input[name='pick_name']").val(pick_name);
+				$("input[name='pick_id']").val(pick_id);
+				$.closePopup();
+			})
+			<if condition="$shop_id eq 2 or $shop_id eq 47">
+			getLocation();
+			</if>
+		})
+
+		function serachPick(){
+			var pick = $("#serach_pick").val();
+			if(pick != ''){
+				$.post("__URL__/searchPick",{pick:pick},function(res){
+					if(res !=''){
+						var html = '';
+						$.each(res,function(i,v){
+
+							html += '<a href="javascript:void(0);" class="weui_media_box weui_media_appmsg select_pick" data-pick-id="'+v.id+'" data-pick-address="'+v.address+'">';
+							html += '<div class="weui_media_bd">';
+							if(v.name == null){
+								v.name = '';
+							}
+							html += '<h4 class="weui_media_title">'+v.name+'</h4>';
+							html += '<p class="weui_media_desc">'+v.address+'</p>';
+							if(v.tel == null){
+								v.tel = '';
+							}
+							if(v.tel != ''){
+								html += '<p class="weui_media_desc">联系方式：'+v.tel+' <!--营业时间：9:00 - 22:00--></p>';
+							}
+							
+							html += '</div>';
+							html += '</a>';
+
+						})
+						$("#search_result").html(html);
+					}else{
+						$("#search_result").html('');
+						$("#result_none").show();
+					}
+				},'json')
+			}
+		}
+
+		function save(){
+			var	name = $("#name").val();
+			var tel = $("#tel").val();
+			if(!name){
+				alert("把您的称呼写上，方便找到您");
+				return;
+			}
+			if(!tel || tel.length != 11){
+				alert("手机号要11位哦~");
+				return ;
+			}
+			
+
+			var pick_name = $("input[name='pick_name']").val();
+
+			if(pick_name == ''){
+				alert('请选择自提地址');
+				return;
+			}
+			var pick_id = $("input[name='pick_id']").val();
+
+			$.post('__URL__/changePickInfoAction',{name:name,tel:tel,pick_name:pick_name,pick_id:pick_id},function(){
+				location.href = '__URL__/goOrder?send_type=2';
+			},'json')
+		}
+
+
+
+
+		function getLocation(){
+			//判断是否支持 获取本地位置
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(showPosition,showError);
+				// navigator.geolocation.getCurrentPosition();
+			}else{
+				alert("浏览器不支持定位.");
+				window.location.href = "__URL__/index?no=1";
+			}
+		}
+
+		function showPosition(position) {
+			var lat=position.coords.latitude;
+			var lng=position.coords.longitude;
+			/*alert('ok');
+			alert(lat);
+			alert(lng);*/
+			//调用地图命名空间中的转换接口   type的可选值为 1:gps经纬度，2:搜狗经纬度，3:百度经纬度，4:mapbar经纬度，5:google经纬度，6:搜狗墨卡托
+			$.post("__URL__/getPicklistByLocation",{lat:lat,lng:lng},function(res){
+				
+				if(res !=''){
+					var html = '';
+					$.each(res,function(i,v){
+
+						html += '<a href="javascript:void(0);" class="weui_media_box weui_media_appmsg select_pick" data-pick-id="'+v.id+'" data-pick-address="'+v.address+'">';
+						html += '<div class="weui_media_bd">';
+						if(v.name == null){
+							v.name = '';
+						}
+						html += '<h4 class="weui_media_title">'+v.name+'</h4>';
+						html += '<p class="weui_media_desc">'+v.address+'</p>';
+						if(v.tel == null){
+							v.tel = '';
+						}
+						if(v.tel != ''){
+							html += '<p class="weui_media_desc">联系方式：'+v.tel+' <!--营业时间：9:00 - 22:00--></p>';
+						}
+						
+						html += '</div>';
+						html += '</a>';
+
+					})
+					$("#search_result").html(html);
+				}else{
+					$("#search_result").html('');
+					$("#result_none").show();
+				}
+
+				
+			},'json');
+		}
+
+		function showError(error){
+			// alert('error');
+			// location.href = "__URL__/index?no=1";
+			/*var lat = '34.223282';
+			var lng = '108.897643';
+			$.post("__URL__/getPicklistByLocation",{lat:lat,lng:lng},function(res){
+				
+				if(res !=''){
+					var html = '';
+					$.each(res,function(i,v){
+
+						html += '<a href="javascript:void(0);" class="weui_media_box weui_media_appmsg select_pick" data-pick-id="'+v.id+'" data-pick-address="'+v.address+'">';
+						html += '<div class="weui_media_bd">';
+						if(v.name == null){
+							v.name = '';
+						}
+						html += '<h4 class="weui_media_title">'+v.name+'</h4>';
+						html += '<p class="weui_media_desc">'+v.address+'</p>';
+						if(v.tel == null){
+							v.tel = '';
+						}
+						if(v.tel != ''){
+							html += '<p class="weui_media_desc">联系方式：'+v.tel+' <!--营业时间：9:00 - 22:00--></p>';
+						}
+						
+						html += '</div>';
+						html += '</a>';
+
+					})
+					$("#search_result").html(html);
+				}else{
+					$("#search_result").html('');
+					$("#result_none").show();
+				}
+
+
+			},'json');*/
+		}
+		
+	</script>
+</html>

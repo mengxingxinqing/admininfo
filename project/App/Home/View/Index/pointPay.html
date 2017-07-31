@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>支付</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/weui.min.css" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/jquery-weui.min.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/css.css" />
+    <style>
+        .btnbox~.keyboardNum.show {}
+
+        .zhifuhead {
+            text-align: left;
+            margin:0 15px;
+            margin-top: 20px;
+        }
+
+        .zhifuhead img {
+            width: 48px;
+            height: 48px;
+        }
+
+        .zhifuhead .username {
+            font-size: 14px;
+            color: #999999;
+            margin: 10px 0 5px;
+        }
+
+        .zhifucard {
+            background-color: #fff;
+            margin: 15px 15px 15px;
+            padding: 15px;
+        }
+
+        .zhifucard .title {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .flexbox {
+            padding-top: 5px;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            font-size: 18px;
+        }
+
+        .flexbox .flex {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            padding: 0 15px 0;
+        }
+
+        .flexbox .flex .weui_input {
+            font-size: 44px;
+            color: #474747;
+        }
+    </style>
+</head>
+
+<body bgcolor="#F7F7F7">
+<div class="zhifuhead">
+    <div class="wallet">
+        <h4> <a href="{:U('Index/pointPayList')}" class="icon-rightlink n-pull-right">明细</a>账户余额：¥{$account_money} <a href="__URL__/userRecharge" class="icon-rightlink">去充值</a></h4>
+        <p>{$info.name}  {$info.number}</p>
+    </div>
+    <div class="username">请输入支付金额</div>
+</div>
+<div class="zhifucard">
+    <div class="title">金额</div>
+    <div class="flexbox">
+        ¥
+        <div class="flex">
+            <div id="numinput" type="number" class="weui_input"></div>
+        </div>
+    </div>
+</div>
+<div class="m15 btnbox" style="">
+    <button class="weui_btn weui_btn_warn" onclick="pointPay();">确认支付</button>
+</div>
+<script src="__PUBLIC__/Home/js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Home/js/jquery-weui.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Home/js/numkeypad/keyboardNum.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    window.onload = function() {
+        setTimeout(function() {
+            $(window).scrollTop(240);
+        }, 500);
+    }
+    var key = new KeyBoardNum('#numinput', {
+        decimal: 2,
+        integer: 8,
+        btnActiveBgColor: '#04be02',
+        btnCallBack: function(num) {
+            $('.keyboardNum').removeClass('show');
+            showpadding();
+            console.log(num);
+        }
+    }).show();
+    $('#numinput').on('click', function() {
+        $('.keyboardNum').addClass('show');
+        showpadding();
+        $(window).scrollTop(240);
+    })
+
+    function showpadding() {
+        if($('.keyboardNum').hasClass('show')) {
+            $('.btnbox').css('padding-bottom', '240px');
+        } else {
+            $('.btnbox').css('padding-bottom', '0');
+        }
+    }
+
+    function pointPay(){
+        var num = $('#numinput').text();
+        var curr = "{$account_money}";
+
+        curr = parseFloat(curr);
+        num = parseFloat(num);
+        if(curr<num){
+            alert("余额不足");
+            return;
+        }
+        var point = "{$info.id}";
+        $.post('__URL__/pointPay',{spid:point,money:num},function (res){
+            if(res == 0){
+                location.href = "{:U('Index/pointPaySuccess')}";
+            }else{
+                alert("余额不足");
+            }
+
+        });
+    }
+</script>
+</body>
+
+</html>

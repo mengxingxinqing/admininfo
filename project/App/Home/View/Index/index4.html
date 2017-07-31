@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>{$info['partner_name']}</title>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/weui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/jquery-weui.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/jquery.fullpage.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/fullpage.css"/>
+    <style type="text/css">
+        .loading {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 999;
+            background: url(__PUBLIC__/Home/img/loading.gif) center center no-repeat #fff;
+            -webkit-background-size: 100px auto;
+            background-size: 100px auto;
+            text-align: center;
+        }
+
+        .loading.on {
+            -webkit-transition: .5s;
+            transition: .5s;
+            -webkit-transform: translateY(-100%);
+            transform: translateY(-100%);
+        }
+
+        .loading span {
+            position: relative;
+            top: 40%;
+            color: #999;
+        }
+    </style>
+
+</head>
+
+<body>
+<div class="loading">
+    <span>{$info['partner_name']}</span>
+</div>
+<div class="page">
+    <header class="n-nav-bar n-flex">
+        <h1 class="n-title n-flex-item"><if condition="$shop_num gt 1 && $info['is_pick_point'] eq 0"><a href="/index.php/Home/SelectShop/index">{$info['partner_name']}[点击切换] </a> <else/><a href="javascript:;">{$info['partner_name']}</a> </if></h1>
+        <div class="header-tab" id="catlist">
+
+        </div>
+    </header>
+
+    <div class="n-footer-bar n-flex">
+        <div class="shopcar on">
+            <a href="javascript:;" onclick="shopcart_submit('/index.php/Home/Index/shopcart');" class=""> <i class="iconfont icon-gouwuche"></i>
+                <div class="numdot" id="sc_num">0</div>
+            </a>
+        </div>
+        <div class="shop-bar n-flex-item"><a href="javascript:;" onclick="shopcart_submit('/index.php/Home/Index/checkShopCart');" class="orderbtn">下单</a>
+            <div class="price">¥<b id="sc_money">0</b>元 <if condition="$info['base_price'] neq 0"> <span id="base_price_show" ><span class="fontreds" id="base_price">{$info['base_price']}</span>元起送</span> </if>
+            </div>
+        </div>
+    </div>
+    <div class="n-goods-itembox">
+
+    </div>
+</div>
+<div id="goods-detail" class="weui-popup-container goods-detail outer">
+    <div class="weui-popup-overlay"></div>
+    <div class="weui-popup-modal">
+
+        <a href="javascript:;" class="close-goods-detail">
+            <img class="goods-detail-img" src="" alt="">
+        </a>
+
+    </div>
+</div>
+
+<div class="n-goods-detail-box">
+    <div class="n-goods-type-header"><span id="f_name"></span> <i class="iconfont icon-15jiajianjia close-btn"></i></div>
+    <div class="n-goods-type-content">
+        <div class="swiper-container">
+            <div class="swiper-wrapper" id="f_imglist">
+                <div class="swiper-slide"><img src="https://sfwm.oss-cn-beijing.aliyuncs.com/goods_101.jpg" alt=""></div>
+                <div class="swiper-slide"><img src="https://sfwm.oss-cn-beijing.aliyuncs.com/goods_101.jpg" alt=""></div>
+                <div class="swiper-slide"><img src="https://sfwm.oss-cn-beijing.aliyuncs.com/goods_101.jpg" alt=""></div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+        <div class="detail-des" id="f_remark"></div>
+        <div id="formatlist">
+
+        </div>
+        <div id="attrlist">
+
+        </div>
+    </div>
+    <div class="n-goods-type-footer">
+        <div class="price">¥<b id="f_price"></b> <span class="info" id="f_result"></span></div>
+        <div class="numbox">
+            <a class="iconfont icon-16jiajianjian numplus btn_dec" id="f_btn_dec" href="javascript:;"></a>
+            <span id="f_num">0</span>
+            <a class="iconfont icon-15jiajianjia numplus btn_inc" href="javascript:;"></a>
+        </div>
+    </div>
+</div>
+
+<div style="display: none" id="hideNotice">{$notice}</div>
+<script>
+    var ossurl = '{$Think.config.OSS_PATH}';
+    var ispartner = 0;
+    var notice ;
+    var init_cat = "{$cat_id}";
+    var goods_discount_status = "{$goods_discount_status}";
+    var goods_discount_num = "{$goods_discount_num}";
+    var base_price = "{$info.base_price}";
+</script>
+<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+    wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，
+        appId: '{$share.signPackage.appId}',
+        timestamp: '{$share.signPackage.timestamp}',
+        nonceStr: '{$share.signPackage.nonceStr}',
+        signature: '{$share.signPackage.signature}',
+        jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
+    });
+    wx.ready(function () {
+        // 在这里调用 API
+        // 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
+        wx.onMenuShareTimeline({
+            title: '{$share.pyq.title}', // 分享标题
+            link:"{$share.pyq.link}",
+            imgUrl: "{$share.pyq.imgUrl}" // 分享图标
+        });
+//                获取“分享给朋友”按钮点击状态及自定义分享内容接口
+        wx.onMenuShareAppMessage({
+            title: '{$share.hy.title}', // 分享标题
+            desc: "{$share.hy.desc}", // 分享描述
+            link:"{$share.hy.link}",
+            imgUrl: "{$share.hy.imgUrl}", // 分享图标
+            type: 'link' // 分享类型,music、video或link，不填默认为link
+        });
+    });
+</script>
+
+<script src="https://lib.sinaapp.com/js/jquery/2.2.4/jquery-2.2.4.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Home/js/jquery.fullpage.min.js"></script>
+<script src="__PUBLIC__/Home/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Home/js/jquery-weui.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Home/js/xscroll-master.min.js" type="text/javascript" charset="utf-8"></script>
+<!--详情页新引入-->
+<script src="__PUBLIC__/Home/js/swiper.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Home/js/index4_new.js?v=11" type="text/javascript" charset="utf-8"></script>
+<div style="display: none">
+    <script src="https://s4.cnzz.com/z_stat.php?id=1260548309&web_id=1260548309" language="JavaScript"></script>
+</div>
+
+<script>
+    $(function () {
+
+    })
+
+</script>
+
+<script type="text/javascript">
+    $(function(){
+        $.get("__URL__/setVisit","",function(){
+
+        })
+    })
+
+    function goRecharge(){
+        location.href = '__URL__/userRecharge'
+    }
+</script>
+</body>
+
+</html>

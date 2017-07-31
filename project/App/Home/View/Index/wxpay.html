@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html manifest="__PUBLIC__/fen.manifest">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no"/>
+    <title>微信支付</title>
+    <script src="__PUBLIC__/Home/js/mui.min.js"></script>
+    <script src="__PUBLIC__/Home/js/jquery-2.1.0.js"></script>
+    <link href="__PUBLIC__/Home/css/mui.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/framextend.css" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/common.css" />
+</head>
+
+<body>
+<div class="mui-content">
+    <br>
+    <div class="mui-text-center mui-h4" >订单编号:{$info['base_info']['order_num']}</div>
+    <div class="pricebig mui-text-center mui-h2 m10" >￥{$info['base_info']['pay_money']}</div>
+    <div class="mui-text-center mui-h4" >总优惠金额:{$info['base_info']['total_money']-$info['base_info']['pay_money']}</div>
+    <div class="mui-card orderbox">
+        <dl>
+            <dt> <span class="td1">品名</span> <span class="td2">单价</span> <span class="td3">数量</span> <span class="td4">单品总价</span> </dt>
+            <foreach name="info['list']" item="item">
+            <dd> <span class="td1 mui-ellipsis">{$item['goods_name']}</span> <span class="td2">￥{$item['price']}</span> <span class="td3">x{$item['num']}</span> <span class="td4">￥{$item['total_money']}</span> </dd>
+            </foreach>
+        </dl>
+    </div>
+    <div class="m10">
+        <button class="mui-btn mui-btn-block mui-btn-success" id="btn" onclick="jsApiCall();">立即支付</button>
+    </div>
+</div>
+<script>
+    $('.btnsel a').on('tap',function(){
+        $(this).parent().find('a').removeClass('on');
+        $(this).addClass('on');
+    })
+
+    $(function (){
+        var url = "{:U('Index/orderStatus')}";
+        var order_id = "{$order_id}";
+        if(order_id){
+            $.post(url,{id:order_id}, function (data) {
+//                alert('data:'+data);
+                if(data=='ready'){
+                    $('#btn').show();
+                }else{
+                    $('#btn').hide();
+                }
+            });
+        }else{
+
+        }
+
+    });
+
+    function jsApiCall(){
+        if (typeof WeixinJSBridge == "undefined"){
+            if( document.addEventListener ){
+                document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+            }else if (document.attachEvent){
+                document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+            }
+        }else{
+            onBridgeReady();
+        }
+    }
+
+    //调用微信JS api 支付
+    function onBridgeReady()
+    {
+        WeixinJSBridge.invoke(
+                'getBrandWCPayRequest',
+                {$apiparam},
+                function(res){
+                    // alert(res.err_msg);
+                    // $('#btn').attr("disabled", true);
+                    if(res.err_msg == "get_brand_wcpay_request:ok"){
+                        // alert('下单成功');
+                        location.href = "{:U('Index/orderSuccess',array('order_num'=>$info['base_info']['order_num']))}";
+                    }else{
+                        var order_id = "{$order_id}";
+                       
+                        $.post("{:U('Index/checkWxpayStatus')}",{order_id:order_id},function(res){
+                            if(res.status == 0 && res.cash_pay==1){
+                                if (confirm('微信支付不成功，是否转为货到付款？')) {
+                                    $.post("{:U('Index/changeWxpay')}",{order_id:order_id},function(res){
+                                        if (res.status) {
+                                            location.href = "{:U('Index/orderSuccess')}";
+                                        }else{
+                                            alert('网络繁忙请稍后再试！');
+                                        }
+                                        
+                                    },'json');
+                                }else{
+                                    $.post("{:U('Index/giveUpWxpay')}",{order_id:order_id},function(){
+                                    });
+                                    location.href = "{:U('Index/index')}";
+                                }                                
+                            }else{
+                                location.href = "{:U('Index/index')}";
+                            }
+                        },'json')
+
+                        
+                        
+                    }
+
+                }
+        );
+    }
+</script>
+ <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+ <script>
+     wx.config({
+         debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，
+         appId: '{$share.signPackage.appId}',
+         timestamp: '{$share.signPackage.timestamp}',
+         nonceStr: '{$share.signPackage.nonceStr}',
+         signature: '{$share.signPackage.signature}',
+         jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
+     });
+     wx.ready(function () {
+         // 在这里调用 API
+         // 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
+         wx.onMenuShareTimeline({
+             title: '{$share.pyq.title}', // 分享标题
+             link:"{$share.pyq.link}",
+             imgUrl: "{$share.pyq.imgUrl}" // 分享图标
+         });
+//                获取“分享给朋友”按钮点击状态及自定义分享内容接口
+         wx.onMenuShareAppMessage({
+             title: '{$share.hy.title}', // 分享标题
+             desc: "{$share.hy.desc}", // 分享描述
+             link:"{$share.hy.link}",
+             imgUrl: "{$share.hy.imgUrl}", // 分享图标
+             type: 'link' // 分享类型,music、video或link，不填默认为link
+         });
+     });
+</script>
+</body>
+</html>

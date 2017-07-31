@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>自提点消费明细</title>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/weui.min.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/jquery-weui.css" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/css.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/person.css" />
+</head>
+
+<body>
+<div class="weui_tab">
+    <div class="weui_navbar">
+        <a href="#" class="weui_navbar_item weui_bar_item_on" data-type="1">
+            自提点消费明细
+        </a>
+    </div>
+    <div class="weui_tab_bd">
+        <volist name="list" id="it">
+        <div class="weui_cells">
+            <div class="weui_cells">
+                <div class="weui_cell">
+                   <div class="weui_cell_bd weui_cell_primary">
+                       <p>自提点消费：<span>{$item['money']}元</span></p>
+                       <p class="color3">地址：{$item['name']}</p>
+                       <p class="color3">{$item['create_time']|date='Y-m-d H:i',###}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </volist>
+    </div>
+</div>
+<div class="chongzhi">
+    <div class="weui_cells_title">明细</div>
+
+</div>
+<div class="m15">
+    <button class="weui_btn weui_btn_default" id="load-page">加载更多</button>
+</div>
+<script src="__PUBLIC__/Home/js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Home/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Home/js/jquery-weui.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    $(function() {
+        FastClick.attach(document.body);
+        var type = $(".weui_bar_item_on").attr("data-type");
+        $.post('__URL__/loadrechargeDetail',{type:type},function(res){
+            var html = '';
+            if(res.list != ''){
+                $.each(res.list,function(i,v){
+                    html += '<div class="weui_cells">';
+                    html += '<div class="weui_cell">';
+                    html += '<div class="weui_cell_bd weui_cell_primary">';
+                    if(v.giveaway_money){
+
+                        if(v.giveaway_money != 0){
+                            html += '<p>'+v.type_str+'：<span>'+v.money+'元</span> <span>(赠送：'+v.giveaway_money+'元)</span></p>';
+                        }else{
+                            html += '<p>'+v.type_str+'：<span>'+v.money+'元</span></p>';
+                        }
+
+                    }else{
+                        html += '<p>'+v.type_str+'：<span>'+v.money+'元</span></p>';
+                    }
+
+                    html += '<p class="color3">'+v.create_time+'</p>';
+                    html += '</div>';
+                    html += '</div>';
+                    html += '</div>';
+                })
+                $('.chongzhi').append(html);
+                if(res.list.length >=5 ){
+                    $('#load-page').attr('load-page',res.page);
+                }else{
+                    $('#load-page').hide();
+                }
+            }else{
+                // $("#load-page").text('暂无数据').attr("disabled","disabled");
+                $("#load-page").hide();
+            }
+
+        },'json')
+
+        $("#load-page").click(function(){
+            var page = $(this).attr("load-page");
+            $.post('__URL__/loadrechargeDetail',{type:type,page:page},function(res){
+                var html = '';
+                if(res.list != ''){
+                    $.each(res.list,function(i,v){
+                        html += '<div class="weui_cells">';
+                        html += '<div class="weui_cell">';
+                        html += '<div class="weui_cell_bd weui_cell_primary">';
+                        if(v.giveaway_money){
+
+                            if(v.giveaway_money != 0){
+                                html += '<p>'+v.type_str+'：<span>'+v.money+'元</span> <span>(赠送：'+v.giveaway_money+'元)</span></p>';
+                            }else{
+                                html += '<p>'+v.type_str+'：<span>'+v.money+'元</span></p>';
+                            }
+
+                        }else{
+                            html += '<p>'+v.type_str+'：<span>'+v.money+'元</span></p>';
+                        }
+                        html += '<p class="color3">'+v.create_time+'</p>';
+                        html += '</div>';
+                        html += '</div>';
+                        html += '</div>';
+                    })
+                    $('.chongzhi').append(html);
+                    if(res.list.length >=5 ){
+                        $('#load-page').attr('load-page',res.page);
+                    }else{
+                        $('#load-page').hide();
+                    }
+                }else{
+                    // $("#load-page").text('暂无数据').attr("disabled","disabled");
+                    $("#load-page").hide();
+                }
+
+            },'json')
+        })
+    });
+</script>
+</body>
+
+</html>

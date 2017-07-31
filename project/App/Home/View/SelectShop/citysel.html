@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="css/mui.min.css"/>
+	<link rel="stylesheet" type="text/css" href="css/localsel.css"/>
+	<script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+
+</head>
+<body>
+		<div class="localbox m10">
+		<h3><button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left" style="position: fixed; left: -5px; top: 14px; color: #fff;">
+            <span class="mui-icon mui-icon-left-nav"></span>返回
+        </button>请选择您所在的区域</h3>
+		<div class="localcurrent">
+			<span class="mui-pull-right">区域不正确？<a href="#">点击切换</a></span>
+			碑林区
+		</div>
+		<ul class="locallist">
+			<li>
+				<h4><span class="mui-pull-right">距我15KM</span>中贸广场</h4>
+				<dl class="addrlist mui-clearfix">
+					<dd class="mui-col-xs-4 mui-pull-left"><a href="#">15号楼</a></dd>
+					<dd class="mui-col-xs-4 mui-pull-left"><a href="#">5号楼</a></dd>
+					<dd class="mui-col-xs-4 mui-pull-left"><a href="#">15号楼</a></dd>
+					<dd class="mui-col-xs-4 mui-pull-left"><a href="#">15号楼</a></dd>
+				</dl>
+				<div class="addr">
+					碑林区 南稍门 中贸广场
+				</div>
+			</li>
+		</ul>
+	</div>
+	<script type="text/javascript">
+
+		document.body.addEventListener('touchstart', function () { });
+		
+		$('.locallist li').on('click',function(){
+			$(this).find('.addrlist').slideToggle();
+		})
+		$('.addrlist').on('click',function(event){
+			event.stopPropagation();  
+		})
+	</script>
+</body>
+</html>

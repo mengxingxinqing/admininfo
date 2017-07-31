@@ -1,0 +1,158 @@
+<div class="row">
+    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+        <div class="dashboard-stat blue">
+            <div class="visual">
+                <i class="fa fa-user-plus"></i>
+            </div>
+            <div class="details">
+                <div class="number" style="font-size:26px;">
+                    <small><span data-counter="counterup" data-value="{$newuser}">0</span></small>  / <small data-counter="counterup" data-value="{$totaluser}">0</small>
+                </div>
+
+                <div class="desc"> <small>新增粉丝数</small> / <small>总粉丝数</small> </div>
+
+            </div>
+            <a class="more" href="{:U('User/index')}"> 浏览详细
+                <i class="m-icon-swapright m-icon-white"></i>
+            </a>
+        </div>
+    </div>
+    
+    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+        <div class="dashboard-stat green">
+            <div class="visual">
+                <i class="fa fa-shopping-cart"></i>
+            </div>
+            <div class="details">
+                <div class="number" style="font-size:26px;">
+                    <small>¥<span data-counter="counterup" data-value="{$todaymoney}">0</span></small>  / <small data-counter="counterup" data-value="{$yesmoney}">0</small>
+                </div>
+                <div class="desc"> 今日流水 / <small>昨日</small> </div>
+            </div>
+            <a class="more" href="{:U('Count/orderAnalysis')}"> 浏览详细
+                <i class="m-icon-swapright m-icon-white"></i>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+        <div class="dashboard-stat purple">
+            <div class="visual">
+                <i class="fa fa-file-text-o"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    <small>
+                    <span data-counter="counterup" data-value="{$order_num}"></span>
+                    </small>
+                </div>
+                <div class="desc"> 今日订单数 </div>
+            </div>
+            <a class="more" href="{:U('order/index')}"> 浏览详细
+                <i class="m-icon-swapright m-icon-white"></i>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+        <div class="dashboard-stat green-jungle">
+            <div class="visual">
+                <i class="fa fa-turkish-lira"></i>
+            </div>
+            <div class="details">
+                <div class="number" style="font-size:26px;">
+                    <small>¥<span data-counter="counterup" data-value="{$today_shoppay|sprintf='%.2f',###}">0</span></small>  / <small data-counter="counterup" data-value="{$yes_shoppay|sprintf='%.2f',###}">0</small>
+                </div>
+                <div class="desc"> 今日到店付 / <small>昨日</small> </div>
+            </div>
+            <a class="more" href="{:U('Order/shoppayOrder')}"> 浏览详细
+                <i class="m-icon-swapright m-icon-white"></i>
+            </a>
+        </div>
+    </div>
+
+</div>
+<div class="clearfix"></div>
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN SAMPLE TABLE PORTLET-->
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-equalizer font-red"></i>
+                    <span class="caption-subject font-red uppercase">门店状态</span>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="table-scrollable table-scrollable-borderless">
+                    <table class="table table-striped table-hover table-light">
+                        <thead>
+                        <tr>
+                            <th> 门店名称 </th>
+                            <th> 电话 </th>
+                            <th> 昨日流水 </th>
+                            <th> 今日流水 </th>
+                            <th> 今日订单数 </th>
+                            <th> 操作 </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="list" id="it">
+                        <tr>
+                            <td> {$it.name} <!-- <span class="label label-sm label-success"> 营业中 </span> --> </td>
+                            <td> {$it.tel} </td>
+                            <td> {$it.yesmoney} </td>
+                            <td> {$it.money} </td>
+                            <td> {$it.num} </td>
+                            <td>
+                                <!-- <a href="#" class="font-blue-madison">查看订单</a> -->
+                                <if condition="$it.is_close eq 0">
+                                <button type="button" class="btn btn-sm green" onclick="closeShop({$it.id},{$it.is_close})">开店中</button>
+                                <else />
+                                <button type="button" class="btn btn-sm grey" onclick="closeShop({$it.id},{$it.is_close})">关店中</button>
+                                </if>
+                                <if condition="$it.no_send eq 0">
+                                <button type="button" class="btn btn-sm blue" onclick="noSend({$it.id},{$it.no_send})">外送中</button>
+                                <else />
+                                <button type="button" class="btn btn-sm grey" onclick="noSend({$it.id},{$it.no_send})">暂不外送中</button>
+                                </if>
+                            </td>
+                        </tr>
+                        </volist>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- END SAMPLE TABLE PORTLET-->
+    </div>
+</div>
+<script type="text/javascript">
+    function closeShop(shop_id,now_status){
+        var str = '';
+        if(now_status == 0){
+            str = '确认关闭该店？';
+        }else{
+            str = '确认打开该店？'
+        }
+        if(confirm(str)){
+            $.post("__URL__/closeShop",{shop_id:shop_id,now_status:now_status},function(res){
+                location.reload();
+            },'json');
+        }
+        
+    }
+
+    function noSend(shop_id,now_status){
+        var str = '';
+        if(now_status == 0){
+            str = '确认关闭外送？';
+        }else{
+            str = '确认开启外送？'
+        }
+        if(confirm(str)){
+            $.post("__URL__/noSend",{shop_id:shop_id,now_status:now_status},function(res){
+                location.reload();
+            },'json');
+        }
+    }
+</script>

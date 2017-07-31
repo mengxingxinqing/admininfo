@@ -1,0 +1,204 @@
+<!--本页依赖-->
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+<!--本页依赖-->
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="fa fa-list font-red"></i>
+			<span class="caption-subject font-red uppercase">餐品信息</span>
+		</div>
+		<empty name="shop_id">
+		<div class="actions">
+			<a href="__URL__/addGoods" class="btn green"><i class="fa fa-plus"></i> 添加新品</a>
+		</div>
+		<else />
+		<div class="actions">
+			<a href="__URL__/addShopGoods?shop_id={$shop_id}" class="btn green"><i class="fa fa-plus"></i> 添加新品</a>
+		</div>
+		</empty>
+	</div>
+	<div class="portlet-body">
+		<notempty  name="shop_id">
+        <div class="row form-horizontal form-row-seperated">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <select class="bs-select form-control" data-live-search="true" data-size="8" name="shop_id" disabled="disabled">
+                            <volist name="shop_list" id="item">
+                            <option value="{$item['id']}" <if condition="$shop_id eq $item['id']">selected</if>  >{$item['name']}</option>
+                            </volist>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </notempty>
+		<div class="tabbable tabbable-tabdrop">
+			<ul class="nav nav-tabs">
+				<li <if condition="$category_id eq 0">class="active"</if> >
+					<a class="category_tab" href="#tab1" data-toggle="tab" data-category="0">全部</a>
+				</li>
+				<volist name="category_list" id="item">
+				<li <if condition="$category_id eq $item['id']">class="active"</if>>
+					<a class="category_tab" href="#tab1" data-toggle="tab" data-category="{$item['id']}">{$item['name']}</a>
+				</li>
+				</volist>
+
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="tab1">
+					<div class="table-scrollable table-scrollable-borderless">
+					<if condition="$shop_id eq 0 and $category_id neq 0">
+					<!-- <div class="alert bg-grey-cararra bg-font-grey-cararra font-red">*可拖动整行进行餐品排序</div> -->
+					</if>
+						<table id="list1" class="table table-striped table-hover table-light">
+							<thead>
+								<tr>
+									<th width="5%"> 顺序 </th>
+									<th width="10%"> 图片 </th>
+									<th width="10%"> 名称 </th>
+									<th width="5%"> 成本价 </th>
+									<th width="5%"> 售价 </th>
+									<th width="10%"> 上架时间 </th>
+									<th width="10%"> 标签 </th>
+									<if condition="$hasStore eq 1">
+										<notempty name="shop_id">
+											<th width="5%"> 库存 </th>
+										</notempty>
+									</if>
+									<if condition="$category_id neq 0">
+									<th width="10%"> 排序 </th>
+									</if>
+									<th width="20%"> 操作 </th>
+								</tr>
+							</thead>
+							<tbody>
+								<volist name="data['data']" id="item">
+								<tr data-sort="{$item['sort']}" data-category="{$item['category_id']}" data-id="{$item['id']}">
+									<td>{$item['sort']}</td>
+									<td><img src="{$Think.config.OSS_PATH}{$item['img']}" width="80" height="80" /></td>
+									<td>{$item['name']}</td>
+									<td>{$item['input_price']}</td>
+									<td>{$item['price']}</td>
+									<td>{$item['create_time']|date='Y-m-d',###}</td>
+
+									<td>{$item['tags']}</td>
+									<if condition="$hasStore eq 1">
+										<notempty name="shop_id">
+											<td><input type="text" value="{$item['store']}" onblur="changeStore(this,{$item['id']});" style="width:50px;"></td>
+										</notempty>
+									</if>
+									<if condition="$shop_id eq 0 and $category_id neq 0">
+									<td>
+										<a href="javascript:;" class="btn btn-xs " onclick="changeGoodsSort('up',{$item['id']})">上移</a>
+										<a href="javascript:;" class="btn btn-xs " onclick="changeGoodsSort('down',{$item['id']})">下移</a>
+									</td>
+									</if>
+									<if condition="$shop_id neq 0 and $category_id neq 0">
+									<td>
+										<a href="javascript:;" class="btn btn-xs " onclick="changeShopGoodsSort('up',{$item['id']})">上移</a>
+										<a href="javascript:;" class="btn btn-xs " onclick="changeShopGoodsSort('down',{$item['id']})">下移</a>
+									</td>
+									</if>
+									<td>
+										<empty name="shop_id">
+										<a href="__URL__/editGoods?id={$item['id']}" class="btn btn-sm yellow">编辑</a>
+										<a href="#" class="btn btn-sm red" onclick="subForm(this,'tform','__URL__/deleteGoods?id={$item.id}',1)">删除</a>
+										</empty>
+										<notempty name="shop_id">
+										<a href="__URL__/editShopGoods?id={$item['id']}&shop_id={$shop_id}&selected_category_id={$category_id}" class="btn btn-sm yellow">编辑</a>
+										<a href="javascript:;" class="btn btn-sm <if condition='$item.is_off eq 0'>blue<else />grey</if>" onclick="changeStatus({$item['id']},{$item['is_off']})"><if condition="$item['is_off'] eq 0">正常售卖中<else />暂停售卖中</if></a>
+										<a href="javascript:;" class="btn btn-sm <if condition='$item.is_display eq 1'>red<else />grey</if>" onclick="goodsDisply({$item['id']},{$item['is_display']})">  <if condition="$item['is_display'] eq 1">上架中<else />下架中</if></a>
+										</notempty>
+									</td>
+								</tr>
+								</volist>
+							</tbody>
+						</table>
+					</div>
+
+				</div>
+
+			</div>
+			<div class="megas512">
+            {$data['page']}
+        	</div>
+		</div>
+
+	</div>
+</div>
+<!-- <script>
+	function changeStatus(id,now_status){
+		$.post("__URL__/changeStatus",{id:id,now_status:now_status},function(res){
+			if(res.status == 'ok'){
+				location.reload();
+			}
+		},'json')
+	}
+</script> -->
+<!--本页依赖-->
+<script src="__PUBLIC__/Back/js/jquery.dragsort-0.5.2.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/counterup/jquery.waypoints.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/counterup/jquery.counterup.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-tabdrop/js/bootstrap-tabdrop.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/js/jquery.timeago.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript"></script>
+<!--本页依赖-->
+<script>
+    $(function() {
+        jQuery("abbr.timeago").timeago();
+        $(".bs-select").selectpicker({
+            iconBase: "fa",
+            tickIcon: "fa-check"
+        })
+
+        $(".category_tab").click(function(){
+        	var category = $(this).attr("data-category");
+        	var shop_id = "{$shop_id}";
+        	location.href = '__URL__/index?shop_id='+shop_id+'&category_id='+category;
+        })
+    })
+    function changeStatus(id,now_status){
+        $.post("__URL__/changeStatus",{id:id,now_status:now_status},function(res){
+            if(res.status == 'ok'){
+                location.reload();
+            }
+        },'json')
+    }
+
+    function goodsDisply(id,now_status){
+    	$.post("__URL__/goodsDisply",{id:id,now_status:now_status},function(res){
+    		if(res.status == 'ok'){
+                location.reload();
+            }
+    	},'json')
+    }
+
+	function changeStore(obj,id){
+		var val = $(obj).val();
+		var reg = new RegExp("^[0-9]*$");
+		if(!reg.test(val)){
+			alert("请输入数字!");
+			$(obj).val(0);
+			return;
+		}
+		var shop_id = "{$shop_id}";
+		$.post('__URL__/changeStore',{id:id,shop_id:shop_id,val:val},function () {
+
+		})
+	}
+
+	function changeGoodsSort(direction,id){
+		$.post('__URL__/changeGoodsSort',{id:id,direction:direction},function(res){
+			location.reload();
+		},'json')
+	}
+	function changeShopGoodsSort(direction,id){
+		$.post('__URL__/changeShopGoodsSort',{id:id,direction:direction},function(res){
+			location.reload();
+		},'json')
+	}
+</script>

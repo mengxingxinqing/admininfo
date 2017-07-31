@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>我的订单</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <script src="__PUBLIC__/Home/js/mui.min.js"></script>
+  <script src="https://lib.sinaapp.com/js/jquery/2.2.4/jquery-2.2.4.min.js" type="text/javascript" charset="utf-8"></script>
+  <link href="__PUBLIC__/Home/css/mui.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="__PUBLIC__/Home/css/framextend.css">
+  <link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css">
+  <link rel="stylesheet" href="__PUBLIC__/Home/css/common.css">
+</head>
+
+<body>
+<div class="mui-content">
+  <empty name="list">
+  <div style="position: fixed;left: 0;right: 0;top: 45%;text-align: center;color: #999;font-size: 18px;">
+    暂无订单
+  </div>
+  <else />
+  <foreach name="list" item="item">
+  <div class="mui-card">
+    <h4 class="mui-clearfix ordertit">
+      <div class="mui-pull-left">订单编号：{$item['sqnum']}</div>
+      <div class="mui-pull-right">
+          <if condition="$item['is_pay'] eq 0 && $item['pay_type'] eq 1"><span class="fontred">(微信未支付,下单失败)</span>
+              <elseif condition="$item['status'] eq 0"/>
+              <span class="fontred">未接单</span>
+              <elseif condition="$item['status'] eq 1"/>
+              <span class="fontred">已接单</span>
+              <elseif condition="$item['status'] eq 2"/>
+              <span class="fontred">配送中</span>
+              <elseif condition="$item['status'] eq 3"/>
+              <span class="fontred">订单已完成</span>
+              <elseif condition="$item['status'] eq 4"/>
+              <span class="fontgreen">已取消</span>
+          </if>
+      </div>
+    </h4>
+    <div class="orderdt">
+      <ul class="orderinfo">
+        <li>金额：<span class="fontred">￥{$item['pay_money']}</span></li>
+        <li>店家：{$item['shop_name']}</li>
+        <li>电话：<a href="tel:{$item['shop_tel']}" style="font-size:20px;"><u>{$item['shop_tel']}</u></a>
+        </li>
+        <li>下单时间：{$item['create_time']|date='Y-m-d H:i',###}</li>
+        <if condition="$item['is_pick'] eq 0">
+        <!-- <li>预计送达时间：{$item['reserve_time']|date='Y-m-d H:i',###}</li> -->
+        <else />
+        <li>自提时间：{$item['reserve_time']|date='Y-m-d H:i',###}</li>
+        <li>自提地点：{$item['pick_address']}</li>
+        </if>
+        </ul>
+      <table class="ordergoods" width="100%" border="0" cellspacing="0" cellpadding="0" style="display: none;">
+        <tbody>
+
+
+       
+
+        <foreach name="item['day']" item='d' key='k'>
+              
+        <tr class="weekfont">
+          <td colspan="4">
+            <div class="mui-pull-right">
+              <if condition="$d['order_info']['is_pay'] eq 0 && $d['order_info']['pay_type'] eq 1"><span class="fontred">(微信未支付,下单失败)</span>
+              <elseif condition="$d['order_info']['status'] eq 0"/>
+              <span class="fontred">未接单</span>
+              <elseif condition="$d['order_info']['status'] eq 1"/>
+              <span class="fontred">已接单</span>
+              <elseif condition="$d['order_info']['status'] eq 2"/>
+              <span class="fontred">配送中</span>
+              <elseif condition="$d['order_info']['status'] eq 3"/>
+              <span class="fontred">订单已完成</span>
+              <elseif condition="$d['order_info']['status'] eq 4"/>
+              <span class="fontgreen">已取消</span>
+              </if>
+            </div>
+            {$k|date='Y-m-d',###}
+          </td>
+        </tr>
+              <foreach name='d["detail_info"]' item='details'>
+              <tr>
+                <!-- <td width="15%"><img src="images/img/55b64f168b37a.jpg" alt="" /></td> -->
+                <td width="48%">{$details['goods_name']}</td>
+                <td width="16%" align="center">x <big>{$details['num']}</big></td>
+                <td width="21%" align="center">￥{$details['price']}</td>
+              </tr>
+              </foreach>
+        </foreach>
+
+        
+
+        <notempty name="item['bonus_money']">
+          <tr>
+          <td width="48%">红包</td>
+          <td width="16%"></td>
+          <td width="21%">-￥{$item['bonus_money']|sprintf='%.2f',###}</td>
+          </tr>
+        </notempty>
+
+        <volist name="item['activity']" id="t">
+          <tr>
+          <td width="48%">{$t['name']}</td>
+          <td width="16%"></td>
+          <td width="21%">
+            <notempty name="t['money']">
+            -￥{$t['money']|sprintf='%.2f',###}
+            </notempty>
+          </td>
+          </tr>
+        </volist>
+
+         <notempty name="item['send_money']">
+          <tr>
+          <td width="48%">配送费</td>
+          <td width="16%"></td>
+          <td width="21%">￥{$item['send_money']|sprintf='%.2f',###}</td>
+          </tr>
+        </notempty>
+
+        </tbody>
+      </table>
+      <p class="beizhu mb0">备注:{$item['user_remark']}</p>
+      <div class="showbtn">展开商品明细</div>
+    </div>
+  </div>
+  </foreach>
+  </empty>
+</div>
+<script type="text/javascript">
+  $('.ordergoods, .beizhu').hide();
+  $('.showbtn').on('tap',function(){
+    $(this).parent().find('.beizhu').toggle();
+    $(this).parent().find('.ordergoods').toggle();
+  });
+</script>
+<div style="display: none">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1257579543&web_id=1257579543" language="JavaScript"></script>
+</div>
+</body>
+ <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+ <script>
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：https://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，
+        appId: '{$signPackage.appId}',
+        timestamp: '{$signPackage.timestamp}',
+        nonceStr: '{$signPackage.nonceStr}',
+        signature: '{$signPackage.signature}',
+        jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
+    });
+    wx.ready(function () {
+        // 在这里调用 API
+        // 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
+        wx.onMenuShareTimeline({
+            title: '{$share_data.title}', // 分享标题
+            desc: "{$share_data.desc}", // 分享描述
+            link:"{$share_data.link}",
+            imgUrl: "{$share_data.imgUrl}" // 分享图标
+        });
+//                获取“分享给朋友”按钮点击状态及自定义分享内容接口
+        wx.onMenuShareAppMessage({
+            title: '{$share_data.title}', // 分享标题
+            desc: "{$share_data.desc}", // 分享描述
+            link:"{$share_data.link}",
+            imgUrl: "{$share_data.imgUrl}", // 分享图标
+            type: 'link' // 分享类型,music、video或link，不填默认为link
+        });
+    });
+</script>
+</html>

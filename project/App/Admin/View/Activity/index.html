@@ -1,0 +1,197 @@
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN SAMPLE TABLE PORTLET-->
+        <volist name="list" id="it">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-settings font-red"></i>
+                    <span class="caption-subject font-red sbold uppercase">{$it['name']}</span>
+                </div>
+                <div class="actions">
+                    <div class="btn-group btn-group-devided">
+                        <a href="__URL__/modifyActivity/m/{$it['add_method']}" data-target="#ajax" data-toggle="modal" class="btn btn-transparent red btn-sm">添加</a>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body noh">
+                <div class="table-scrollable">
+                    <table class="table table-hover table-light">
+                        <thead>
+                        <tr>
+                            <th> 当前活动 </th>
+                            <th> 适用门店 </th>
+                            <th>有效期限</th>
+                            <th>活动时间</th>
+                            <th> 操作 </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="it.aclist" id="ait">
+                        <tr>
+                            <td> {$ait['name']} </td>
+                            <td> {$ait['shop_names']} </td>
+                            <td>
+                                <notempty name="ait['activity_day']">
+                                {$ait['activity_day']}天
+                                <else />
+
+                                </notempty>
+                            </td>
+                            <td>
+                                <notempty name="ait['end_time']">
+                                {$ait['start_time']|date='Y/m/d',###} - {$ait['end_time']|date='Y/m/d',###}
+                                <else />
+                                一直
+                                </notempty>
+                            </td>
+                            <td>
+                                <button onclick='subForm(this,"","__URL__/stop/id/{$ait['id']}")' class="btn btn-info btn-sm">删除</button>
+                            </td>
+                        </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        </volist>
+
+
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-settings font-red"></i>
+                    <span class="caption-subject font-red sbold uppercase">商品活动价</span>
+                </div>
+                <div class="actions">
+                    <div class="btn-group btn-group-devided">
+                        <a href="__URL__/goodsDiscount/" data-target="#ajax" data-toggle="modal" class="btn btn-transparent red btn-sm">设置</a>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body noh">
+                <div class="table-scrollable">
+                    <table class="table table-hover table-light">
+                        <thead>
+                        <tr>
+                            <th> 当前活动 </th>
+                            <th> 适用门店 </th>
+                            <if condition="$isset_week eq 1">
+                            <th> 优惠数量 </th>
+                            </if>
+                            <th> 活动共享 </th>
+                            <th> 操作 </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr id="discount_tr">
+                            <td></td>
+                            <td></td>
+                            <td>
+                                
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                                
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-settings"></i>
+                    <span class="caption-subject sbold uppercase">活动历史</span>
+                </div>
+
+            </div>
+            <div class="portlet-body noh">
+                <div class="table-scrollable">
+                    <table class="table table-hover table-light">
+                        <thead>
+                        <tr>
+                            <th> 活动类型 </th>
+                            <th> 当前活动 </th>
+                            <th> 适用门店 </th>
+                            <th> 日期 </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="oldlist['data']" id="it">
+                        <tr>
+                            <td> {$it['type']} </td>
+                            <td> {$it['name']} </td>
+                            <td> {$it['shop_names']} </td>
+                            <td>{$it['start_time']|date='Y-m-d',###}至{$it['end_time']|date='Y-m-d',###}</td>
+                        </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="megas512">
+            {$oldlist['page']}
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!--弹出容器-->
+<div class="modal fade bs-modal-lg" id="ajax" role="basic" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img src="__PUBLIC__/Back/metronic/assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
+                <span> &nbsp;&nbsp;Loading... </span>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        $.get("__URL__/getGoodsDiscount","",function(res){
+            if(res){
+                var html = '';
+                html += '<td>商品活动价</td>';
+                html += '<td>'+res.shop_names+'</td>';
+                <if condition="$isset_week eq 1">
+                html += '<td>'+res.goods_discount_num+'</td>';
+                </if>
+                var share = '是';
+                if(res.share_with_other == 0){
+                    share = '否';
+                }
+                html += '<td>'+share+'</td>';
+
+                if(res.status == 0){
+
+                    html += '<td><button onclick="changeDiscountStatus(0)" class="btn btn-sm">关闭中</button></td>';
+
+                }else{
+
+                    html += '<td><button onclick="changeDiscountStatus(1)" class="btn btn-info btn-sm">进行中</button></td>';
+                }
+
+                $("#discount_tr").html(html);
+
+            }
+        },'json')
+    })
+    function changeDiscountStatus(now_status){
+        $.get("__URL__/changeDiscountStatus",{now_status:now_status},function(res){
+            if(res.msg == 'ok'){
+                location.reload();
+            }
+        },'json')
+    }
+</script>

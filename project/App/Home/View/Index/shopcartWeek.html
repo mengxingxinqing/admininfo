@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>购物车 </title>
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/weui.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/order.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/css.css" />
+	</head>
+
+	<body>
+		<div class="n-footer-bar shopcarpage on" style="height: 48px;">
+			<button class="orderbtn orderbtn_go">下单</button>
+			<div class="price">¥ <b id="totalmoney"></b> 元 </div>
+		</div>
+		<div class="n-pagebox" style="padding-bottom: 60px;">
+			<!--这里是居中文字-->
+			<!--<div style="position:fixed; top: 48%; left: 0; right: 0; text-align: center; color: #999;">购物车空</div>-->
+			<!--这里是居中文字-->
+		</div>
+
+		<script src="__PUBLIC__/Home/js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__PUBLIC__/Home/js/jquery.tap.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__PUBLIC__/Home/js/shopcart_week.js?v1" type="text/javascript" charset="utf-8"></script>
+
+	</body>
+	<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	<script>
+		wx.config({
+			debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，
+			appId: '{$share.signPackage.appId}',
+			timestamp: '{$share.signPackage.timestamp}',
+			nonceStr: '{$share.signPackage.nonceStr}',
+			signature: '{$share.signPackage.signature}',
+			jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
+		});
+		wx.ready(function () {
+			// 在这里调用 API
+			// 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
+			wx.onMenuShareTimeline({
+				title: '{$share.pyq.title}', // 分享标题
+				link:"{$share.pyq.link}",
+				imgUrl: "{$share.pyq.imgUrl}" // 分享图标
+			});
+//                获取“分享给朋友”按钮点击状态及自定义分享内容接口
+			wx.onMenuShareAppMessage({
+				title: '{$share.hy.title}', // 分享标题
+				desc: "{$share.hy.desc}", // 分享描述
+				link:"{$share.hy.link}",
+				imgUrl: "{$share.hy.imgUrl}", // 分享图标
+				type: 'link' // 分享类型,music、video或link，不填默认为link
+			});
+		});
+	</script>
+</html>

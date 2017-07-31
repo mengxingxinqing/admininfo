@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title></title>
+
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/mui.min.css" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/localsel.css"/>
+</head>
+<body>
+	<div class="localbox m10" id="list">
+		<h2>请选择您所在的区域</h2>
+
+		<ul class="localsellist">
+		<foreach name="list" item="val">
+			<li class="mui-col-xs-6 mui-pull-left">
+				<a href="__URL__/shopSelect?areas_id={$val.id}">{$val.name}</a>
+			</li>
+		</foreach>
+		</ul>
+	</div>
+</body>
+</html>

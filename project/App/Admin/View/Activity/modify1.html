@@ -1,0 +1,90 @@
+{__NOLAYOUT__}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <h4 class="modal-title">首单送红包活动</h4>
+</div>
+<div class="modal-body">
+    <div class="form">
+        <form method="post" id="form1" class="form-horizontal">
+            <div class="form-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">适用门店</label>
+                            <div class="col-md-9">
+                                <div class="checkbox-list hd-shopsel">
+
+                                    <label class="checkbox-inline">
+                                        <input class="allchk" type="checkbox"> 全部 </label>
+                                    <volist name="list" id="it">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" class="chk" value="{$it['id']}" data-name="{$it['name']}"> {$it['name']} </label>
+                                    </volist>
+                                </div>
+                                <!-- 每个活动都要有 -->
+                                <input type="hidden" name="shop_names" id="shop_names">
+                                <input type="hidden" name="shop_ids" id="shop_ids">
+                                <input type="hidden" name="m" value="{$m}">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/row-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">首单送红包</label>
+                            <div class="col-md-9">
+                                <input type="number" name="param1" class="form-control input-xsmall inline" min="0" placeholder="金额"> &nbsp;元 &nbsp;
+                                红包有效期 &nbsp;<input type="number" name="param2" class="form-control input-xsmall inline" min="0" placeholder="有效期"> &nbsp;天
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button onclick="subForm(this,'form1','__URL__/modifyActivity')" class="btn green">开始活动</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6"> </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    //全选复选框
+    $('.allchk').change(function() {
+        if ($(this).is(":checked")) {
+            $(".hd-shopsel input[type=checkbox]").prop("checked", true);
+            $(".hd-shopsel input[type=checkbox]").parent('span').addClass('checked');
+            getdata();
+        } else {
+            $(".hd-shopsel input[type=checkbox]").prop("checked", false);
+            $(".hd-shopsel input[type=checkbox]").parent('span').removeClass('checked')
+        }
+    });
+    $('.chk').change(function () {
+        getdata();
+    });
+
+    function getdata() {
+        var ids=',';
+        var names = '';
+        $('.chk').each(function () {
+            if($(this).is(":checked")){
+                ids += $(this).val()+",";
+                names += $(this).attr('data-name')+" ";
+            }
+        })
+        $('#shop_names').val(names);
+        $('#shop_ids').val(ids);
+    }
+</script>

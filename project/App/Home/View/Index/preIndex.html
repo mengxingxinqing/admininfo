@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>{$info['name']}</title>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/weui.min.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/jquery-weui.css" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/css.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/pre.css" />
+</head>
+
+<body>
+<notempty name="setting.banner">
+<div class="n-bannerplay">
+    <!--<a href="javascript:;" class="addrsel">中贸广场店⟩</a>-->
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <volist name="setting.banner" id="it">
+            <div class="swiper-slide"><img src="{$it.img}" /></div>
+            </volist>
+        </div>
+        <!-- Add Pagination -->
+        <div class="swiper-pagination"></div>
+    </div>
+</div>
+</notempty>
+<notempty name="setting.info.remark">
+<div class="proclaim">
+    <h2><i class="icon-proclaim"></i>{$setting.info.title}</h2>
+    <p>
+        {$setting.info.remark}
+    </p>
+</div>
+</notempty>
+<notempty name="setting.small">
+<div class="smimglink">
+    <div class="weui_grids">
+        <volist name="setting.small" id="it">
+        <a href="{$it.url}" class="weui_grid js_grid" data-id="button">
+            <img src="{$it.img}" alt="">
+        </a>
+        </volist>
+    </div>
+</div>
+</notempty>
+<notempty name="setting.big">
+<ul class="bigimglink"	>
+    <volist name="setting.big" id="it">
+    <li><a href="{$it.url}"><img src="{$it.img}"/></a></li>
+    </volist>
+
+</ul>
+</notempty>
+<div class="m15">
+    <button class="weui_btn weui_btn_primary" onclick="goIndex();">进店浏览</button>
+</div>
+<script src="https://lib.sinaapp.com/js/jquery/2.2.4/jquery-2.2.4.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Home/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Home/js/jquery-weui.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Home/js/swiper.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    $(function() {
+        FastClick.attach(document.body);
+        $(".swiper-container").swiper({
+            pagination: '.swiper-pagination',
+            paginationClickable: true,
+            spaceBetween: 30,
+            centeredSlides: true,
+            autoplay: 3000,
+            autoplayDisableOnInteraction: false
+        });
+
+    });
+
+    function goIndex(){
+        location.href = "{:U('Index/index')}";
+    }
+</script>
+</body>
+
+</html>

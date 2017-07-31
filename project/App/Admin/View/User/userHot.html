@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.3&key=1df154e733e82c81a76cb01b419b7740"></script>
+</head>
+<body>
+<div id="container" style="height: 600px;width: 800px"></div>
+</body>
+<script>
+    var heatmapData = '{$list["list"]}';
+    heatmapData = eval("("+heatmapData+")");
+    var map = new AMap.Map("container", {
+        resizeEnable: true,
+        center: [{$list['center']}],
+        zoom: 11
+    });
+    if (!isSupportCanvas()) {
+        alert('热力图仅对支持canvas的浏览器适用,您所使用的浏览器不能使用热力图功能,请换个浏览器试试~')
+    }
+    var heatmap;
+    map.plugin(["AMap.Heatmap"], function() {
+        //初始化heatmap对象
+        heatmap = new AMap.Heatmap(map, {
+            radius: 25, //给定半径
+            opacity: [0, 0.8]
+        });
+        //设置数据集：该数据为北京部分“公园”数据
+        heatmap.setDataSet({
+            data: heatmapData,
+            max: 100
+        });
+    });
+    //判断浏览区是否支持canvas
+    function isSupportCanvas() {
+        var elem = document.createElement('canvas');
+        return !!(elem.getContext && elem.getContext('2d'));
+    }
+</script>
+
+</html>

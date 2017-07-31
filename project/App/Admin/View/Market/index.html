@@ -1,0 +1,249 @@
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN SAMPLE TABLE PORTLET-->
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-list font-red"></i>
+                    <span class="caption-subject font-red uppercase">邀请活动</span>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="well">
+                    <p>{$info['open_time']|date="Y年m月d日",###}至今：
+                        <br />
+                        总用户数:
+                        <big class="font-red">
+                            <span>{$invite['user_num']}</span>人
+                        </big>
+                        <br />
+                        发起邀请的人数：
+                        <big class="font-red">
+                            <span>{$invite['num1']}</span>人
+                        </big>发起邀请的人数占总用户数的比例：
+                        <big class="font-red">
+                            <span>{$invite['num2']|sprintf='%.2f',###}%</span>
+                        </big>
+                        <br />
+                        被邀请来的人数：
+                        <big class="font-red">
+                            <span>{$invite['num3']}</span>人
+                        </big> 新用户占比：
+                        <big class="font-red">
+                            <span>{$invite['num4']|sprintf='%.2f',###}%({$invite['num5']}/{$invite['num6']}) </span>
+                        </big>
+                        <br />
+                        邀请红包总计发出
+                        <big class="font-red">
+                            <span>{$invite['num7']}个({$invite['num8']}元)</span>
+                        </big>，实际使用
+                        <big class="font-red">
+                            <span>{$invite['num9']}</span>个({$invite['num10']}元)
+                        </big>
+                    </p>
+                    <if condition="$info['is_open'] eq 0">
+                    <h3 class="block" style="text-align:center;color:#97b1c3; margin-bottom:0;padding-bottom:0">邀请活动已暂停</h3>
+                    </if>
+                </div>
+                <form action="#" class="form-horizontal">
+
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <if condition="$info['is_open'] eq 1">
+                                <a class="btn btn-warning" href="__URL__/setting">修改</a>
+                                <button class="btn btn-danger" type="button" onclick="stopMarket(this);">停止活动</button>
+                                <else/>
+                                <a class="btn green" href="__URL__/setting">开启活动</a>
+                            </if>
+
+                        </div>
+                    </div>
+                    <div class="form-body">
+                        <h3 class="form-section">1.邀请活动规则</h3>
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">邀请者获取红包条件</label>
+                                    <div class="col-md-6 form-control-static">
+                                        <if condition="$info['get_type'] eq 0">
+                                            好友关注既得
+                                            <elseif condition="$info['get_type'] eq 1"/>满足距离条件
+                                            <elseif condition="$info['get_type'] eq 2"/>好友关注并下单得
+                                        </if>
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <if condition="$info['get_type'] eq 1">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">邀请范围</label>
+                                    <div class="col-md-6 form-control-static">
+                                        <if condition="$info['range_type'] eq 0">
+                                        周边<span>{$info['get_range']}</span>公里
+                                            <else/>本市内都可用
+                                        </if>
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </if>
+
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">邀请红包</label>
+                                    <div class="col-md-9 form-control-static">
+                                        金额<span>{$info['money']}</span>元 有效期
+                                        <span>{$info['active_time']}</span>天
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 class="form-section">2.邀请文字</h3>
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <h5>分享微信好友</h5>
+                                <div class="sherecard friendemo">
+                                    <empty name="info.title1">
+                                        <h5>请在右侧输入标题</h5>
+                                        <else/>
+                                        <h5>{$info['title1']}</h5>
+                                    </empty>
+                                    <div class="cardcont">
+                                        <empty name="info.img1">
+                                        <img src="__PUBLIC__/Back/metronic/img/noimage.jpg" alt="" />
+                                            <else/>
+                                            <img src="{$info['img1']}" alt="" />
+                                        </empty>
+                                        <empty name="info.content1">
+                                        <p>请在右侧输入内容</p>
+                                            <else/>
+                                            <p>{$info['content1']}</p>
+                                        </empty>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>分享朋友圈</h5>
+                                <div class="sherecard friends momentdemo">
+                                    <div class="cardcont">
+                                        <empty name="info.img1">
+                                        <img src="__PUBLIC__/Back/metronic/img/noimage.jpg" alt="" />
+                                            <else/>
+                                            <img src="{$info['img2']}" alt="" />
+                                            </empty>
+                                        <empty name="info.title2">
+                                        <p>请在右侧输入标题</p>
+                                            <else/>
+                                            <p>{$info['title2']}</p>
+                                        </empty>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <h3 id="p1" class="form-section">3.好友所见邀请页</h3>
+                        <div class="row">
+                            <div class="col-md-6" style="overflow: auto;">
+                                <div class="invitedemo" <notempty name="info.img4"> style='background-image:url("{$info['img4']}") ' </notempty>>
+                                    <div class="demoheader">
+                                        <img src="__PUBLIC__/Back/metronic/img/header5.png" />
+                                    </div>
+                                    <div class="democontent">
+                                        <div class="userinfo">
+                                            <img class="headimg" src="__PUBLIC__/Back/metronic/img/0.jpg" alt="" />
+                                            <h5><span>XXX</span>给您推荐～</h5>
+
+                                        </div>
+                                        <div class="inimgbox">
+                                            <empty name="info.img3">
+                                            <img src="__PUBLIC__/Back/metronic/img/noimage2.jpg" alt="" />
+                                                <else/>
+                                                <img src="{$info['img3']}" alt="" />
+                                            </empty>
+                                            <div class="shadow"></div>
+                                        </div>
+
+                                        <div class="contentpv">
+                                            <empty name="info.content3">
+                                            请在右侧输入内容
+                                                <else/>
+                                                {$info['content3']}
+                                            </empty>
+                                        </div>
+                                        <div class="qrcode">
+                                            <img src="__PUBLIC__/qrcode/qrcode.jpg" alt="" />
+                                        </div>
+                                        <div class="shopname">长按二维码识别关注<span>{$pinfo['name']}</span></div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-settings"></i>
+                    <span class="caption-subject sbold uppercase">活动历史</span>
+                </div>
+            </div>
+            <div class="portlet-body noh">
+                <div class="table-scrollable">
+                    <table class="table table-hover table-light">
+                        <thead>
+                        <tr>
+                            <th width="40%"> 日期 </th>
+                            <th width="20%"> 邀请人数 </th>
+                            <th width="20%"> 被邀请人数 </th>
+                            <th width="20%"> 操作 </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="market_log['data']" id="it">
+                        <tr>
+                            <td> {$it['start_time']|date='Y-m-d',###}至{$it['end_time']|date='Y-m-d',###} </td>
+                            <td> {$it['send_bonus_num']} </td>
+                            <td> {$it['get_num']} </td>
+                            <td>
+                                <button type="button" class="btn btn-warning green-jungle" onclick="exportData({$it['id']})" style="margin-right: 15px;">导出</button>
+                            </td>
+                        </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="megas512">
+            {$market_log['page']}
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function stopMarket(obj) {
+        if(!confirm("是否停止邀请活动？"))
+        {
+            return;
+        }
+        $(obj).attr("disabled", true);
+        $.post("__URL__/stop",{},function (data) {
+            subComplete(data)
+        });
+    }
+
+    function exportData(id){
+        location.href = '__URL__/exportData?id='+id;
+    }
+</script>

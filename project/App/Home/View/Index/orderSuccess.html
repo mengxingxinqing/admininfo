@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>订单成功 </title>
+		<link rel="stylesheet" href="/Public/Home/css/weui.min.css" />
+		<link rel="stylesheet" href="/Public/Home/css/iconfont.css" />
+		<link rel="stylesheet" href="/Public/Home/css/order.css" />
+		<link rel="stylesheet" href="/Public/Home/css/css.css" />
+		<link href="__PUBLIC__/Home/css/mui.min.css" rel="stylesheet" />
+
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css" />
+    	<link rel="stylesheet" href="__PUBLIC__/Home/css/common.css" />
+		<script src="__PUBLIC__/Home/js/mui.min.js"></script>
+		<script src="https://lib.sinaapp.com/js/jquery/2.2.4/jquery-2.2.4.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<h3 class="titlebig" style="margin-top: 100px;">
+    	<i class="iconfont icon-wancheng"></i> 订单提交成功！
+    </h3>
+		<div class=" n-card">
+			<div class="m10 timealert" style="font-size:18px">
+			<if condition="$order_info['is_pick'] eq 0">预计送达时间：<else />自提时间：</if>{$order_info['reserve_time']|date='Y-m-d H:i',###}
+			</div>
+			<div class="m10 timealert" style="font-size:18px">
+			<if condition="$order_info['is_pick'] eq 1">自提地点：{$order_info['pick_address']}
+			</if>
+			</div>
+		</div>
+		<div class="m10">
+			<notempty name="money">
+			<a class="weui_btn weui_btn_warn invite-btn" href="#">
+			点击分享，再得{$money}元红包
+			</a>
+			</notempty>
+		</div>
+		<div class="m10" style="text-align: center;">
+			<!--我们在『{$shop_info['address']}』，欢迎到店选购 ^ω^-->
+		</div>
+
+		<div class="zhuanfatext pos">
+      		<img src="__PUBLIC__/Home/images/zhuanfatext.png">
+    	</div>
+
+    	<script>
+	      var mask = mui.createMask(function(){
+	          $('.zhuanfatext').hide();
+	      });
+	      
+	      $('.weui_btn_primary').on('tap',function(){
+	          $('.zhuanfatext').show();
+	          mask.show();//显示遮罩
+	          addstatics();
+	      });
+
+	      var base_id = "{$base_id}";
+	      function addstatics(){
+	        $.get('__URL__/getStatics',{'sharetype':'shopping'});
+	      }
+	      $(function(){
+
+	        $('a').each(function(){
+	            var href = $(this).attr('href');
+	            href = href+'?'+Math.random();
+	            $(this).attr('href',href);
+	        });
+	      });
+	    </script>
+	</body>
+	<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+  	<script>
+		wx.config({
+			debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，
+			appId: '{$share.signPackage.appId}',
+			timestamp: '{$share.signPackage.timestamp}',
+			nonceStr: '{$share.signPackage.nonceStr}',
+			signature: '{$share.signPackage.signature}',
+			jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
+		});
+		wx.ready(function () {
+			// 在这里调用 API
+			// 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
+			wx.onMenuShareTimeline({
+				title: '{$share.pyq.title}', // 分享标题
+				link:"{$share.pyq.link}",
+				imgUrl: "{$share.pyq.imgUrl}" // 分享图标
+			});
+			// 获取“分享给朋友”按钮点击状态及自定义分享内容接口
+			wx.onMenuShareAppMessage({
+				title: '{$share.hy.title}', // 分享标题
+				desc: "{$share.hy.desc}", // 分享描述
+				link:"{$share.hy.link}",
+				imgUrl: "{$share.hy.imgUrl}", // 分享图标
+				type: 'link' // 分享类型,music、video或link，不填默认为link
+			});
+		});
+    </script>
+    <script type="text/javascript">
+		(function() {
+			$('.invite-btn').on('click', function() {
+				$('body').append('<div class="n-mask"><div class="invitetext"></div></div>');
+				return false;
+			})
+			$(document).on('click', function() {
+				$('.n-mask').remove();
+			})
+		})();
+	</script>
+</html>

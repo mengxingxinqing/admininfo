@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<title>订单详情</title>
+		<link rel="stylesheet" href="__Public__/Home/css/weui.min.css" />
+		<link rel="stylesheet" href="__Public__/Home/css/jquery-weui.css" />
+		<link rel="stylesheet" href="__Public__/Home/css/iconfont.css" />
+		<link rel="stylesheet" href="__Public__/Home/css/css.css?v2" />
+		<link rel="stylesheet" href="__Public__/Home/css/order.css" />
+	</head>
+
+	<body>
+		<!--<header class="n-nav-bar">
+<button class="n-header-link n-pull-left"><span class="backicon"></span>返回</button>
+<h1 class="n-title">十分便利</h1>
+</header>-->
+		<div class="n-pagebox">
+			<form id="myform" name="myform" method="post" action="/index.php/Home/Index/saveOrder" class="mui-input-group">
+			<div class="n-card">
+				<div class="weui_cell">
+					<div class="weui_cell_hd">
+						<label class="weui_label">称呼</label>
+					</div>
+					<div class="weui_cell_bd weui_cell_primary">
+						<input class="weui_input" id="name" name="name" type="text" value="{$address['name']}" placeholder="请输入您的称呼" onkeyup="changeAddress()">
+					</div>
+				</div>
+				<div class="weui_cell">
+					<div class="weui_cell_hd">
+						<label class="weui_label">电话</label>
+					</div>
+					<div class="weui_cell_bd weui_cell_primary">
+						<input class="weui_input" type="text" id="tel" name="tel" value="{$address['tel']}" placeholder="请输入您的电话号码" onkeyup="changeAddress()">
+					</div>
+				</div>
+				<div class="weui_cell">
+					<div class="weui_cell_hd">
+						<label class="weui_label">地址</label>
+					</div>
+					<div class="weui_cell_hd mr5">{$shop_address}</div>
+					<div class="weui_cell_bd weui_cell_primary">
+						<input class="weui_input" id="address" name="address" type="text" value="{$address['address']}" placeholder="{$placeholder}" onkeyup="changeAddress()">
+					</div>
+				</div>
+				<input type="hidden" name="bonus_id" id="bonus_id" value="{$bonusinfo['id']}">
+				<input type="hidden" name="bonus_partner" id="bonus_partner" value="{$bonusinfo['pid']}">
+				<input type="hidden" name="real_price" id="real_price" value="{$total_money-$bonusinfo['money']}">
+				<input type="hidden" name="remark" id="attrs" value="">
+				<input type="hidden" name="total_money" id="total_money" value="{$total_money}">
+				<input type="hidden" name="userremark" id="userremark">
+				<input type="hidden" name="activity_id" id="activity_id">
+				<empty name="address">
+					<input type="hidden" name="addresschange" id="addresschange" value="0">
+				</empty>
+				<notempty name="address">
+					<input type="hidden" name="addresschange" id="addresschange" value="1">
+				</notempty>
+			</div>
+			<volist name="info" id="vo">
+			<div class="n-card orderbox">
+				<h5>{$vo['shop_info']['partner_name']}</h5>
+				<dl>
+					<dt> <span class="td1">品名</span> <span class="td2">单价</span> <span class="td3">数量</span> <span class="td4">单品总价</span> </dt>
+					<volist name="vo['goods_info']" id="sub">
+					<dd> <span class="td1 mui-ellipsis">{$sub['name']}</span> <span class="td2">￥{$sub['price']}</span> <span class="td3">x{$sub['num']}</span> <span class="td4">￥{$sub['total_money']}</span> </dd>
+					</volist>
+				</dl>
+				<div class="priceall" id="infolist{$vo['shop_info']['partner_id']}">
+					<if condition="$bonusinfo['money'] gt 0">
+					<div class="pricedec">
+						<div class="price n-pull-right">
+							<span>-<span>￥{$bonusinfo['money']}</span></span>
+						</div>
+						<div class="bonustext"><span>{$bonusinfo['money']}</span>元红包</div>
+					</div>
+					</if>
+
+					<div class="pricedec res">
+						<div class="price n-pull-right " data-val="{$vo['shop_info']['total_money']}">
+							<if condition="$bonusinfo['money'] gt 0"><span>(原价:<s>￥{$vo['shop_info']['total_money']}</s>)</span><else/>
+								<span style="display: none" id="yuanjia_{$vo['shop_info']['partner_id']}">(原价:<s>￥{$vo['shop_info']['total_money']}</s>)</span>
+							</if>
+							<span class="bonustext">￥<span id="total_{$vo['shop_info']['partner_id']}">{$vo['shop_info']['total_money']-$bonusinfo['money']}</span>元 </span>
+						</div>
+						<div style="font-size: 16px;">现价</div>
+					</div>
+				</div>
+
+			</div>
+			</volist>
+			<notempty name="goods_attrs">
+			<div class="n-card orderbox">
+				<div class="orderbox">
+					<dl>
+						<dt>请选择规格：</dt>
+					</dl>
+					<ul class="typesle">
+						<volist  name="goods_attrs" id="gt" >
+						<li data-id="{$gt['id']}" data-name="{$gt['name']}">{$gt['name']}
+							<div class="btnsel mui-pull-right">
+								<foreach name="gt['attrs']" item="attr" key="k">
+									<a href="javascript:;" data-val="{$attr}"
+									<if condition="$k eq 0">class="on"</if>
+									>{$attr}</a>
+								</foreach>
+							</div>
+						</li>
+						</volist>
+					</ul>
+					<div id="hideval" style="display: none;"></div>
+				</div>
+			</div>
+			</notempty>
+			<div class="n-card">
+				<div class="priceall" style="border: none;">
+
+                        <div class="pricenum">
+
+                            <div class="price n-pull-right">
+                                支付金额：￥<span id="res_total">{$total_money-$bonusinfo['money']}</span>
+                            </div>
+                        </div>
+
+                    </div>
+				
+			</div>
+			<h5 class="h5tit">备注</h5>
+			<div class="n-card">
+				<div class="weui_cell" style="padding: 10px 15px; height: auto;">
+					<div class="weui_cell_bd weui_cell_primary">
+						<textarea class="weui_textarea" name="userremark" id="remarktext" placeholder="请输入您的具体要求" rows="2"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="beizhutag" style="display:none">
+				<span>常温</span>
+				<span>冰镇</span>
+				<span>不辣</span>
+				<span>特辣</span>
+				<span>多醋</span>
+				<span>不要葱</span>
+				<span>不要香菜</span>
+				<span>不要海带</span>
+			</div>
+			<h5 class="h5tit">送达时间</h5>
+			<div class="n-card">
+				<if condition="$timeselect['reserve'] eq 0">
+				<div class="weui_cell weui_cell_select weui_select_after">
+					<div class="weui_cell_bd weui_cell_primary">
+						{$timeselect['html']}
+					</div>
+				</div>
+					<else/>
+					<div class="weui_cell weui_cell_select weui_select_after">
+						<div class="weui_cell_bd weui_cell_primary">
+							<input type="text" value="" class="weui_input open-popup" data-target="#select-time" placeholder="请选择送达时间" readonly="readonly" />
+							<input type="hidden" id="reserve_time" name="reserve_time">
+						</div>
+					</div>
+				</if>
+			</div>
+			<h5 class="h5tit">请选择支付方式</h5>
+			<div class="n-card">
+				<div class="weui_cells weui_cells_radio zhifu">
+					<if condition="$isopenwx eq 1">
+						<label class="weui_cell weui_check_label" for="weixin" id="pay1" style="background-color:#02B9C2; color:#fff">
+							<div class="weui_cell_bd weui_cell_primary">
+								<p> 微信支付 </p>
+							</div>
+							<div class="weui_cell_ft">
+								<input type="radio" name="pay_type" value="微信支付" checked="checked" class="weui_check" id="weixin">
+								<span class="weui_icon_checked"></span> </div>
+						</label>
+						<label class="weui_cell weui_check_label" for="xianxia" id="pay2">
+							<div class="weui_cell_bd weui_cell_primary">
+								<p> 货到付款 </p>
+							</div>
+							<div class="weui_cell_ft">
+								<input type="radio" class="weui_check" value="线下支付" name="pay_type" id="xianxia">
+								<span class="weui_icon_checked"></span> </div>
+						</label>
+						<else/>
+						<label class="weui_cell weui_check_label" for="xianxia" id="pay2" style="background-color:#02B9C2; color:#fff">
+							<div class="weui_cell_bd weui_cell_primary">
+								<p> 货到付款 </p>
+							</div>
+							<div class="weui_cell_ft">
+								<input type="radio" class="weui_check" value="线下支付" checked="checked" name="pay_type" id="xianxia">
+								<span class="weui_icon_checked"></span> </div>
+						</label>
+					</if>
+
+
+				</div>
+			</div>
+			<div class="m15">
+				<a href="javascript:;" style="display: none;" class="weui_btn weui_btn_primary"  id="saveorder" onclick="return submyformpost(this);">确认</a>
+			</div>
+			</form>
+			<div style="padding-bottom: 20px;"></div>
+		</div>
+
+		<div id="select-time" class='weui-popup-container popup-bottom'>
+			<div class="weui-popup-overlay"></div>
+			<div class="weui-popup-modal">
+				<div class="toolbar">
+					<div class="toolbar-inner">
+						<a href="javascript:;" class="picker-button close-popup">关闭</a>
+						<h1 class="title">请选择送达时间</h1>
+					</div>
+				</div>
+				<div class="modal-content">
+					<div class="n-time-selec-tbox">
+						<div class="left-time">
+							<ul>
+								<li>周三（明天）</li>
+								<li class="on">周四（后天）</li>
+								<li>周五</li>
+								<li>周六</li>
+								<li>周日</li>
+							</ul>
+						</div>
+						<div class="right-time">
+							<ul>
+								<li>11:30</li>
+								<li>11:40</li>
+								<li>11:50</li>
+								<li>12:00</li>
+								<li>12:10</li>
+								<li>12:20</li>
+								<li>12:10</li>
+								<li>12:30</li>
+								<li>12:40</li>
+								<li>12:50</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="https://lib.sinaapp.com/js/jquery/2.2.4/jquery-2.2.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/Public/Home/js/jquery-weui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/Public/Home/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/Public/Home/js/order.js?v0.5" type="text/javascript" charset="utf-8"></script>
+
+		<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+		<script>
+			wx.config({
+				debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，
+				appId: '{$share.signPackage.appId}',
+				timestamp: '{$share.signPackage.timestamp}',
+				nonceStr: '{$share.signPackage.nonceStr}',
+				signature: '{$share.signPackage.signature}',
+				jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
+			});
+			wx.ready(function () {
+				// 在这里调用 API
+				// 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
+				wx.onMenuShareTimeline({
+					title: '{$share.pyq.title}', // 分享标题
+					link:"{$share.pyq.link}",
+					imgUrl: "{$share.pyq.imgUrl}" // 分享图标
+				});
+//                获取“分享给朋友”按钮点击状态及自定义分享内容接口
+				wx.onMenuShareAppMessage({
+					title: '{$share.hy.title}', // 分享标题
+					desc: "{$share.hy.desc}", // 分享描述
+					link:"{$share.hy.link}",
+					imgUrl: "{$share.hy.imgUrl}", // 分享图标
+					type: 'link' // 分享类型,music、video或link，不填默认为link
+				});
+			});
+		</script>
+	</body>
+
+</html>

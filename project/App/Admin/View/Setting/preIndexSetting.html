@@ -1,0 +1,259 @@
+<div class="portlet light bordered">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa fa-plus font-red"></i>
+            <span class="caption-subject font-red uppercase">首页展示设置</span>
+        </div>
+        <div class="actions">
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <form class="form-horizontal" id="tform" method="post" enctype="multipart/form-data">
+            <div class="form-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div>
+                            <img class="bigimgbz hide" src="__PUBLIC__/Back/img/imgmark-b.png" width="100%" />
+                            <img class="smimgbz" src="__PUBLIC__/Back/img/imgmark.png" width="100%" />
+                        </div>
+                    </div>
+                    <!--/span-->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <h3 class="form-section font-lg">轮播图</h3>
+                            <label class="control-label col-md-2"></label>
+                            <div class="col-md-9">
+                                <span class="help-block font-red">最多设置3张，3张图片尺寸请保持一致。不需要显示，不设置即可。<br />建议尺寸750px x 400px</span>
+                            </div>
+                            <label class="control-label col-md-2">图1</label>
+                            <div class="col-md-9">
+                                <input type="file" name="banner-1" class="form-control" placeholder="">
+                                <span class="help-block"></span>
+                            </div>
+                            <label class="control-label col-md-2">图2</label>
+                            <div class="col-md-9">
+                                <input type="file" name="banner-2" class="form-control" placeholder="">
+                                <span class="help-block"></span>
+                            </div>
+                            <label class="control-label col-md-2">图3</label>
+                            <div class="col-md-9">
+                                <input type="file" name="banner-3" class="form-control" placeholder="">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <h3 class="form-section font-lg">公告信息</h3>
+                            <label class="control-label col-md-3"></label>
+                            <div class="col-md-9">
+                                <span class="help-block font-red">不需要显示，不填写即可</span>
+                            </div>
+                            <div class="row">
+                                <label class="control-label col-md-3">公告标题</label>
+                                <div class="col-md-8">
+                                    <input type="text" name="title" class="form-control" placeholder="请填写标题" value="{$info.title}">
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="control-label col-md-3">公告内容</label>
+                                <div class="col-md-8">
+                                    <textarea class="form-control" name="remark" rows="3">{$info.remark}</textarea>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="form-section font-lg">图片链接</h3>
+                        <div class="radio-list col-md-offset-1 imglinktab">
+                            <label class="radio-inline">
+                                <input type="radio" name="isbig" class="smimgrd" value="0" <empty name="info.is_big">checked</empty> > 小图链接 </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="isbig" class="bigimgrd" value="1" <if condition="$info.is_big eq 1">checked</if> > 大图链接 </label>
+                        </div>
+                        <div class="smimgmd">
+                            <label class="control-label col-md-1"></label>
+                            <div class="col-md-9">
+                                <span class="help-block font-red">最多添加12个，可跳转到相应分类，请保持所有图片尺寸一致。不需要显示，不设置即可。<br />推荐240px x 120px。</span>
+                            </div>
+                            <div class="smimgitem">
+                                <volist name="smalllist" id="it" key ="k">
+                                <div class="row">
+                                    <div class="col-md-2 col-md-offset-1 linkprimg">
+                                        <empty name="it.img">
+                                        <img src="__PUBLIC__/Back/img/smimglink.png" alt="" />
+                                            <else/>
+                                            <img src="{$it.img}" alt="" />
+                                        </empty>
+                                    </div>
+                                    <div class="col-md-3 imglinkset">
+                                        <input type="file" name="small-{$k}" class="form-control" placeholder="">
+                                        <span class="help-block"></span>
+                                    </div>
+                                    <div class="col-md-1 control-label">
+                                        跳转到
+                                    </div>
+                                    <div class="col-md-3 linkviset">
+                                        <input type="hidden" name="smallurl-{$k}" value="{$it.url}" />
+                                        <select name="" class="form-control">
+                                            <option value="">请选择…</option>
+                                            <volist name="urls" id="url">
+                                            <option value="{$url.url}">{$url.name}</option>
+                                            </volist>
+                                        </select>
+                                        <span class="help-block"></span>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button type="button" class="btn btn-default btn-sm" onclick="delimg(this,{$it.id})">删除</button>
+                                    </div>
+                                </div>
+                                </volist>
+
+
+                            </div>
+                        </div>
+                        <div class="bigimgmd hide">
+                            <label class="control-label col-md-1"></label>
+                            <div class="col-md-11">
+                                <span class="help-block font-red">最多添加6个大图，可跳转到相应分类。不需要显示，不设置即可。<br />建议尺寸为750x500及以上，大小建议尽量控制在200KB以内，不要超过1M。</span>
+                            </div>
+                            <div class="bigimgitem">
+                                <volist name="biglist" id="it" key ="k">
+                                <div class="row">
+                                    <div class="col-md-1 col-md-offset-1 linkprbigimg">
+                                        <empty name="it.img">
+                                            <img src="__PUBLIC__/Back/img/bigimglink.png" alt="" />
+                                            <else/>
+                                            <img src="{$it.img}" alt="" />
+                                        </empty>
+                                    </div>
+                                    <div class="col-md-3 bigimglinkset">
+                                        <input type="file" name="big-{$k}" class="form-control" placeholder="">
+                                        <span class="help-block"></span>
+                                    </div>
+                                    <div class="col-md-1 control-label">
+                                        跳转到
+                                    </div>
+                                    <div class="col-md-3 linkviset">
+                                        <input type="hidden" name="bigurl-{$k}" value="{$it.url}" />
+                                        <select name="" class="form-control">
+                                            <option value="">请选择…</option>
+                                            <volist name="urls" id="url">
+                                                <option value="{$url.url}">{$url.name}</option>
+                                            </volist>
+                                        </select>
+                                        <span class="help-block"></span>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button type="button" class="btn btn-default btn-sm" onclick="delimg(this,{$it.id})">删除</button>
+                                    </div>
+                                </div>
+                                </volist>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <button type="submit" class="btn green savebtn">保存</button>
+                    </div>
+                    <div class="col-md-6"> </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        var is_big = "{$info.is_big}";
+        if(is_big == "1"){
+
+            $('.smimgmd, .smimgbz').addClass('hide');
+            $('.bigimgmd, .bigimgbz').removeClass('hide');
+        }
+        //读取val小图链接
+        var selectVal = $('.smimgmd .linkviset select option');
+        selectVal.each(function() {
+            if($(this).val() == $(this).parent().prev().val()) {
+                $(this).prop('selected', 'selected');
+                return;
+            }
+        });
+        //读取val大图链接
+        var selectValb = $('.bigimgitem .linkviset select option');
+        selectValb.each(function() {
+            if($(this).val() == $(this).parent().prev().val()) {
+                $(this).prop('selected', 'selected');
+                return;
+            }
+        });
+
+        //获取select
+        $(".smimgmd").on('change', '.linkviset select', function() {
+            $(this).prev().val($(this).val());
+
+        });
+        //获取select大图链接
+        $(".bigimgitem").on('change', '.linkviset select', function() {
+            $(this).prev().val($(this).val());
+        });
+
+
+        //图片链接类型切换
+        $('.imglinktab .smimgrd').on('change', function() {
+            $('.bigimgmd, .bigimgbz').addClass('hide');
+            $('.smimgmd, .smimgbz').removeClass('hide');
+        });
+        $('.imglinktab .bigimgrd').on('change', function() {
+            $('.smimgmd, .smimgbz').addClass('hide');
+            $('.bigimgmd, .bigimgbz').removeClass('hide');
+        });
+
+        //上传图片预览
+        $('.smimgmd').on('change', '.imglinkset input', function() {
+            getImg($(this).parent('.imglinkset').prevAll('.linkprimg').find('img'), this);
+        })
+        //上传图片预览
+        $('.bigimgmd').on('change', '.bigimglinkset input', function() {
+            getImg($(this).parent('.bigimglinkset').prevAll('.linkprbigimg').find('img'), this);
+        })
+    })
+
+    //本地预览图片
+    function getImg(fileupclass, obj) {
+        var objUrl = getObjectURL(obj.files[0]);
+        console.log("objUrl = " + objUrl);
+        if(objUrl) {
+            fileupclass.attr("src", objUrl);
+        }
+    }
+    //建立一個可存取到該file的url
+    function getObjectURL(file) {
+        var url = null;
+        if(window.createObjectURL != undefined) { // basic
+            url = window.createObjectURL(file);
+        } else if(window.URL != undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file);
+        } else if(window.webkitURL != undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file);
+        }
+        return url;
+    }
+
+    function delimg(obj,id){
+        $.post('__URL__/delimg',{id:id},function (data) {
+            $(obj).parents('.row').find('img').prop('src','__PUBLIC__/Back/img/bigimglink.png');
+            $(obj).parents('.row').find('select option:first').prop('selected','selected');
+            $(obj).parents('.row').find('.linkviset input').prop('val','');
+        })
+    }
+</script>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>十分便利</title>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/weui.min.css" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/css.css" />
+    <style type="text/css">
+        .loading {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 999;
+            background: url(__PUBLIC__/Home/img/loading.gif) center center no-repeat #fff;
+            -webkit-background-size: 100px auto;
+            background-size: 100px auto;
+            text-align: center;
+        }
+
+        .loading.on {
+            -webkit-transition: .5s;
+            transition: .5s;
+            -webkit-transform: translateY(-100%);
+            transform: translateY(-100%);
+        }
+
+        .loading span {
+            position: relative;
+            top: 40%;
+            color: #02B9C2;
+            font-size: 22px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="loading">
+    <span>十分便利</span>
+</div>
+<div class="page">
+    <header class="n-nav-bar">
+        <button class="n-header-link n-pull-left" onclick="location.href='/index.php/Home/SelectShop/selectAreas';">切换<span class="selecticon"></span></button>
+        <!--<h1 class="n-title">十分便利</h1>-->
+        <div class="n-header-tab">
+            <a href="/index.php/Home/Index/index" >十分便利</a>
+            <a href="javascript:;" class="active">合作商户</a>
+        </div>
+    </header>
+    <!--<div class="n-banner-header banner1">
+        <h3>小店打样咯！欢迎明天再来哦！</h3>
+        <p>营业时间：09:00 - 18:30</p>
+    </div>-->
+    <div class="n-footer-bar">
+        <div class="shopcar">
+            <a href="/index.php/Home/Index/shopcart" class=""> <i class="iconfont icon-gouwuche"></i>
+                <div class="numdot" id="sc_num">0</div>
+            </a>
+        </div>
+        <a href="/index.php/Home/Index/checkShopCart" class="orderbtn">下单</a>
+        <div class="price">¥<b id="sc_money">0</b>元 <span id="base_price_show" style="display: none;"><span class="fontreds" id="base_price"></span>元起送</span>
+        </div>
+    </div>
+    <div class="n-fullpagebox">
+        <div class="n-leftmenu">
+
+            <div class="xs-container">
+                <div class="xs-content">
+                    <ul id="catlist">
+                        <foreach name="partners" item="it">
+                            <li id="cat{$it['id']}" data-id="{$it['id']}" <if condition="$cat eq $it['id']"> class="catli on" </if> >{$it['name']}</li>
+                        </foreach>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="n-rightcontent">
+            <div class="xs-container">
+                <div class="xs-content">
+                    <ul class="n-goodslist">
+
+                    </ul>
+                    <p class="addrboxtext"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var ossurl = '{$Think.config.OSS_URL}';
+    var ispartner = 1;
+</script>
+<script src="__PUBLIC__/Home/js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Home/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Home/js/xscroll-master.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/Home/js/partner.js?v1" type="text/javascript" charset="utf-8"></script>
+</body>
+
+</html>

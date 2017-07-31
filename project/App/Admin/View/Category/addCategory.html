@@ -1,0 +1,86 @@
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="fa fa-info-circle font-red"></i>
+			<span class="caption-subject font-red uppercase">分类添加</span>
+		</div>
+		<div class="actions">
+			
+		</div>
+	</div>
+	<div class="portlet-body form">
+		<form action="#" class="form-horizontal" id="tform">
+			<div class="form-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label class="control-label col-md-3">分类名称</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="name" placeholder="请输入分类名称" require="true">
+								<span class="help-block"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--/row-->
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label class="control-label col-md-3">排序</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="sort" require="true">
+								<span class="help-block">请输入排序的数值。 例如:输入数字1 当前分类就会排在最顶端</span>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+
+
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label class="control-label col-md-3">适用门店</label>
+							<div class="col-md-9">
+								<div class="checkbox-list hd-shopsel">
+								<label class="checkbox-inline">
+		                    <input class="allchk" type="checkbox" checked> 全部 </label>
+								<volist name="shop_list" id="item">
+									<label class="checkbox-inline">
+		                    <input type="checkbox" name="shop_id[]" value="{$item['id']}" checked> {$item['name']} </label>
+		                    	</volist>
+								</div>
+
+								<span class="help-block"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="form-actions">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="row">
+							<div class="col-md-offset-3 col-md-9">
+								<a href="javascript:;" class="btn green" onclick="subForm(this,'tform','__URL__/addCategoryAction')">保存</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6"> </div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+	$('.allchk').change(function() {
+		if ($(this).is(":checked")) {
+			$(".hd-shopsel input[type=checkbox]").prop("checked", true);
+			$(".hd-shopsel input[type=checkbox]").parent('span').addClass('checked');
+		} else {
+			$(".hd-shopsel input[type=checkbox]").prop("checked", false);
+			$(".hd-shopsel input[type=checkbox]").parent('span').removeClass('checked')
+		}
+	});
+</script>

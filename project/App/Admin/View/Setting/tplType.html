@@ -1,0 +1,76 @@
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="fa fa-plus font-red"></i>
+			<span class="caption-subject font-red uppercase">添加门店</span>
+		</div>
+		<div class="actions">
+
+		</div>
+	</div>
+	<div class="portlet-body form">
+		<form action="__URL__/tplType" class="form-horizontal" method="post">
+			<input type="hidden" name="back" value="{$back}">
+			<div class="form-body">
+				<div class="row">
+					<div class="col-md-12">
+						<h4 class="block text-center">请选择您要是用的页面模版</h4>
+					</div>
+				</div>
+				<div class="row tpl-select">
+					<div class="col-md-4">
+						<label for="biaozhun" class="center-block">
+						<div class="text-center"><input type="radio" name="tpl_type" id="biaozhun" value="1" class="hidden" <if condition="$tpl_type eq 1">checked="checked"</if> >标准模式</div>
+						<div class="text-center">
+							<img src="__PUBLIC__/Back/metronic/img/tpl-biaozhun.png" <if condition="$tpl_type eq 1">class="on"</if> width="200" data-type="biaozhun" />
+						</div>
+						</label>
+						<div class="mobanjianjie">适用于品类较多，餐品较多的情况</div>
+					</div>
+					<div class="col-md-4">
+						<label for="datu" class="center-block">
+						<div class="text-center"><input type="radio" name="tpl_type" id="datu" value="2" class="hidden" <if condition="$tpl_type eq 2">checked="checked"</if>>大图模式</div>
+						<div class="text-center">
+							<img src="__PUBLIC__/Back/metronic/img/tpl-datu.png" width="200" <if condition="$tpl_type eq 2">class="on"</if> data-type="datu" />
+						</div>
+						</label>
+						<div class="mobanjianjie">适用于无品类或品类较少（建议0－5），餐品较少，注重餐品图片细节的情况</div>
+					</div>
+
+
+					<div class="col-md-4">
+						<label for="shuangtu" class="center-block">
+						<div class="text-center"><input type="radio" name="tpl_type" id="shuangtu" value="3" class="hidden" <if condition="$tpl_type eq 3">checked="checked"</if>>双图模式</div>
+						<div class="text-center">
+							<img src="__PUBLIC__/Back/metronic/img/tpl-shuangtu.png" width="200" <if condition="$tpl_type eq 3">class="on"</if> data-type="shuangtu" />
+						</div>
+						</label>
+						<div class="mobanjianjie">适用于品类稍多又注重餐品图片细节的情况</div>
+					</div>
+				</div>
+				
+			</div>
+	</div>
+	<div class="form-actions">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-offset-3 col-md-9">
+						<button type="submit" class="btn green">保存</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6"> </div>
+		</div>
+	</div>
+	</form>
+</div>
+<script type="text/javascript">
+	$('.tpl-select img').on('click',function(){
+		$('.tpl-select img').removeClass('on');
+		$(this).addClass('on');	
+		$("input[name='tpl_type']").removeAttr("checked");
+		var tpl_type = $(this).attr('data-type');
+		$("#"+tpl_type).attr("checked","checked");
+	})
+</script>

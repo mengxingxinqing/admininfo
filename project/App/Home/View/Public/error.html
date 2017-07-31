@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>系统消息 </title>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/weui.min.css" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/order.css" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/css.css" />
+    <script src="__PUBLIC__/Back/metronic/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+</head>
+
+<body>
+<div style="position: fixed; top: 50%; width: 100%; text-align: center; transform: translateY(-50%);">
+    <h3 class="titlebig" style="margin-top: 0;">
+        <i class="weui_icon_msg weui_icon_warn"></i>
+    </h3>
+    <p style="text-align: center;">
+        购物车里空空如也
+    </p>
+</div>
+
+</body>
+<script>
+    (function(){
+        var wait = 1,
+                href = "<?php echo($jumpUrl); ?>";
+        var interval = setInterval(function(){
+            var time = --wait;
+            if(time <= 0) {
+                location.href = href;
+                clearInterval(interval);
+            };
+        }, 1000);
+    })();
+</script>
+
+</html>

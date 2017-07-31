@@ -1,0 +1,148 @@
+<div class="portlet light bordered">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa fa-list font-red"></i>
+            <span class="caption-subject font-red uppercase">充值</span>
+        </div>
+    </div>
+    <div class="portlet-body form">
+
+        <div class="center-block">
+            <div class="portlet">
+                <div class="portlet-title">
+                    <div class="caption">
+                        店铺资金池信息 </div>
+                    <div class="tools">
+
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="table-scrollable table-scrollable-borderless">
+                        <table class="table table-striped table-bordered table-hover table-checkable order-column table-light moneytb">
+                            <thead>
+                            <tr>
+                                <th width="150px">店铺名称</th>
+                                <th>当前余额</th>
+                                <th>费率</th>
+                                <th>封顶金额</th>
+                                <th>本月抽成</th>
+                                <th>电话抽成</th>
+                                <th>流水充值</th>
+                                <th>手动充值</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <volist name="list" id="it">
+                                <tr>
+                                    <td>
+                                        {$it.shop_name}
+                                    </td>
+                                    <td>{$it['money']|number_format=###,2,'.',''}元</td>
+                                    <td>{$it['rate']|number_format=###,2,'.',''}</td>
+                                    <td>{$it['top_money']|number_format=###,2,'.',''}元</td>
+                                    <td>{$it['dec_money']|number_format=###,2,'.',''}元</td>
+                                    <td>{$it['dec_phone_money']|number_format=###,2,'.',''}元</td>
+                                    <td>{$it['inc_money']|number_format=###,2,'.',''}元</td>
+                                    <td>{$it['back_inc_money']|number_format=###,2,'.',''}元</td>
+                                    <td>
+                                        <if condition="$it.curr_status eq 0">
+                                            <span class="green">正常</span>
+                                            <else/>
+                                            <span class="badge badge-warning">支付已切换</span>
+                                        </if>
+                                    </td>
+                                    <td>
+                                        <a class="btn blue" href="__URL__/showPay/id/{$it.shop_id}" data-target="#ajax" data-toggle="modal" class="btn btn-warning" >充值</a>
+                                    </td>
+                                </tr>
+                            </volist>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="center-block">
+            <div class="portlet">
+                <div class="portlet-title">
+                    <div class="caption">
+                        充值记录 </div>
+                    <div class="tools">
+                        <!-- <a href="javascript:;" class="" title=""> 查看更多</a> -->
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="table-scrollable table-scrollable-borderless">
+                        <table class="table table-striped table-bordered table-hover table-checkable order-column table-light moneytb">
+                            <thead>
+                            <tr>
+                                <th>类型</th>
+                                <th>订单金额</th>
+                                <th>充值金额</th>
+                                <th>时间</th>
+                                <th>备注</th>
+                                <th>状态</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <volist name="log['data']" id="it">
+                            <tr>
+                                <td>
+                                    <if condition="$it['type'] eq 1">
+                                        订单充值
+                                        <else/>
+                                        手动充值
+                                    </if>
+                                </td>
+                                <td>{$it['order_money']|number_format=###,2,'.',''}元</td>
+                                <td>{$it['money']|number_format=###,2,'.',''}元</td>
+                                <td>{$it['create_time']|date='Y-m-d H:i',###}</td>
+                                <td>
+                                    <if condition="$it['type'] eq 1">
+                                        订单号：{$it['order_id']}
+                                    </if>
+                                </td>
+                                <td>
+                                    <if condition="$it['status'] eq 0">
+                                        成功
+                                        <else/>
+                                        退单
+                                    </if>
+                                </td>
+                            </tr>
+                            </volist>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="megas512">
+                    {$log['page']}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--弹出容器-->
+<div class="modal fade" id="ajax" role="basic" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img src="__PUBLIC__/Back/metronic/assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
+                <span> &nbsp;&nbsp;Loading... </span>
+            </div>
+        </div>
+    </div>
+</div>
+

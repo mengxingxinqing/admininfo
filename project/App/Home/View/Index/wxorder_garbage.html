@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html manifest="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>十分便利  0元起 免费送</title>
+    <script src="__PUBLIC__/Home/js/mui.min.js"></script>
+    <script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <link href="__PUBLIC__/Home/css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/framextend.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/common.css"/>
+    <script src="__PUBLIC__/Home/js/jquery.sub.js"></script>
+</head>
+
+<body>
+<!--页面主结构开始-->
+<div id="app" class="mui-views">
+    <div class="mui-view">
+        <div class="mui-navbar">
+        </div>
+        <div class="mui-pages">
+        </div>
+    </div>
+</div>
+<!--页面主结构结束-->
+<!--单页面开始-->
+<div id="order" class="mui-page">
+    <header class="mui-navbar-inner mui-bar mui-bar-nav">
+        <a href="javasctipt:;" onclick="myback();" class="mui-left mui-action-back mui-pull-left">
+            <span class="mui-icon mui-icon-left-nav"></span>
+        </a>
+        <h1 class="mui-center mui-title">订单信息</h1>
+    </header>
+    <div class="mui-page-content">
+        <div class="mui-scroll-wrapper">
+            <div class="mui-scroll">
+                <div class="mui-card">
+                    <form id="myform" name="myform" action="{:U('Index/wxpay')}" class="mui-input-group">
+                        <input type="hidden" name="order_num" value="{$order_num}">
+                        <input type="hidden" name="bonus_id" id="bonus_id" value="{$checkedbonus['id']}">
+                        <div class="mui-input-row">
+                            <label>称呼</label>
+                            <notempty name="address['name']">
+                                <input type="text" id="name" name="name" value="{$address['name']}"
+                                       placeholder="请输入您的姓名">
+                            </notempty>
+                            <empty name="address['name']">
+                                <input type="text" id="name" name="name" value="{$nickname}" placeholder="请输入您的姓名">
+                            </empty>
+                        </div>
+                        <div class="mui-input-row">
+                            <label>电话</label>
+                            <input type="text" id="tel" name="tel" value="{$address['tel']}" placeholder="请输入您的电话号码">
+                        </div>
+                        <div class="mui-input-row addript">
+                            <label>地址</label>
+                            <span class="iptd1">中贸广场</span>
+                            <input type="text" id="address" name="address" value="{$address['address']}" class="iptd2"
+                                   placeholder="请输入具体地址">
+                        </div>
+                        <input type="hidden" name="remark" id="attrs" value="">
+                        <input type="hidden" name="pay_type" id="pay_type" value="微信支付">
+                        <input type="hidden" name="total_money" id="total_money" value="{$shopcartcount['totalmoney']}">
+                        <input type="hidden" name="userremark" id="userremark">
+                    </form>
+                </div>
+                <div class="mui-card orderbox">
+                    <dl>
+                        <dt>
+                            <span class="td1">品名</span>
+                            <span class="td2">单价</span>
+                            <span class="td3">数量</span>
+                            <span class="td4">单品总价</span>
+                        </dt>
+                        <foreach name="list" item="item">
+                            <dd>
+                                <span class="td1 mui-ellipsis">{$item['name']}</span>
+                                <span class="td2">￥{$item['price']}</span>
+                                <span class="td3">x{$item['buynum']}</span>
+                                <span class="td4">￥{$item['totalmoney']}</span>
+                            </dd>
+                        </foreach>
+                    </dl>
+                    <div class="priceall">
+                        <notempty name="bonus">
+                            <div class="bonus">
+                                <a href="#bounslist" class="mui-navigate-right mui-block">
+                                    <span class="mui-badge mui-badge-danger mui-badge-inverted">已抵现<span id="bnprice">0.00</span>元</span> 使用红包
+                                </a>
+                            </div>
+                        </notempty>
+                        <div class="pricenum">
+                            <div class="price mui-pull-right">
+                                ￥<span id="restotalmoney">{$shopcartcount['totalmoney']}</span>元
+                            </div>
+                            <span class="mui-pull-right">总金额：</span>
+                        </div>
+                    </div>
+                </div>
+                <notempty name="goods_attrs">
+                    <div class="mui-card orderbox">
+                        <dl>
+                            <dt>可选择：</dt>
+                        </dl>
+                        <ul class="typesle">
+                            <volist  name="goods_attrs" id="gt" >
+                                <li data-id="{$gt['id']}" data-name="{$gt['name']}">{$gt['name']}
+                                        <div class="btnsel mui-pull-right">
+                                            <foreach name="gt['attrs']" item="attr" key="k">
+                                                <a href="javascript:;" data-val="{$attr}"
+                                                <if condition="$k eq 0">class="on"</if>
+                                                >{$attr}</a>
+                                            </foreach>
+                                        </div>
+                                </li>
+                            </volist>
+                        </ul>
+                    </div>
+                </notempty>
+                <h5 class="m10">备注</h5>
+                <div class="m10">
+					<textarea style="font-size:14px;" name="userremark" id="remarktext" rows="5" placeholder="还有什么需要叮咛我们的,可以写在这里。"></textarea>
+                </div>    
+
+                <h5 class="m10">请选择您的支付方式<span id="extendmsg"></span></h5>
+                <div class="mui-card paysel" id="choosepay">
+                    <form class="mui-input-group">
+                        <div class="mui-input-row mui-radio" id="pay1">
+                            <label>微信支付</label>
+                            <input name="radio1" checked value="微信支付" onclick="changePayMethod('微信支付');" type="radio">
+                        </div>
+                        <div class="mui-input-row mui-radio" id="pay2">
+                            <label>线下支付</label>
+                            <input name="radio1" value="线下支付" onclick="changePayMethod('线下支付');" type="radio">
+                        </div>
+
+
+                    </form>
+                </div>
+                <div class="m10">
+                    <button class="mui-btn mui-btn-block mui-btn-warning" onclick="submyformpost(this)">确认</button>
+                </div>
+                <div id="hideval"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="bounslist" class="mui-page">
+    <!--页面标题栏开始-->
+
+    <header class="mui-navbar-inner mui-bar mui-bar-nav">
+        <a href="javasctipt:;" class="mui-left mui-action-back mui-pull-left">
+            <span class="mui-icon mui-icon-left-nav"></span>
+        </a>
+
+        <h1 class="mui-center mui-title">红包</h1>
+    </header>
+    <!--页面标题栏结束-->
+    <!--页面主内容区开始-->
+    <div class="mui-page-content">
+        <div class="mui-scroll-wrapper">
+            <div class="mui-scroll">
+                <ul class="bonusmoneylist">
+                    <foreach name="bonus" item="item">
+                        <li <if condition="$item['checked'] eq 1">class="on"</if> id="bonus{$item['id']}" data-id="{$item['id']}" data-val="{$item['money']}" >
+                        <a href="javascript:;" class="mui-action-back">
+                            <div class="price">{$item['money']|intval}<span>元</span></div>
+                            <div class="date">有效期至：{$item['over_time']|date='Y年m月d日',###}</div>
+                            <div class="usable">可使用</div>
+                        </a>
+                        </li>
+                    </foreach>
+                    <li class="nouse" onclick="donotuse();">
+                        <a href="javascript:;" class="mui-action-back">
+                            不使用
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <!--页面主内容区结束-->
+</div>
+
+<script>
+    $(function(){
+//        var hasExtend = {$hasExtend};
+//        if(hasExtend>0){
+//            $('#pay2').hide();
+//            $('#extendmsg').html('（您的订单中含有外卖，因此需要微信支付）');
+//        }
+
+        if($('#bnprice').length>0){
+            var m = "{$checkedbonus['money']}";
+            var bonus_price = 0;
+            if(m){
+                bonus_price = "{$checkedbonus['money']}";
+            }
+            $('#bnprice').html(parseInt(bonus_price));
+            var total = "{$shopcartcount['totalmoney']}";
+            var leave = parseFloat(total)-parseFloat(bonus_price);
+            if(leave<0){
+                leave = 0;
+            }
+            if(leave == 0){
+                $('#pay_type').val('线下支付');
+                $('#choosepay').hide();
+            }
+            $('#restotalmoney').html(leave);
+        }
+    });
+
+
+    $('.btnsel a').on('tap', function () {
+        $(this).parent().find('a').removeClass('on');
+        $(this).addClass('on');
+    });
+
+    function submyformpost(obj) {
+        getAttrs();
+        var tel = $('#tel').val();
+        if (tel.length != 11) {
+            alert('亲，手机号填错了~！');
+            return false;
+        }
+        var address = $('#address').val();
+        if (!address) {
+            alert('请填写您的门牌号');
+            return;
+        }
+        $('#userremark').val($('#remarktext').val());
+
+        var paytype = $('#pay_type').val();
+        if(paytype == '微信支付'){
+            $(obj).attr("disabled", true);
+            $('#myform').submit();
+        }else{
+            paymethod2(obj);
+        }
+
+    }
+
+    function  changePayMethod(type){
+        $('#pay_type').val(type);
+//        alert($('#pay_type').val());
+    }
+
+    function paymethod2(obj) {
+        var url = "{:U('Index/saveorder')}";
+        $(obj).attr("disabled", true);
+        loading(1);
+        $.post(url, $('#myform').serialize(), function (data) {
+            loading(0);
+            data = eval('(' + data + ')');
+            // 提示信息
+            if (data.msg) alert(data.msg);
+            if (data['url'])
+                location.href = data.url;
+        });
+    }
+    function getAttrs() {
+        if ($('.typesle').find('li').length != 0) {
+            $('.typesle').find('li').each(function () {
+                var id = $(this).attr('data-id');
+                var name = $(this).attr('data-name');
+                var attr = $(this).find('.on').attr('data-val');
+                if ($('#' + id + attr).length > 0) {
+                    var num = parseInt($('#' + id + attr).attr('data-num'));
+                    $('#' + id + attr).attr('data-num', num + 1);
+                } else {
+                    var html = '<input type="hidden" id="' + id + attr + '" data-num="1" data-name="' + name + '" data-attr="' + attr + '" />'
+                    $('#hideval').append(html);
+                }
+            });
+            var remark = "";
+            $('#hideval').find('input').each(function () {
+                remark += $(this).attr('data-name') + " * " + $(this).attr('data-num') + " (" + $(this).attr('data-attr') + ")  ";
+            });
+            $('#attrs').val(remark);
+        }
+    }
+
+    function myback() {
+        history.back(-1);
+    }
+
+    function loading(type) {
+        var html = '<div id="loadingdiv" style="text-align: center; line-height: 24px;  position: absolute;  left: 0;  right: 0; color: #999; top: 50%; margin-top: -12px;"><img src="__PUBLIC__/Home/images/loading.gif" width="83"/></div>';
+        if (!type) {
+            $('#loadingdiv').remove();
+        } else {
+            $('body').append(html);
+        }
+    }
+
+</script>
+
+<script src="__PUBLIC__/Home/js/mui.view.js "></script>
+<script>
+    mui.init();
+    //初始化单页view
+    var viewApi = mui('#app').view({
+        defaultPage: '#order'
+    });
+    //初始化单页的区域滚动
+    mui('.mui-scroll-wrapper').scroll();
+    //分享操作
+    var view = viewApi.view;
+    (function ($) {
+        //处理view的后退与webview后退
+        var oldBack = $.back;
+        $.back = function () {
+            if (viewApi.canBack()) { //如果view可以后退，则执行view的后退
+                viewApi.back();
+            } else { //执行webview后退
+                oldBack();
+            }
+        };
+        //监听页面切换事件方案1,通过view元素监听所有页面切换事件，目前提供pageBeforeShow|pageShow|pageBeforeBack|pageBack四种事件(before事件为动画开始前触发)
+        //第一个参数为事件名称，第二个参数为事件回调，其中e.detail.page为当前页面的html对象
+        view.addEventListener('pageBeforeShow', function (e) {
+            //				console.log(e.detail.page.id + ' beforeShow');
+        });
+        view.addEventListener('pageShow', function (e) {
+            //				console.log(e.detail.page.id + ' show');
+        });
+        view.addEventListener('pageBeforeBack', function (e) {
+            //				console.log(e.detail.page.id + ' beforeBack');
+        });
+        view.addEventListener('pageBack', function (e) {
+            //				console.log(e.detail.page.id + ' back');
+        });
+    })(mui);
+    $('.btnsel a').on('tap', function () {
+        $(this).parent().find('a').removeClass('on');
+        $(this).addClass('on');
+    })
+    $('.bonusmoneylist li').on('tap', function () {
+        $('.bonusmoneylist li').removeClass('on');
+        $(this).addClass('on');
+        var id = $(this).attr('data-id');
+        var total = "{$shopcartcount['totalmoney']}";
+        if(id){
+            var money = $('#bonus'+id).attr('data-val');
+
+            $('#bnprice').html(parseInt(money));
+            var leave = parseFloat(total)-parseFloat(money);
+            if(leave<0){
+                leave = 0;
+                $('#pay_type').val('线下支付');
+                $('#choosepay').hide();
+            }
+            $('#restotalmoney').html(leave);
+            $('#bonus_id').val(id);
+        }else{
+            $('#choosepay').show();
+            $('#pay_type').val('微信支付');
+            $('#restotalmoney').html(total);
+            $('#bnprice').html('0');
+            $('#bonus_id').val(0);
+        }
+
+    })
+</script>
+
+<script>
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：https://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，
+        appId: '{$signPackage.appId}',
+        timestamp: '{$signPackage.timestamp}',
+        nonceStr: '{$signPackage.nonceStr}',
+        signature: '{$signPackage.signature}',
+        jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'chooseWXPay']
+    });
+    wx.ready(function () {
+        // 在这里调用 API
+        // 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
+        wx.onMenuShareTimeline({
+            title: '{$share_data.title}', // 分享标题
+            desc: "{$share_data.desc}", // 分享描述
+            link: "{$share_data.link}",
+            imgUrl: "{$share_data.imgUrl}" // 分享图标
+        });
+//                获取“分享给朋友”按钮点击状态及自定义分享内容接口
+        wx.onMenuShareAppMessage({
+            title: '{$share_data.title}', // 分享标题
+            desc: "{$share_data.desc}", // 分享描述
+            link: "{$share_data.link}",
+            imgUrl: "{$share_data.imgUrl}", // 分享图标
+            type: 'link' // 分享类型,music、video或link，不填默认为link
+        });
+    });
+</script>
+<script src="https://s4.cnzz.com/z_stat.php?id=1256154911&web_id=1256154911" language="JavaScript"></script>
+</body>
+</html>

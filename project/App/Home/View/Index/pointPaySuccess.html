@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>支付成功</title>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/weui.min.css" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/order.css" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/css.css" />
+    <style>
+        .weui_icon_msg:before {
+            font-size: 32px;
+            margin-right: 10px;
+            position: relative;
+            top: -2px;
+        }
+    </style>
+</head>
+
+<body>
+<div style="position: fixed; top: 40%; width: 100%;transform: translateY(-50%);">
+    <p style="text-align: center; font-size: 18px;">
+        <i class="weui_icon_msg weui_icon_success"></i>支付成功!
+    </p>
+    <div class="n-card" style="font-size: 16px; padding: 15px;">
+        <div style="text-align: center;">
+            <div style="font-size: 14px; color: #999;">支付金额</div>
+            <div style="font-size: 38px; line-height: 1.2;">{$info['money']}</div>
+            <div style="font-size: 24px; margin-bottom: 5px;">{$info['create_time']|date='m月d日 H:i',###}</div>
+        </div>
+        <div style="font-size: 16px; color: #999;">自提点名称：<span>{$info['name']}</span></div>
+    </div>
+</div>
+</body>
+
+</html>

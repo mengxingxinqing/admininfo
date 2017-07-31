@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>我是教练</title>
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/weui.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/css.css" />
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/coach_info.css" />
+	</head>
+
+	<body>
+		<div class="coach-cont-box">
+			<div class="headimg">
+				<img src="{$info['avatar']}" />
+			</div>
+			<div class="username">{$info['name']}</div>
+			<div class="username-tag">特约教练</div>
+			<div class="wechatid">微信号：{$info['weixin']}</div>
+			<h3 class="invite-title" style="margin-bottom: 15px;"><strong>请扫描下方二维码<br />进行充值操作</strong></h3>
+			<div class="qrcode">
+				<img src="{$info['url']}"/>
+			</div>
+			<div class="shimailogo">
+				<img src="__PUBLIC__/Home/img/shimai/logo.png"/>
+			</div>
+			<div style="clear: both;"></div>
+		</div>
+		<div class="explain">
+			<!--<ol>
+				<li>让用户打开微信扫一扫，扫描二维码；</li>
+				<li>让用户在充值界面选择金额进行充值操作</li>
+			</ol>-->
+		</div>
+		<script src="__PUBLIC__/Home/js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__PUBLIC__/Home/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__PUBLIC__/Home/js/jquery-weui.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function() {
+				FastClick.attach(document.body);
+
+				(function() {
+					$('.invite-btn').on('click', function() {
+						$('body').append('<div class="n-mask"><div class="invitetext"></div></div>');
+						return false;
+					})
+					$(document).on('click', function() {
+						$('.n-mask').remove();
+					})
+				})();
+			})
+		</script>
+	</body>
+
+</html>

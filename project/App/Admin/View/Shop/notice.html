@@ -1,0 +1,74 @@
+<link href="/Public/Back/metronic/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN SAMPLE TABLE PORTLET-->
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-list font-red"></i>
+                    <span class="caption-subject font-red uppercase">发布店铺公告</span>
+                </div>
+                <div class="actions">
+                    <div class="btn-group">
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="portlet-body form">
+                <form method="post" id="form1" enctype="multipart/form-data" action="__URL__/notice" class="form-horizontal">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3"></label>
+                                    <div class="col-md-9">
+                                        <textarea id="content" name="content">{$content}</textarea>
+                                        <input type="hidden" name="shop_id" value="{$sid}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3"></label>
+                                    <div class="col-md-9">
+                                        <button type="button" class="btn btn-danger" onclick="savedata();">保存</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- END SAMPLE TABLE PORTLET-->
+    </div>
+</div>
+<script src="/Public/Back/metronic/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
+<script type="text/javascript" src="/Public/ueditor/ueditor.config.js"></script>
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="/Public/ueditor/ueditor.all.js"></script>
+<!-- 实例化编辑器 -->
+
+<script type="text/javascript" src="/Public/ckeditor/ckeditor.js"></script>
+
+<script>
+//    CKEDITOR.replace( 'content' ,{
+//        filebrowserBrowseUrl:'__PUBLIC__/ckfinder/ckfinder.html',
+//        filebrowserImageBrowseUrl:'__PUBLIC__/ckfinder/ckfinder.html?type=Images',
+//        filebrowserFlashBrowseUrl: '__PUBLIC__/ckfinder/ckfinder.html?type=Flash',
+//        filebrowserUploadUrl: '__PUBLIC__/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+//        filebrowserImageUploadUrl: '__PUBLIC__/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+//        filebrowserFlashUploadUrl: '__PUBLIC__/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'}
+//    );
+</script>
+
+<script type="text/javascript">
+    var ue = UE.getEditor('content');
+    function savedata(){
+        $('#form1').submit();
+    }
+</script>

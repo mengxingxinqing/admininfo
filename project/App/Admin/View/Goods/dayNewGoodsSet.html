@@ -1,0 +1,141 @@
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="icon-settings font-red"></i>
+			<span class="caption-subject font-red sbold uppercase">每日新品设置</span>
+		</div>
+	</div>
+	<div class="portlet-body form">
+		<form action="#" class="form-horizontal" id="tform">
+			<div class="col-md-3">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <select class="bs-select form-control" data-live-search="true" data-size="8" name="shop_id" onchange="changeShop(this.value);">
+                            <volist name="shop_list" id="item">
+                            <option value="{$item['id']}" <if condition="$shop_id eq $item['id']">selected</if>  >{$item['name']}</option>
+                            </volist>
+                        </select>
+                    </div>
+                </div>
+            </div>
+			<div class="form-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label class="control-label col-md-3">营业日期设置</label>
+							<div class="col-md-9">
+								<div class="clearfix">
+									<div class="btn-group" data-toggle="buttons">
+										<volist name="dayset_list" id="item">
+										<label class="btn btn-default <if condition="$item['status'] eq 1">active</if>">
+                                        <input type="checkbox" class="toggle" name="day[]" value="{$item['day_name']}"  <if condition="$item['status'] eq 1">checked="checked"</if> >
+                                        <if condition="$item['day_name'] eq 1">
+                                        周一
+                                        <elseif condition="$item['day_name'] eq 2" />
+                                        周二
+                                        <elseif condition="$item['day_name'] eq 3" />
+                                        周三
+                                        <elseif condition="$item['day_name'] eq 4" />
+                                        周四
+                                        <elseif condition="$item['day_name'] eq 5" />
+                                        周五
+                                        <elseif condition="$item['day_name'] eq 6" />
+                                        周六
+                                        <elseif condition="$item['day_name'] eq 7" />
+                                        周日
+                                        </if>
+                                        </label>
+                                        </volist>
+									</div>
+								</div>
+
+								<span class="help-block">按下按钮选中表示当日营业</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="row">
+					<!--/span-->
+					<div class="col-md-12">
+						<div class="form-group">
+							<label class="control-label col-md-3"><strong class="font-red"></strong>今日不可定</label>
+							<div class="col-md-9">
+								<div class="input-group input-large">
+									<input type="checkbox" class="make-switch" data-size="small" data-on-color="info" data-on-text="是" data-off-text="否" <if condition="$shop_info['close_today_dayset'] eq 1">checked</if> onchange="closeTodayDayset(this)">
+                                    <input type="hidden" id="close_today_dayset" name="close_today_dayset" value="{$shop_info['close_today_dayset']}">
+								</div>
+								<span class="help-block"></span>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+				</div>
+
+				<!--/row-->
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label class="control-label col-md-3">预定优惠</label>
+							<div class="col-md-9">
+								<div class="form-group">
+									<!-- <div class="col-md-12" style="margin: 10px 0;">
+										<button class="btn btn-success btn-sm">增加</button>
+									</div> -->
+									<volist name="discount_list" id="item">
+									<div class="clearfix">
+										<div class="col-md-6">
+											提前<span>{$item['days']}</span>天，优惠
+											<input type="number" step="0.1" min="0" class="form-control input-xsmall inline" name="discount[]" placeholder="金额" value="{$item['discount_money']}"> 元
+											<span class="help-block"></span>
+											<input type="hidden" name="advance_day[]" value="{$item['days']}">
+										</div>
+									</div>
+									</volist>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label class="control-label col-md-3">首页公告</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="dayset_announce" value="{$shop_info['dayset_announce']}" />
+									
+								<span class="help-block"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="form-actions">
+				<div class="row">
+					<div class="col-md-12 text-center">
+						<a href="javascript:;" class="btn green savebtn" onclick="subForm(this,'tform','__URL__/dayNewGoodsSet')">保存</a>
+					</div>
+					<div class="col-md-6"> </div>
+				</div>
+			</div>
+		</form>
+
+	</div>
+</div>
+<script type="text/javascript">
+	function changeShop(shop_id){
+		location.href = '__URL__/dayNewGoodsSet?shop_id='+shop_id;
+	}
+
+	function closeTodayDayset(obj){
+		if($(obj).is(':checked')){     
+            $("#close_today_dayset").val(1);
+        }else{
+            $("#close_today_dayset").val(0);
+            
+        }
+	}
+</script>

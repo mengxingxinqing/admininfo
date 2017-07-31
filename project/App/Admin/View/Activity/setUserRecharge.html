@@ -1,0 +1,121 @@
+<div class="portlet light bordered">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa fa-plus font-red"></i>
+            <span class="caption-subject font-red uppercase">用户储值设置</span>
+        </div>
+        <!-- <div class="actions">
+            <a href="__URL__/userRechargeLog" class="btn green btn-outline"><i class="fa"></i> 用户储值记录</a>
+        </div> -->
+    </div>
+    <div class="portlet-body form">
+        <form action="#" class="form-horizontal" id="tform" method="post">
+            
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">用户储值</label>
+                            <div class="col-md-8">
+                                <div class="radio-list">
+
+
+                                    <input type="checkbox" class="make-switch" data-size="small" data-on-color="info" <if condition="$is_user_recharge eq 1">  checked </if> data-on-text="开启" data-off-text="关闭" onchange="changeFixedTime(this)">
+
+                                    <input type="hidden" id="userrecharge" name="is_user_recharge" value="{$is_user_recharge}">
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="reserve_box" <if condition="$is_user_recharge eq 0" >style="display:none;"</if>>
+                    
+                    <div class="row default_row">
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    <button type="button" class="btn btn-xs btn-success add_delete add_reserve">增加</button>
+                                </label>
+                                <div class="col-md-10">
+                                    充
+                                    <input type="text" class="form-control input-xsmall inline" name="money[]" value="{$list[0]['money']}"> 元 <span class="help-block"></span> 
+                                    送 <input type="text" class="form-control input-xsmall inline" name="giveaway_money[]" value="{$list[0]['giveaway_money']}"> 元<span class="help-block"></span>
+                                    送
+                                    <input type="text" class="form-control input-xsmall inline" name="bonus_num[]" value="{$list[0]['bonus_num']}"> 张 <input type="text" class="form-control input-xsmall inline" name="bonus_money[]" value="{$list[0]['bonus_money']}"> 元红包，满
+                                    <input type="text" class="form-control input-xsmall inline" name="bonus_param1[]" value="{$list[0]['bonus_param1']}"> 元可用，有效期
+                                    <input type="text" class="form-control input-xsmall inline" name="bonus_param2[]" value="{$list[0]['bonus_param2']}"> 天
+                                    <span class="help-block"></span>
+                                </div>
+
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <volist name="list" id="item" key="key">
+                    <if condition="$key gt 1">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    <button type="button" class="btn btn-xs btn-default delete_reserve">删除</button>
+                                </label>
+                                <div class="col-md-10">
+                                    充
+                                    <input type="text" class="form-control input-xsmall inline" name="money[]" value="{$item['money']}"> 元 <span class="help-block"></span>
+                                    送 <input type="text" class="form-control input-xsmall inline" name="giveaway_money[]" value="{$item['giveaway_money']}"> 元<span class="help-block"></span>
+                                    送
+                                    <input type="text" class="form-control input-xsmall inline" name="bonus_num[]" value="{$item['bonus_num']}"> 张 <input type="text" class="form-control input-xsmall inline" name="bonus_money[]" value="{$item['bonus_money']}"> 元红包，满
+                                    <input type="text" class="form-control input-xsmall inline" name="bonus_param1[]" value="{$item['bonus_param1']}"> 元可用，有效期
+                                    <input type="text" class="form-control input-xsmall inline" name="bonus_param2[]" value="{$item['bonus_param2']}"> 天
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </if>
+                    </volist>
+                </div>
+
+
+                <div class="form-actions">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            
+                            <a href="javascript:;" onclick="subForm(this,'tform','__URL__/setUserRecharge')" class="btn green savebtn">保存</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        
+
+
+        $(".add_reserve").click(function(){
+
+            var html = '<div class="row"><div class="col-md-9"><div class="form-group"><label class="control-label col-md-2"><button type="button" class="btn btn-xs btn-default delete_reserve">删除</button></label><div class="col-md-10">充 <input type="text" class="form-control input-xsmall inline" name="money[]"> 元 <span class="help-block"></span> 送 <input type="text" class="form-control input-xsmall inline" name="giveaway_money[]"> 元<span class="help-block"></span> 送 <input type="text" class="form-control input-xsmall inline" name="bonus_num[]"> 张 <input type="text" class="form-control input-xsmall inline" name="bonus_money[]"> 元红包，满 <input type="text" class="form-control input-xsmall inline" name="bonus_param1[]"> 元可用，有效期 <input type="text" class="form-control input-xsmall inline" name="bonus_param2[]"> 天 <span class="help-block"></span></div></div></div></div>';
+            $(".reserve_box").append(html);
+        })
+
+        $(".reserve_box").on('click','.delete_reserve',function(){
+            $(this).closest(".row").remove();
+        })
+    })
+
+    function changeFixedTime(obj){
+        if($(obj).is(':checked')){     
+            $("#userrecharge").val(1);
+            $(".reserve_box").show();
+        }else{
+            $("#userrecharge").val(0);
+            $(".reserve_box").hide();
+        }
+    }
+</script>

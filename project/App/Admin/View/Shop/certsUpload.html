@@ -1,0 +1,207 @@
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet" type="text/css" />
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="fa fa-plus font-red"></i>
+			<span class="caption-subject font-red uppercase">添加证件</span>
+		</div>
+		<div class="actions"><a href="__URL__/index" class="btn green">添加完成返回</a></div>
+	</div>
+	<div class="portlet-body form">
+		<form id="fileupload" action="__URL__/certsUploadding" method="POST" enctype="multipart/form-data">
+			<!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+			<div class="row fileupload-buttonbar">
+				<div class="col-lg-7">
+					<!-- The fileinput-button span is used to style the file input field as button -->
+					<span class="btn green fileinput-button">
+		                <i class="fa fa-plus"></i>
+		                <span> 添加图片 </span>
+						<input type="file" name="files[]" multiple="">
+					</span>
+					<!-- <button type="submit" class="btn blue start">
+                <i class="fa fa-upload"></i>
+                <span> 开始上传 </span>
+            </button>
+					<button type="reset" class="btn warning cancel">
+                <i class="fa fa-ban-circle"></i>
+                <span> 取消上传 </span>
+            </button>
+					<button type="button" class="btn red delete">
+                <i class="fa fa-trash"></i>
+                <span> 删除 </span>
+            </button> -->
+					<!-- <input type="checkbox" class="toggle"> -->
+					<!-- The global file processing state -->
+					<!-- <span class="fileupload-process"> </span> -->
+				</div>
+				<!-- The global progress information -->
+				<div class="col-lg-5 fileupload-progress fade">
+					<!-- The global progress bar -->
+					<div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+						<div class="progress-bar progress-bar-success" style="width:0%;"> </div>
+					</div>
+					<!-- The extended global progress information -->
+					<div class="progress-extended"> &nbsp; </div>
+				</div>
+			</div>
+			<!-- The table listing the files available for upload/download -->
+			<table role="presentation" class="table table-striped clearfix">
+				<tbody class="files"> </tbody>
+			</table>
+			<input type="hidden" name="shop_id" value="{$shop_id}">
+		</form>
+
+
+	</div>
+	<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+	<script id="template-upload" type="text/x-tmpl"> {% for (var i=0, file; file=o.files[i]; i++) { %}
+		<tr class="template-upload fade">
+			<td>
+				<span class="preview"></span>
+			</td>
+			<td>
+				<p class="name">{%=file.name%}</p>
+				<strong class="error text-danger label label-danger"></strong>
+			</td>
+			<td>
+				<p class="size">Processing...</p>
+				<div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+					<div class="progress-bar progress-bar-success" style="width:0%;"></div>
+				</div>
+			</td>
+			<td> {% if (!i && !o.options.autoUpload) { %}
+				<button class="btn blue start" disabled>
+                    <i class="fa fa-upload"></i>
+                    <span>上传</span>
+                </button> {% } %} {% if (!i) { %}
+				<button class="btn red cancel">
+                    <i class="fa fa-ban"></i>
+                    <span>取消</span>
+                </button> {% } %}
+			</td>
+		</tr> {% } %} </script>
+	<!-- The template to display files available for download -->
+	<script id="template-download" type="text/x-tmpl"> 
+	{% for (var i=0, file; file=o.files[i]; i++) { %}
+		<tr class="template-download fade">
+			<td>
+				<span class="preview"> 
+				{% if (file.thumbnailUrl) { %}
+        		<a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery>
+            	<img style="width:80px;height:80px;" src="{%=file.thumbnailUrl%}">
+        		</a> 
+        		{% } %}
+        		</span>
+			</td>
+			<td>
+				<p class="name">
+					<span>{%=file.name%}</span>
+				</p> 
+
+				{% if (file.error) { %}
+				<div>
+					<span class="label label-danger">Error</span> {%=file.error%}
+				</div>
+				{% } %} 
+			</td>
+			<td>
+				
+			</td>
+			<td> 
+				{% if (file.deleteUrl) { %}
+				<button class="btn red delete" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}" >
+                    <i class="fa fa-trash-o"></i>
+                    <span>删除</span>
+                	</button>
+				{% } else { %}
+				<button class="btn yellow cancel">
+                    <i class="fa fa-ban"></i>
+                    <span>取消</span>
+                 </button> 
+                {% } %} 
+            </td>
+		</tr> 
+	{% } %} 
+	</script>
+	<!-- END PAGE BASE CONTENT -->
+</div>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/fancybox/source/jquery.fancybox.pack.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/jquery-file-upload/js/vendor/tmpl.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/jquery-file-upload/js/vendor/load-image.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/jquery-file-upload/js/vendor/canvas-to-blob.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/jquery-file-upload/blueimp-gallery/jquery.blueimp-gallery.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/jquery-file-upload/js/jquery.iframe-transport.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/jquery-file-upload/js/jquery.fileupload.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/jquery-file-upload/js/jquery.fileupload-process.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/jquery-file-upload/js/jquery.fileupload-image.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/jquery-file-upload/js/jquery.fileupload-audio.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/jquery-file-upload/js/jquery.fileupload-video.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/jquery-file-upload/js/jquery.fileupload-validate.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/jquery-file-upload/js/jquery.fileupload-ui.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+	$("#fileupload").fileupload({
+		disableImageResize: !1,
+		autoUpload: !1,
+		disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
+		maxFileSize: 5e6,
+		acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
+	});
+
+	// $('#fileupload').fileupload({
+	//     done: function (e, data) {
+	//        var html = '';
+	//        html += '<tr>';
+	//        html += '<td><img src="aaa.jpg"></td>'
+	//        html += '<td>bbbbb</td>'
+	//        html += '<td>213123</td>'
+	//        html += '</tr>';
+	//        $(".files").append(html);
+	//     }
+	// });
+
+	// $("#fileupload").fileupload("option", "redirect", window.location.href.replace(/\/[^\/]*$/, "/cors/result.html?%s")), 
+
+	/*$.support.cors && $.ajax({
+		type: "HEAD"
+	}).fail(function() {
+		$('<div class="alert alert-danger"/>').text("Upload server currently unavailable - " + new Date).appendTo("#fileupload")
+	});
+
+	$("#fileupload").addClass("fileupload-processing");*/
+
+	// $.ajax({
+	// 	url: $("#fileupload").attr("action"),
+	// 	dataType: "json",
+	// 	context: $("#fileupload")[0]
+	// }).always(function() {
+	// 	// $(this).removeClass("fileupload-processing")
+	// 	$(this).fileupload("option", "done").call(this, $.Event("done"), {
+	// 		result: e
+	// 	})
+	// }).done(function(e) {
+	// 	$(this).fileupload("option", "done").call(this, $.Event("done"), {
+	// 		result: e
+	// 	})
+	// })
+	$(function(){
+		var shop_id = "{$shop_id}";
+		$.get("__URL__/getCerts",{shop_id:shop_id},function(res){
+			var file = res.files[0]
+			var	 html = '';
+			$.each(res.files,function(i,v){
+				html += '<tr class="template-download fade in">';
+				html += '<td><span class="preview"><a><img style="width:80px;height:80px;" src="'+v.thumbnailUrl+'"></a></span></td>';
+				html += '<td><p class="name"><span>'+v.name+'</span></p></td>'
+				html += '<td></td>';
+				html += '<td><button class="btn red delete" data-type="delete" data-url="'+file.deleteUrl+'" ><i class="fa fa-trash-o"></i><span>删除</span></button></td>';
+				html += '</tr>';
+			})
+			
+			$(".files").append(html);
+		},'json')
+	})
+</script>

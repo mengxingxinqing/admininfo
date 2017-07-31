@@ -1,0 +1,62 @@
+{__NOLAYOUT__}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <h4 class="modal-title">推送预览</h4>
+</div>
+<div class="modal-body">
+    <div class="form">
+        <form action="#" class="form-horizontal">
+            <div class="form-body">
+
+                <!--/row-->
+                <div class="row">
+                    <div class="col-md-10">
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3"></label>
+                            <div class="col-md-9">
+                                <img src="__PUBLIC__/Back/img/demo.png" alt="" />
+                                <input type="hidden" id="gid" value="{$id}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">编号</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" id="uid" placeholder="请输入编号">
+                                <span class="help-block">在公众号中回复“"编号”获取
+</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" data-dismiss="modal" class="btn dark btn-outline">关闭</button>
+    <button type="button" class="btn green save">预览</button>
+</div>
+<script type="text/javascript">
+    $('body').on('click','.save',function(){
+        var uid = $('#uid').val();
+        var gid = $('#gid').val();
+        if(!uid){
+            mToast("编号必须填写","系统提示","error");
+            return;
+        }
+        $(this).prop("disable","disable");
+        mToast("请稍后。。。","系统提示","info");
+        $.post("__URL__/articlePre",{uid:uid,gid:gid},function () {
+            mToast('预览发布成功');
+            $('#ajax').modal('hide');
+        })
+    })
+</script>

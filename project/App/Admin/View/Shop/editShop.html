@@ -1,0 +1,430 @@
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/morris/morris.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Back/metronic/assets/global/plugins/jqvmap/jqvmap/jqvmap.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript"
+		src="https://webapi.amap.com/maps?v=1.3&key=1df154e733e82c81a76cb01b419b7740&plugin=AMap.Autocomplete"></script>
+<script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="fa fa-plus font-red"></i>
+			<span class="caption-subject font-red uppercase">编辑门店</span>
+		</div>
+		
+	</div>
+	<div class="portlet-body form">
+		<form action="#" class="form-horizontal" id="tform">
+			<input type="hidden" name="id" value="{$data['id']}">
+			<div class="form-body">
+				<h3 class="form-section font-lg">门店基本设置</h3>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">门店名称</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" placeholder="请输入门店名称" name="name" value="{$data['name']}">
+								<span class="help-block"></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">首页底部文本</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control" placeholder="请输入文本" name="bottom_address" value="{$data['bottom_address']}">
+								<span class="help-block" >
+									显示在商品列表底部
+	                             </span>
+								<span class="help-block" style="display:none">
+									<label class="checkbox-inline" style="padding-left: 0;">
+	                                    <input type="checkbox" name="show_bottom_address" value="1" checked="checked">显示在商品列表底部
+									</label>
+	                             </span>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+
+					<!--/span-->
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4"><strong class="font-red">* </strong>门店接单App帐号</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control" placeholder="仅限11位手机号" name="account" value="{$data['account']}" require="true">
+								<span class="help-block"></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4"><strong class="font-red">* </strong>接单App密码设置</label>
+							<div class="col-md-8">
+								<input type="password" class="form-control" placeholder="请输入密码" name="pwd" value="{$data['pwd']}" require="true">
+								<span class="help-block"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4"><strong class="font-red">* </strong>出票联数</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control" placeholder="" name="print_times" value="{$data['print_times']}" require="true">
+								<span class="help-block"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label class="control-label col-md-2"></label>
+							<div class="col-md-9">
+								 <a href="{:U('shop/certsUpload')}?shop_id={$data['id']}" class="btn btn-sm green-jungle">资质证件</a>
+
+	                            <a href="{:U('shop/notice')}?shop_id={$data['id']}" class="btn btn-sm green-jungle">发布公告</a>
+
+	                            <a href="{:U('shop/shoppay')}?shop_id={$data['id']}" class="btn btn-sm green-jungle">到店付二维码</a>
+
+	                            <a href="{:U('shop/setBuilding')}?shop_id={$data['id']}" class="btn btn-sm green-jungle">常见配送区域设置</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<h3 class="form-section font-lg">门店人员设置</h3>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">店长名字</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control" placeholder="请输入店长名字" name="shop_manager" value="{$data['shop_manager']}">
+								<span class="help-block"></span>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">客服电话</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control" placeholder="请输入客服电话" name="tel" value="{$data['tel']}">
+								<span class="help-block"></span>
+							</div>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">顾客留言接收id</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control" placeholder="请输入接收人的uid" name="admin_uid" value="{$data['admin_uid']}">
+								<span class="help-block"></span>
+							</div>
+						</div>
+					</div>
+					
+					<!--/span-->
+					
+				</div>
+				
+				<h3 class="form-section font-lg">门店服务设置</h3>
+
+				<div class="row">
+					<!--/span-->
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">营业时间</label>
+							<div class="col-md-8">
+								<div class="input-group input-large">
+									<div>
+									<input type="text" class="form-control timepicker timepicker-24" name="start_time" value="{$data['start_time']}">
+									</div>
+									<span class="input-group-addon"> 到 </span>
+									<div>
+									<input type="text" class="form-control timepicker timepicker-24" name="end_time" value="{$data['end_time']}">
+									</div>
+								</div>
+								<span class="help-block"></span>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+				</div>
+
+
+				<div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">预定天数</label>
+                            <div class="col-md-8">
+                                <select name="reserve_day" class="form-control" id="change_reserve">
+                                    <option value="0" <if condition="$data['reserve_day'] eq 0">selected</if> >无预定</option>
+                                    <option value="1" <if condition="$data['reserve_day'] eq 1">selected</if> >提前1天</option>
+                                    <option value="2" <if condition="$data['reserve_day'] eq 2">selected</if> >提前2天</option>
+                                    <option value="3" <if condition="$data['reserve_day'] eq 3">selected</if> >提前3天</option>
+                                    <option value="4" <if condition="$data['reserve_day'] eq 4">selected</if> >提前4天</option>
+                                    <option value="5" <if condition="$data['reserve_day'] eq 5">selected</if> >提前5天</option>
+                                    <option value="6" <if condition="$data['reserve_day'] eq 6">selected</if> >提前6天</option>
+                                    <option value="7" <if condition="$data['reserve_day'] eq 7">selected</if> >提前7天</option>
+                                </select>
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+				<div class="row">
+					<!--/span-->
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4"><strong class="font-red"></strong>门店自提</label>
+							<div class="col-md-8">
+								<div class="input-group input-large">
+									<input type="checkbox" class="make-switch" data-size="small" data-on-color="info" data-on-text="开启" data-off-text="关闭" <if condition="$data['is_pick'] eq 1">checked</if> onchange="changePick(this)">
+                                    <input type="hidden" id="is_pick" name="is_pick" value="{$data['is_pick']}">
+								</div>
+								<span class="help-block"></span>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+				</div>
+
+
+				<!-- <div class="reserve_box" <if condition="$data['is_pick'] eq 0">style="display: none"</if>>
+                    
+                    <div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">
+							自提地址
+							</label>
+							<div class="col-md-8">
+                                    <input type="text" class="form-control inline" name="pick_address" value="{$pick_address}">
+							</div>
+						</div>
+					</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label col-md-4">
+									自提时间
+								</label>
+								<div class="col-md-8">
+									<div class="input-group input-large">
+										<button type="button" class="btn btn-sm btn-success add_delete add_reserve">增加</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label col-md-4">
+									
+								</label>
+								<div class="col-md-8">
+									
+	                                <div class="input-group input-large">
+	                                	<div>
+										<input type="text" class="form-control timepicker timepicker-24" name="pick_start_time[]" value="{$pick_time[0]['pick_start_time']}" >
+										</div>
+										<span class="input-group-addon"> 到 </span>
+										<div>
+										<input type="text" class="form-control timepicker timepicker-24" name="pick_end_time[]" value="{$pick_time[0]['pick_end_time']}">
+										</div>
+									</div>
+									<span class="help-block"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<volist name="pick_time" id="item" key="k">
+					<if condition="$k gt 1">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label col-md-4">
+									<button type="button" class="btn btn-xs btn-default delete_reserve">删除</button>
+								</label>
+								<div class="col-md-8">
+									
+	                                <div class="input-group input-large">
+	                                	<div>
+										<input type="text" class="form-control timepicker timepicker-24" name="pick_start_time[]" value="{$item['pick_start_time']}">
+										</div>
+										<span class="input-group-addon"> 到 </span>
+										<div>
+										<input type="text" class="form-control timepicker timepicker-24" name="pick_end_time[]" value="{$item['pick_end_time']}">
+										</div>
+									</div>
+									<span class="help-block"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+					</if>
+					</volist>
+                </div> -->
+                
+			</div>
+			<div class="form-actions">
+				<div class="row">
+					<div class="col-md-12 text-center">
+								<a href="javascript:;" onclick="subForm(this,'tform','__URL__/editShopAction')" class="btn green savebtn">保存门店信息</a>
+								<!-- <a href="__URL__/certsUpload?shop_id={$data['id']}" class="btn red" style="margin-left:20px;">修改证件</a>
+								<a href="__URL__/notice?shop_id={$data['id']}" class="btn yellow" style="margin-left:20px;">发布公告</a>
+								<a href="__URL__/shoppay?id={$data['id']}" class="btn blue" style="margin-left:20px;">到店付二维码</a> -->
+
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/counterup/jquery.waypoints.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/counterup/jquery.counterup.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/moment.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Back/metronic/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<script type="text/javascript">
+	$(".timepicker-24").timepicker({
+		autoclose: !0,
+		minuteStep: 10,
+		showSeconds: !1,
+		showMeridian: !1
+	})
+</script>
+<script type="text/javascript">
+	<empty name="data.lng">
+	var map = new AMap.Map("container", {
+		resizeEnable: true,
+		zoom: 10,
+	});
+	<else />
+	var map = new AMap.Map("container", {
+		resizeEnable: true,
+		zoom: 10,
+		// center: ["{$data['lat']}", "{$data['lng']}"],
+		center: [{$data['lng']},{$data['lat']}],
+	});
+	</empty>
+
+
+	// map.setCity("北京");
+
+	//为地图注册click事件获取鼠标点击出的经纬度坐标
+	var clickEventListener = map.on('click', function(e) {
+		document.getElementById("lnglat").value = e.lnglat.getLng() + ',' + e.lnglat.getLat();
+		$('#lng').val(e.lnglat.getLng());
+		$('#lat').val(e.lnglat.getLat());
+		lnglat = e.lnglat;
+		addMark();
+		addCircle();
+	});
+	var auto = new AMap.Autocomplete({
+		input: "tipinput"
+	});
+	AMap.event.addListener(auto, "select", select);//注册监听，当选中某条记录时会触发
+	function select(e) {
+		if (e.poi && e.poi.location) {
+			map.setZoom(13);
+			map.setCenter(e.poi.location);
+			$('#lng').val(e.poi.location.getLng());
+			$('#lat').val(e.poi.location.getLat());
+			lnglat = e.poi.location;
+			addMark();
+			addCircle();
+		}
+	}
+	var marker,circle,lnglat;
+	function addMark(){
+		if(!lnglat) return;
+		if(marker){
+			marker.setMap(null);
+		}
+		marker = new AMap.Marker({
+			icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+			position: lnglat
+		});
+		marker.setMap(map);
+	}
+
+	function addCircle(){
+		var r = $('#send_range').val();
+		if(!r || !lnglat) return;
+		r = r*1000;
+		if(circle){
+			circle.setMap(null);
+		}
+		circle = new AMap.Circle({
+			center: new AMap.LngLat(lnglat.lng, lnglat.lat),// 圆心位置
+			radius: r, //半径
+			strokeColor: "#F33", //线颜色
+			strokeOpacity: 1, //线透明度
+			strokeWeight: 3, //线粗细度
+			fillColor: "#ee2200", //填充颜色
+			fillOpacity: 0.35//填充透明度
+		});
+		circle.setMap(map);
+	}
+
+	$('#send_range').on('input',function () {
+		addCircle();
+	})
+
+</script>
+<script type="text/javascript">
+	$(function(){
+		$(document).on('focusin','.timepicker-24',function(){
+                
+                $(this).timepicker({
+                autoclose: !0,
+                minuteStep: 5,
+                showSeconds: !1,
+                showMeridian: !1
+            })
+        });
+		$(".add_reserve").click(function(){
+			var html = '<div class="row"><div class="col-md-6"><div class="form-group"><label class="control-label col-md-4"><button type="button" class="btn btn-xs btn-default delete_reserve">删除</button></label><div class="col-md-8"><div class="input-group input-large"><div><input type="text" class="form-control timepicker timepicker-24" name="pick_start_time[]" value=""></div><span class="input-group-addon"> 到 </span><div><input type="text" class="form-control timepicker timepicker-24" name="pick_end_time[]" value=""></div></div><span class="help-block"></span></div></div></div></div>';
+			$(".reserve_box").append(html);
+		})
+
+		$(".reserve_box").on('click','.delete_reserve',function(){
+            $(this).closest(".row").remove();
+        })
+
+
+	})
+	function changePick(obj){
+        if($(obj).is(':checked')){     
+            $("#is_pick").val(1);
+            // $(".reserve_box").show();
+        }else{
+            $("#is_pick").val(0);
+            // $(".reserve_box").hide();
+        }
+    }
+</script>

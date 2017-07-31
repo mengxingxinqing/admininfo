@@ -1,0 +1,54 @@
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN SAMPLE TABLE PORTLET-->
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-list font-red"></i>
+                    <span class="caption-subject font-red uppercase">素材详情</span>
+                </div>
+                <div class="actions">
+                    <div class="btn-group">
+                        <a class="btn btn-success margin-right-10" href="__URL__/articlegroup"><i class="fa fa-plus"></i> 返回</a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="portlet-body">
+                <div class="articlebox">
+                    <div class="coverarticl">
+                        <div class="coverimg" style="background-image: url({$data['head']['cover']});"></div>
+                        <h4><a href="__URL__/articleedit/gid/{$gid}/id/{$data['head']['id']}">{$data['head']['title']}</a></h4>
+                        <div class="editmenu">
+                            <a href="__URL__/articleedit/gid/{$gid}/id/{$data['head']['id']}" class="btn btn-xs btn-warning">编辑</a>
+                            <a href="__URL__/articleDel/id/{$data['head']['id']}" class="btn btn-xs btn-danger">删除</a>
+                        </div>
+                    </div>
+                    <volist name="data.list" id="it">
+                    <div class="smcoverarticl">
+                        <div class="coverimg" style="background-image: url({$it['cover']});"></div>
+                        <h4><a href="__URL__/articleedit/gid/{$gid}/id/{$it['id']}">{$it['title']}</a></h4>
+                        <div class="editmenu">
+                            <a href="javascript:;" onclick="changSort({$it['id']},'up')" class="btn btn-xs btn-info">上移</a>
+                            <a href="javascript:;" onclick="changSort({$it['id']},'down')" class="btn btn-xs btn-info">下移</a>
+                            <a href="__URL__/articleedit/gid/{$gid}/id/{$it['id']}" class="btn btn-xs btn-warning">编辑</a>
+                            <a href="javascript:;" onclick="subForm(this,'','__URL__/articleDel/id/{$it['id']}')" class="btn btn-xs btn-danger">删除</a>
+                        </div>
+                    </div>
+                    </volist>
+                    <a href="__URL__/articleedit/gid/{$gid}" class="smcoverarticl text-center btn btn-block grey-cararra" style="display: block;">
+                                            点击添加文章
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- END SAMPLE TABLE PORTLET-->
+    </div>
+</div>
+<script>
+    function changSort(id, type) {
+        $.post('__URL__/articlePos',{id:id,type:type},function () {
+            location.reload(true);
+        });
+    }
+</script>

@@ -1,0 +1,78 @@
+<div class="portlet light bordered">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa fa-list font-red"></i>
+            <span class="caption-subject font-red uppercase">门店管理</span>
+        </div>
+        <div class="actions">
+            <a href="__URL__/addShop" class="btn green btn-outline"><i class="fa fa-plus"></i> 添加门店</a>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="table-scrollable table-scrollable-borderless">
+            <table class="table table-striped table-hover table-light">
+                <thead>
+                    <tr>
+                        <th width="10%"> 门店名称 </th>
+                        <th width="10%"> 地址 </th>
+                        <th width="10%"> 电话 </th>
+                        <th width="10%"> 营业时间 </th>
+                        <th width="10%"> 今日订单数 </th>
+                        <th width="50%"> 操作 </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <volist name="list.data" id="item">
+                    <tr>
+                        <td>{$item['name']}</td>
+                        <td>{$item['address']}</td>
+                        <td>{$item['tel']}</td>
+                        <td class="text-nowrap">{$item['start_time']} - {$item['end_time']}</td>
+                        <td>{$item['order_count']}</td>
+                        <td>
+							<a href="__URL__/editShop?id={$item['id']}" class="btn btn-sm blue-hoki">基本设置</a>
+                            <a href="{:U('shop/setSend')}?shop_id={$item['id']}" class="btn btn-sm blue-hoki">配送设置</a>
+                            <if condition="$item['is_pick'] eq 1">
+                            <a href="{:U('shop/editPick')}?shop_id={$item['id']}" class="btn btn-sm blue-hoki">自提设置</a>
+                            </if>
+							<a href="{:U('category/index')}?shop_id={$item['id']}" class="btn btn-sm green">分类管理</a>
+							<a href="{:U('goods/index')}?shop_id={$item['id']}" class="btn btn-sm green">餐品管理</a>
+							<a href="{:U('order/index')}?shop_id={$item['id']}" class="btn btn-sm yellow-crusta">订单管理</a>
+							<a href="{:U('user/index')}?shop_id={$item['id']}" class="btn btn-sm yellow-crusta">用户管理</a>
+                            
+
+                            <!-- <a href="javascript:;" onclick="deleteShop({$item['id']})" class="btn btn-sm red">删除店面</a> -->
+                            <!--
+                            <a href="{:U('shop/certsUpload')}?shop_id={$item['id']}" class="btn btn-sm green-jungle">资质证件</a>
+
+                            <a href="{:U('shop/notice')}?shop_id={$item['id']}" class="btn btn-sm green-jungle">发布公告</a>
+
+                            <a href="{:U('shop/shoppay')}?shop_id={$item['id']}" class="btn btn-sm green-jungle">到店付二维码</a>
+
+                            <a href="{:U('shop/setBuilding')}?shop_id={$item['id']}" class="btn btn-sm green-jungle">常见配送区域</a>
+                            -->
+                        </td>
+                    </tr>
+                    </volist>
+                    
+                </tbody>
+            </table>
+            <div class="megas512">
+                {$list['page']}
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function deleteShop(shop_id){
+        if(confirm('确定删除该门店？')){
+            $.post("__URL__/deleteShop",{id:shop_id},function(res){
+                if(res.status == 'ok'){
+                    location.reload();
+                }else{
+                    alert('删除失败');
+                }         
+            },'json')
+        }   
+    }
+</script>

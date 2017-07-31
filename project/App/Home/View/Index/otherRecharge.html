@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>充值</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/weui.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/jquery-weui.min.css" />
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/css.css" />
+		<style>
+			.btnbox~.keyboardNum.show {}
+			
+			.zhifuhead {
+				text-align: left;
+				margin:0 15px;
+				margin-top: 20px;
+			}
+			
+			.zhifuhead img {
+				width: 48px;
+				height: 48px;
+			}
+			
+			.zhifuhead .username {
+				font-size: 14px;
+				color: #999999;
+				margin: 0 0 20px;
+			}
+			
+			.zhifucard {
+				background-color: #fff;
+				margin: 20px 15px 15px;
+				padding: 15px;
+			}
+			
+			.zhifucard .title {
+				font-size: 14px;
+				color: #666;
+			}
+			
+			.flexbox {
+				padding-top: 5px;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				font-size: 18px;
+			}
+			
+			.flexbox .flex {
+				-webkit-box-flex: 1;
+				-webkit-flex: 1;
+				-ms-flex: 1;
+				flex: 1;
+				padding: 0 15px 0;
+			}
+			
+			.flexbox .flex .weui_input {
+				font-size: 44px;
+				color: #474747;
+			}
+		</style>
+	</head>
+
+	<body bgcolor="#F7F7F7">
+		<div class="zhifuhead">
+			<div class="username">请输入充值金额</div>
+		</div>
+		<div class="zhifucard">
+			<div class="title">金额</div>
+			<div class="flexbox">
+				¥
+				<div class="flex">
+					<div id="numinput" type="number" class="weui_input"></div>
+				</div>
+			</div>
+		</div>
+		<div class="m15 btnbox" style="">
+			<button type="button" class="weui_btn weui_btn_warn" onclick="recharge(this)">确认充值</button>
+		</div>
+		<div class="zhifuhead">
+			<volist name="list" id="item">
+			<div class="username">充{$item['money']} <if condition="$item['giveaway_money'] gt 0">送{$item['giveaway_money']}元</if> <if condition="$item['bonus_money'] gt 0">送{$item['bonus_money']*$item['bonus_num']}元红包</if> </div>
+			</volist>
+		</div>
+
+		<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+		<script>
+			wx.config({
+				debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，
+				appId: '{$share.signPackage.appId}',
+				timestamp: '{$share.signPackage.timestamp}',
+				nonceStr: '{$share.signPackage.nonceStr}',
+				signature: '{$share.signPackage.signature}',
+				jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage','chooseWXPay']
+				// jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
+			});
+			wx.ready(function () {
+				// 在这里调用 API
+				// 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
+				wx.onMenuShareTimeline({
+					title: '{$share.pyq.title}', // 分享标题
+					link:"{$share.pyq.link}",
+					imgUrl: "{$share.pyq.imgUrl}" // 分享图标
+				});
+//                获取“分享给朋友”按钮点击状态及自定义分享内容接口
+				wx.onMenuShareAppMessage({
+					title: '{$share.hy.title}', // 分享标题
+					desc: "{$share.hy.desc}", // 分享描述
+					link:"{$share.hy.link}",
+					imgUrl: "{$share.hy.imgUrl}", // 分享图标
+					type: 'link' // 分享类型,music、video或link，不填默认为link
+				});
+			});
+		</script>
+
+		<script src="__PUBLIC__/Home/js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__PUBLIC__/Home/js/jquery-weui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__PUBLIC__/Home/js/numkeypad/keyboardNum.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			window.onload = function() {
+				setTimeout(function() {
+					$(window).scrollTop(240);
+				}, 500);
+			}
+			var key = new KeyBoardNum('#numinput', {
+				decimal: 2,
+				integer: 8,
+				btnActiveBgColor: '#04be02',
+				btnCallBack: function(num) {
+					$('.keyboardNum').removeClass('show');
+					showpadding();
+					console.log(num);
+				}
+			}).show();
+			$('#numinput').on('click', function() {
+				$('.keyboardNum').addClass('show');
+				showpadding();
+				$(window).scrollTop(240);
+			})
+
+			function showpadding() {
+				if($('.keyboardNum').hasClass('show')) {
+					$('.btnbox').css('padding-bottom', '240px');
+				} else {
+					$('.btnbox').css('padding-bottom', '0');
+				}
+			}
+		</script>
+
+
+		<script type="text/javascript">
+			function recharge(obj){
+				var money = $("#numinput").text();
+				if(money > 0){
+					$(obj).attr("disabled","disabled");
+					$.post("__URL__/getWxParam",{money:money},function(res){
+	                	jsApiCall(res.order_id,res.apiparam);
+                	},'json');
+				}else{
+					alert('请输入正确金额');
+				}
+				
+			}
+
+			function jsApiCall(order_id,apiparam){
+		        if (typeof WeixinJSBridge == "undefined"){
+		            if( document.addEventListener ){
+		                document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+		            }else if (document.attachEvent){
+		                document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+		                document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+		            }
+		        }else{
+		            onBridgeReady(order_id,apiparam);
+		        }
+		    }
+
+		    //调用微信JS api 支付
+		    function onBridgeReady(order_id,apiparam)
+		    {
+		        WeixinJSBridge.invoke(
+		                'getBrandWCPayRequest',
+		                // {$apiparam},
+		                apiparam,
+		                function(res){
+		                    // $('#btn').attr("disabled", true);
+		                    if(res.err_msg == "get_brand_wcpay_request:ok"){
+		                        // alert('下单成功');
+		                        location.href = '__URL__/rechargeSuccess';
+		                    }else{
+		                        // var order_id = "{$order_id}";
+		                        location.href = '__URL__/rechargeError';
+		                    }
+
+		                }
+		        );
+		    }
+		</script>
+	</body>
+
+</html>

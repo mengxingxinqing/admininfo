@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>客服消息</title>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/weui.min.css" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/jquery-weui.css" />
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/css.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/chat.css"/>
+</head>
+<body>
+<header class="n-nav-bar">
+    <h1 class="n-title">{$uinfo['nickname']}  对话中...</h1>
+    <notempty name="tel">
+    <a href="tel:{$tel}" class="n-header-link n-pull-right">一键拨号</a>
+    </notempty>
+</header>
+<div class="n-footer bg-fill">
+    <div class="n-reply-bar n-flex">
+        <div class="n-reply-wrap flexbox">
+            <input type="text" id="content" placeholder="请输入内容" />
+        </div>
+        <button class="n-btn-min" onclick="reply(this)">发送</button>
+    </div>
+</div>
+<div class="n-container n-content">
+    <div class="n-chat-win">
+        <volist name="list" id="it">
+        <div class="time">{$it.create_time|date='m-d H:i',###}</div>
+        <dl class="receive">
+            <dt><img src="{$uinfo['headimgurl']}"></dt>
+            <dd><span>
+                <if condition="$it.type eq 'text'">
+                {$it.content}
+                    <else/>
+                    <img src="/{$it.content}" width="100%">
+                </if>
+            </span><i></i></dd>
+        </dl>
+            <volist name="it.answer" id="sid">
+            <dl class="send">
+                <dt><img src="__PUBLIC__/Home/img/ask.jpg"></dt>
+                <dd><span>{$sid.content}</span><i></i></dd>
+            </dl>
+            </volist>
+        </volist>
+
+    </div>
+</div>
+</body>
+<script src="https://lib.sinaapp.com/js/jquery/2.2.4/jquery-2.2.4.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    $(function(){
+        $(window).scrollTop($(".n-chat-win")[0].scrollHeight);
+    })
+
+    function reply(obj){
+        var id = "{$answerid}";
+        var content = $('#content').val();
+        if(!content || content == ' '){
+            return;
+        }
+        var headimg = "{$uinfo['headimg']}";
+        var url = "__URL__/answer";
+        var pid = "{$pid}";
+        $.post(url,{id:id,content:content,pid:pid},function(data){
+            var html = '<dl class="send"><dt><img src="__PUBLIC__/Home/img/ask.jpg"></dt> <dd><span>'+content+'</span><i></i></dd></dl>';
+            $('.n-chat-win').append(html);
+            $('#content').val('');
+            alert("回复成功");
+        });
+    }
+
+</script>
+</html>
